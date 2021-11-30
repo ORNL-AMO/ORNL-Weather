@@ -30,4 +30,4 @@ This program is for requesting weather data from National Centers for Environmen
 
 
 ### Special Information
-This program has been made by seniors Computer Science students from Tennessee Technological University for own Capstone Project. We would like to give our thanks to the Oak Ridge National Labs Team that worked with us on this project and giving us great experience for our future careers and working in an Agile environment and team. 
+This program has been made by senior Computer Science students from Tennessee Technological University for own Capstone Project. We would like to give our thanks to the Oak Ridge National Labs Team that worked with us on this project and giving us great experience for our future careers and working in an Agile environment and team. 
