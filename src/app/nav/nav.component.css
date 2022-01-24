@@ -1,0 +1,18 @@
+.homebtn { /* home button styling*/
+    background-color: #F44848; 
+    border: none; 
+    color: white; /* White text */
+    padding: 12px 16px; 
+    font-size: 22px; 
+    cursor: pointer; 
+    border-radius: 50%;
+    margin-top: 12px;
+    margin-left: 12px;
+    margin-right: 12px;
+    margin-right: 12px;
+  }
+  
+
+  .homebtn:hover { /* Change to green on hover */
+    background-color: #839c7c;
+  }

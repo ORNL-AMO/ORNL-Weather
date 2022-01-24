@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<body>
+    <!-- <div class="center" style="margin-top:100px;">
+        <button class="button button1" (click)="getStations()"><b>Get Stations</b></button>
+    </div> -->
+
+    <h1>Stations in the Area</h1>
+    <div id="scrollable-area">
+        <table fixed-table-headers="scrollable-area">
+            
+            <tr>
+                <th ><input type="checkbox" ></th>
+                <th *ngFor = "let column of headers">
+                    {{column}}
+                </th>
+                
+                
+            </tr>
+
+             <!-- <tr *ngFor = "let row of stationsArray">
+                <td ><input type="checkbox" (change)="getSelect($event, row[0].Station_ID)"></td>
+                <td class="rows">{{row[0].Station_ID}}</td>
+                <td class="rows">{{row[0].Station_Name}}</td>
+                <td class="rows">{{row[0].Distance}}</td> 
+            </tr> -->
+        </table>
+    </div>
+    <div class="center" style="margin-top:10px;">
+        <button class="button button1" style="margin-top:10px; margin-right: 160px;" (click)="goBack()"><b>Back</b></button>
+
+        <button class="button button1" style="margin-top:10px; margin-left: 160px;"><b>Data Selection</b></button>
+    </div>
+
+</body>
+
+</html>
