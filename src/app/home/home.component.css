@@ -1,0 +1,81 @@
+body{ /* overall default styling for this page */
+    color: #2b376b;
+    font-size: 22px;
+}
+.startDate{ /* styling for start date button */
+    margin-right: 50px;
+    padding:10px;
+    border-radius:60px;
+    border: 1.5px solid #5a7255;
+    color: #2b376b;
+    justify-content: center;
+    font-size: 16px;
+    text-align: center;
+}
+
+.endDate{ /* styling for end date button */
+    margin-left: 50px;
+    padding:10px;
+    border-radius:60px;
+    border: 1.5px solid #5a7255;
+    color: #2b376b;
+    justify-content: center;
+    font-size: 16px;
+    text-align: center;
+}
+
+.labelStartDate{ /* margin for start date label */
+    margin-right: 115px;
+}
+
+.labelEndDate{ /* margin for end date label */
+    margin-left: 115px;
+}
+
+.zip { /* zip code and distance input boxes stling and padding */
+    width: 225px;
+    padding:10px;
+    border-radius:60px;
+    border: 1.5px solid #5a7255;
+    color: #2b376b;
+    justify-content: center;
+    font-size: 16px;
+    text-align: center;
+}
+
+
+
+.button { /* default button */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 22px;
+    margin: 4px 2px;
+    cursor: pointer;
+    
+}
+
+
+  
+.center { /* centering */
+    display: flex;
+    justify-content: center;
+}
+
+.button1 { /* color and styling of station select button */
+    border-radius: 25px; 
+    background-color: #F44848;
+} 
+
+
+.button:hover { /* change color on station select button hover */
+    background-color: #839c7c;
+}
+
+/* Remove annoying blue highlight when input box selected */
+input:focus {
+        outline: black;
+    }

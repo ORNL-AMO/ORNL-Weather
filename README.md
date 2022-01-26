@@ -4,7 +4,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+This program is for requesting weather data from National Centers for Environmental Information (NCEI). Same as the [NCEI LCD Website](https://www.ncei.noaa.gov/maps/lcd/) this program will give the user the option to select a weather station they wish to receive data from, choose the dataset elements, the timeframe over which they need their data and will give the user the ability to download the csv for that selected data. This program will give the user the ability to instantly receive this data rather then waiting for the NCEI Website to send it to them. 
 
 ## Code scaffolding
 
