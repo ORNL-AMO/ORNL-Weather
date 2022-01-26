@@ -1,4 +1,0 @@
-/* Remove annoying blue highlight when input box selected */
-input:focus {
-        outline: black;
-    }

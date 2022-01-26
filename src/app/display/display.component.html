@@ -1,1 +1,16 @@
-<p>display works!</p>
+<!-- displaying code to confirm test pull of data from NCEI servers -->
+<h1>Your Selected Data</h1>
+    <div>
+        <table>
+            <tr>
+                <th *ngFor = "let row of headers">
+                    {{row}}
+                </th>
+                
+            </tr>
+
+            <tr *ngFor = "let row of dataObj">
+                <td *ngFor = "let i of row" class="rows">{{i}}</td>
+            </tr>
+        </table>
+    </div>

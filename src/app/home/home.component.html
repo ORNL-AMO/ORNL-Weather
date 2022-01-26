@@ -1,29 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
+  
 </head>
 
 <body>
 
-  <div>
-      <label for="ZipCode"><b>Enter Zip Code or Station ID</b></label>
-  </div>
-
-  <div>
-      <input class="zip" name="zipcode" #zipcode id="zipcode" type="text" placeholder="Zip Code or Station ID"
-      maxlength="11" size=18 (keyup)="checkInput()" (keyup.enter)="getCoords(zipcode.value)">
-  </div>
-  <div>
-        <button class="button button1" (click)="getCoords(zipcode.value)" ><b>Station Select</b></button>
-  </div>
-  <!-- Display potential errors regarding input data to user -->
-  <div *ngIf="errors" class="alert alert-danger">
-    {{ errors }}
-  </div>
     <div>
-
+        <label for="ZipCode"><b>Enter Zip Code or Station ID</b></label>        
     </div>
+
+    <div>
+        <input class="zip" name="zipcode" #zipcode id="zipcode" type="text" placeholder="Zip Code or Station ID">
+    </div>
+    <div>
+        <button class="button button1" (click)="zipOrStation(zipcode.value)" ><b>Station Select</b></button>
+    </div>
+    
+
 </body>
 
 <script>
@@ -32,3 +26,4 @@
 </script>
 
 </html>
+
