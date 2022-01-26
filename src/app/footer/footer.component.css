@@ -1,0 +1,26 @@
+.footer{ /* Creating empty basic footer container size and styling */
+    position:bottom;
+    bottom:0;
+    left:0;
+    right:0;
+    overflow: hidden;
+    border:none;
+    outline:none;
+    font-size:0;
+    height:270px;
+    background:transparent;
+    
+    
+  
+ }
+ 
+ #imginthefooter {  /* Styling for footer image */
+    background: url(/assets/industrial-skyline.png) no-repeat; /*get footer image from assets */
+    height:100%;
+    width:100%;
+    background-size: 100%;
+    bottom:0;
+    
+    
+
+}
