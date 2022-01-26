@@ -8,11 +8,12 @@ This program is for requesting weather data from National Centers for Environmen
 
 
 ## Dependencies
-- 
-
+- [Node.js](https://nodejs.org/en/)
+- [Angular CLI](https://github.com/angular/angular-cli)
 
 ## Build
-- 
+- To remove all project-related node modules: `npm run clean` from the root project directory
+- To install all required packages: `npm install`
 
 
 ## Running tests
