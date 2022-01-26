@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+</head>
+
+<body>
+
+  <div>
+      <label for="ZipCode"><b>Enter Zip Code or Station ID</b></label>        
+  </div>
+
+  <div>
+      <input class="zip" name="zipcode" #zipcode id="zipcode" type="number" placeholder="Enter Zip Code" maxlength="5">
+  </div>
+  
+  <br/>
+    
+  <div>
+      <label>
+          <b>Start Date</b>
+          <input type="date" name="StartDate" #StartDate/>
+      </label>
+
+      <label>
+        <b>End Date</b>
+          <input type="date" name="EndDate" #EndDate/>
+      </label>
+    </div>
+
+  <div>
+    <button class="button button1" (click)="getCoordsAndDate(zipcode.value, StartDate.value, EndDate.value)" ><b>Station Select</b></button>
+</div>
+</body>
+
+<script>
+
+
+</script>
+
+</html>
+
