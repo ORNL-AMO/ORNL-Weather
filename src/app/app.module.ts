@@ -20,12 +20,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CommonModule } from '@angular/common';
-
-import { appRoutingModule } from './app.routing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NavComponent } from './nav/nav.component';
 import { FooterComponent } from './footer/footer.component';
-import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -34,7 +29,8 @@ import { CommonModule } from '@angular/common';
     StationsComponent,
     DataComponent,
     DisplayComponent,
-    NavbarComponent
+    NavbarComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

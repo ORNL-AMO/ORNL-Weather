@@ -11,6 +11,7 @@ export class HomeComponent implements OnInit {
   //Declare required variables
   lat: any
   long: any
+  zip: any;
   stationID: string = ""
   errors: string = ""
   private stationsJSON: any
@@ -18,9 +19,6 @@ export class HomeComponent implements OnInit {
   startDate: any;
   endDate: any;
 
-  ngOnInit(): void{
-    
-  }
    constructor() {
     this.lat = null
     this.long = null
@@ -62,7 +60,13 @@ export class HomeComponent implements OnInit {
     }
     console.log(this.stationsJSON)
   }
-
+  acceptVariables(val: any, SD: any, ED: any){
+    this.startDate = SD;
+    this.endDate = ED;
+    console.log(this.startDate);
+    console.log(this.endDate);
+    this.getCoords(val);
+  }
   //Validate input and check if Zip or Station ID
   getCoords(val: any) {
     var num: string = val
@@ -70,7 +74,7 @@ export class HomeComponent implements OnInit {
     this.long = null
     this.stationID = ""
     this.errors = ""
-
+    getStations()
     //Ensure user input is a 5 or 11 digit number
     if(isNaN(+num)) {
       console.log("Input is NaN")
@@ -92,9 +96,8 @@ export class HomeComponent implements OnInit {
   }
 
   //Get coordinates for center of input zip code
-  getCoordsZip(val: any){
-    var num: string = val
-
+  getCoordsZip(zip: any){
+    var num: string = zip
     this.zipJSON.forEach((zipcode: any) => {
       if(zipcode.ZIPCODE == num){
         this.lat = zipcode.LAT
@@ -184,3 +187,5 @@ export class HomeComponent implements OnInit {
     }
   }
 }
+
+function getStations(){}
