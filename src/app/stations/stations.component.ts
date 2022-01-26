@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-stations',
@@ -7,22 +6,9 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./stations.component.css']
 })
 export class StationsComponent implements OnInit {
-
-  headers = ['Station ID', 'Station Name', 'Distance(Miles)']
-
-  constructor(private route: ActivatedRoute, private routerSelect: Router) {
-  }
-  goBack(){
-    this.routerSelect.navigate(["/home"])
-  }
+  constructor() { }
 
   ngOnInit(): void {
   }
 
 }
-
-
-
-
-
-

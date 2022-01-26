@@ -75,5 +75,7 @@ body{ /* overall default styling for this page */
     background-color: #839c7c;
 }
 
-
-
+/* Remove annoying blue highlight when input box selected */
+input:focus {
+        outline: black;
+    }
