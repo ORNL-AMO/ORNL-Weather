@@ -1,0 +1,347 @@
+[
+ {
+   "DataTypes": "HourlyAltimeterSetting"
+ },
+ {
+   "DataTypes": "HourlyDewPointTemperature"
+ },
+ {
+   "DataTypes": "HourlyDryBulbTemperature"
+ },
+ {
+   "DataTypes": "HourlyPrecipitation"
+ },
+ {
+   "DataTypes": "HourlyPresentWeatherType"
+ },
+ {
+   "DataTypes": "HourlyPressureChange"
+ },
+ {
+   "DataTypes": "HourlyPressureTendency"
+ },
+ {
+   "DataTypes": "HourlyRelativeHumidity"
+ },
+ {
+   "DataTypes": "HourlySkyConditions"
+ },
+ {
+   "DataTypes": "HourlySeaLevelPressure"
+ },
+ {
+   "DataTypes": "HourlyStationPressure"
+ },
+ {
+   "DataTypes": "HourlyVisibility"
+ },
+ {
+   "DataTypes": "HourlyWetBulbTemperature"
+ },
+ {
+   "DataTypes": "HourlyWindDirection"
+ },
+ {
+   "DataTypes": "HourlyWindGustSpeed"
+ },
+ {
+   "DataTypes": "HourlyWindSpeed"
+ },
+ {
+   "DataTypes": "Sunrise"
+ },
+ {
+   "DataTypes": "Sunset"
+ },
+ {
+   "DataTypes": "DailyAverageDewPointTemperature"
+ },
+ {
+   "DataTypes": "DailyAverageDryBulbTemperature"
+ },
+ {
+   "DataTypes": "DailyAverageRelativeHumidity"
+ },
+ {
+   "DataTypes": "DailyAverageSeaLevelPressure"
+ },
+ {
+   "DataTypes": "DailyAverageStationPressure"
+ },
+ {
+   "DataTypes": "DailyAverageWetBulbTemperature"
+ },
+ {
+   "DataTypes": "DailyAverageWindSpeed"
+ },
+ {
+   "DataTypes": "DailyCoolingDegreeDays"
+ },
+ {
+   "DataTypes": "DailyDepartureFromNormalAverageTemperature"
+ },
+ {
+   "DataTypes": "DailyHeatingDegreeDays"
+ },
+ {
+   "DataTypes": "DailyMaximumDryBulbTemperature"
+ },
+ {
+   "DataTypes": "DailyMinimumDryBulbTemperature"
+ },
+ {
+   "DataTypes": "DailyPeakWindDirection"
+ },
+ {
+   "DataTypes": "DailyPeakWindSpeed"
+ },
+ {
+   "DataTypes": "DailyPrecipitation"
+ },
+ {
+   "DataTypes": "DailySnowDepth"
+ },
+ {
+   "DataTypes": "DailySnowfall"
+ },
+ {
+   "DataTypes": "DailySustainedWindDirection"
+ },
+ {
+   "DataTypes": "DailySustainedWindSpeed"
+ },
+ {
+   "DataTypes": "DailyWeather"
+ },
+ {
+   "DataTypes": "MonthlyAverageRH"
+ },
+ {
+   "DataTypes": "MonthlyDaysWithGT001Precip"
+ },
+ {
+   "DataTypes": "MonthlyDaysWithGT010Precip"
+ },
+ {
+   "DataTypes": "MonthlyDaysWithGT32Temp"
+ },
+ {
+   "DataTypes": "MonthlyDaysWithGT90Temp"
+ },
+ {
+   "DataTypes": "MonthlyDaysWithLT0Temp"
+ },
+ {
+   "DataTypes": "MonthlyDaysWithLT32Temp"
+ },
+ {
+   "DataTypes": "MonthlyDepartureFromNormalAverageTemperature"
+ },
+ {
+   "DataTypes": "MonthlyDepartureFromNormalCoolingDegreeDays"
+ },
+ {
+   "DataTypes": "MonthlyDepartureFromNormalHeatingDegreeDays"
+ },
+ {
+   "DataTypes": "MonthlyDepartureFromNormalMaximumTemperature"
+ },
+ {
+   "DataTypes": "MonthlyDepartureFromNormalMinimumTemperature"
+ },
+ {
+   "DataTypes": "MonthlyDepartureFromNormalPrecipitation"
+ },
+ {
+   "DataTypes": "MonthlyDewpointTemperature"
+ },
+ {
+   "DataTypes": "MonthlyGreatestPrecip"
+ },
+ {
+   "DataTypes": "MonthlyGreatestPrecipDate"
+ },
+ {
+   "DataTypes": "MonthlyGreatestSnowDepth"
+ },
+ {
+   "DataTypes": "MonthlyGreatestSnowDepthDate"
+ },
+ {
+   "DataTypes": "MonthlyGreatestSnowfall"
+ },
+ {
+   "DataTypes": "MonthlyGreatestSnowfallDate"
+ },
+ {
+   "DataTypes": "MonthlyMaxSeaLevelPressureValue"
+ },
+ {
+   "DataTypes": "MonthlyMaxSeaLevelPressureValueDate"
+ },
+ {
+   "DataTypes": "MonthlyMaxSeaLevelPressureValueTime"
+ },
+ {
+   "DataTypes": "MonthlyMaximumTemperature"
+ },
+ {
+   "DataTypes": "MonthlyMeanTemperature"
+ },
+ {
+   "DataTypes": "MonthlyMinSeaLevelPressureValue"
+ },
+ {
+   "DataTypes": "MonthlyMinSeaLevelPressureValueDate"
+ },
+ {
+   "DataTypes": "MonthlyMinSeaLevelPressureValueTime"
+ },
+ {
+   "DataTypes": "MonthlyMinimumTemperature"
+ },
+ {
+   "DataTypes": "MonthlySeaLevelPressure"
+ },
+ {
+   "DataTypes": "MonthlyStationPressure"
+ },
+ {
+   "DataTypes": "MonthlyTotalLiquidPrecipitation"
+ },
+ {
+   "DataTypes": "MonthlyTotalSnowfall"
+ },
+ {
+   "DataTypes": "MonthlyWetBulb"
+ },
+ {
+   "DataTypes": "AWND"
+ },
+ {
+   "DataTypes": "CDSD"
+ },
+ {
+   "DataTypes": "CLDD"
+ },
+ {
+   "DataTypes": "DSNW"
+ },
+ {
+   "DataTypes": "HDSD"
+ },
+ {
+   "DataTypes": "HTDD"
+ },
+ {
+   "DataTypes": "NormalsCoolingDegreeDay"
+ },
+ {
+   "DataTypes": "NormalsHeatingDegreeDay"
+ },
+ {
+   "DataTypes": "ShortDurationEndDate005"
+ },
+ {
+   "DataTypes": "ShortDurationEndDate010"
+ },
+ {
+   "DataTypes": "ShortDurationEndDate015"
+ },
+ {
+   "DataTypes": "ShortDurationEndDate020"
+ },
+ {
+   "DataTypes": "ShortDurationEndDate030"
+ },
+ {
+   "DataTypes": "ShortDurationEndDate045"
+ },
+ {
+   "DataTypes": "ShortDurationEndDate060"
+ },
+ {
+   "DataTypes": "ShortDurationEndDate080"
+ },
+ {
+   "DataTypes": "ShortDurationEndDate100"
+ },
+ {
+   "DataTypes": "ShortDurationEndDate120"
+ },
+ {
+   "DataTypes": "ShortDurationEndDate150"
+ },
+ {
+   "DataTypes": "ShortDurationEndDate180"
+ },
+ {
+   "DataTypes": "ShortDurationPrecipitationValue005"
+ },
+ {
+   "DataTypes": "ShortDurationPrecipitationValue010"
+ },
+ {
+   "DataTypes": "ShortDurationPrecipitationValue015"
+ },
+ {
+   "DataTypes": "ShortDurationPrecipitationValue020"
+ },
+ {
+   "DataTypes": "ShortDurationPrecipitationValue030"
+ },
+ {
+   "DataTypes": "ShortDurationPrecipitationValue045"
+ },
+ {
+   "DataTypes": "ShortDurationPrecipitationValue060"
+ },
+ {
+   "DataTypes": "ShortDurationPrecipitationValue080"
+ },
+ {
+   "DataTypes": "ShortDurationPrecipitationValue100"
+ },
+ {
+   "DataTypes": "ShortDurationPrecipitationValue120"
+ },
+ {
+   "DataTypes": "ShortDurationPrecipitationValue150"
+ },
+ {
+   "DataTypes": "ShortDurationPrecipitationValue180"
+ },
+ {
+   "DataTypes": "REM"
+ },
+ {
+   "DataTypes": "BackupDirection"
+ },
+ {
+   "DataTypes": "BackupDistance"
+ },
+ {
+   "DataTypes": "BackupDistanceUnit"
+ },
+ {
+   "DataTypes": "BackupElements"
+ },
+ {
+   "DataTypes": "BackupElevation"
+ },
+ {
+   "DataTypes": "BackupEquipment"
+ },
+ {
+   "DataTypes": "BackupLatitude"
+ },
+ {
+   "DataTypes": "BackupLongitude"
+ },
+ {
+   "DataTypes": "BackupName"
+ },
+ {
+   "DataTypes": "WindEquipmentChangeDate"
+ }
+]
