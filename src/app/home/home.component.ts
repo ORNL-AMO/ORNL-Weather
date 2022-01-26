@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-home',
@@ -8,11 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 
 export class HomeComponent implements OnInit {
-
-  //declaring lat, long, and dataObj variables
-  lat: any;
-  long: any;
-  constructor() { }
+  //Declare required variables
+  lat: any
+  long: any
+  stationID: string = ""
+  errors: string = ""
+  private stationsJSON: any
+  private zipJSON: any;
+  startDate: any;
+  endDate: any;
 
   ngOnInit(): void{
     

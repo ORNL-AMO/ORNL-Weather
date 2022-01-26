@@ -1,13 +1,9 @@
-html { background-color: #ADC8E2 } ;
-
-
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-body {
-    margin: 0;
-    margin-top: 0;
-    margin-bottom: 0;
-}
-
-
-
+/* background color for whole app */
+ html {
+ background: #ADC8E2;  /* fallback (default) for old browsers */
+ background: -webkit-linear-gradient(to right, #ADC8E2, #a5ebe7);  /* gradient background that works for certain browsers */
+ background: linear-gradient(to right, #ADC8E2, #a5ebe7); /* gradient background that works for all other browsers */
+ }
+ 
+/* default margins and font for whole app */
+ body { margin: 0; margin-bottom: 0; font-family: 'Lato', sans-serif }

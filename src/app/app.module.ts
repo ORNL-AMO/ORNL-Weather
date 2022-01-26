@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+/* importing components */
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { StationsComponent } from './stations/stations.component';
@@ -18,6 +19,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { CommonModule } from '@angular/common';
+
+import { appRoutingModule } from './app.routing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NavComponent } from './nav/nav.component';
+import { FooterComponent } from './footer/footer.component';
 import { CommonModule } from '@angular/common';
 
 @NgModule({
@@ -43,7 +50,6 @@ import { CommonModule } from '@angular/common';
     MatCheckboxModule,
     MatListModule,
     CommonModule,
-
   ],
   providers: [],
   bootstrap: [AppComponent]
