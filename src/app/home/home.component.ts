@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 
@@ -14,7 +13,9 @@ export class HomeComponent implements OnInit {
   stationID: string = ""
   errors: string = ""
   private stationsJSON: any
-  private zipJSON: any
+  private zipJSON: any;
+  startDate: any;
+  endDate: any;
 
   constructor() {
     this.lat = null
