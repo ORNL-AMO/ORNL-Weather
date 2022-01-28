@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <app-navbar></app-navbar>
 
     <div>
@@ -6,3 +7,11 @@
         
     </div>
 <app-footer></app-footer>
+=======
+<app-home></app-home>
+
+
+<div class="footer">
+    <img src="assets/industrial-skyline.png">
+</div>
+>>>>>>> Brian

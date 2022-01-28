@@ -6,6 +6,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./stations.component.css']
 })
 export class StationsComponent implements OnInit {
+<<<<<<< HEAD
+  
+=======
+
+>>>>>>> Brian
   constructor() { }
 
   ngOnInit(): void {
