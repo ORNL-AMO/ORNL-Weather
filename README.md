@@ -1,25 +1,15 @@
-# ORNL-Weather
-
-
-# NCEI/NOAA Local Climatological Data Retrieval
-### About 
-
-This program is for requesting weather data from National Centers for Environmental Information (NCEI) that is to be mainly used with [VERIFI](https://github.com/ORNL-AMO/VERIFI). Same as the [NCEI LCD Website](https://www.ncei.noaa.gov/maps/lcd/) this program will give the user the option to select a weather station they wish to receive data from, choose the dataset elements, the timeframe over which they need their data and will give the user the ability to download the csv for that selected data. This program will give the user the ability to instant receive this data rather then waiting for the NCEI Website to send it to them. 
+This program is for requesting weather data from National Centers for Environmental Information (NCEI). Same as the [NCEI LCD Website](https://www.ncei.noaa.gov/maps/lcd/) this program will give the user the option to select a weather station they wish to receive data from, choose the dataset elements, the timeframe over which they need their data and will give the user the ability to download the csv for that selected data. This program will give the user the ability to instantly receive this data rather then waiting for the NCEI Website to send it to them. 
 
 
 ## Dependencies
-- 
-
+- [Node.js](https://nodejs.org/en/)
+- [Angular CLI](https://github.com/angular/angular-cli)
 
 ## Build
-- 
-
-
-## Running tests
-
-- Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-- Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+- To install all required packages: 
+- First download and install node.js from above link.
+- Pull the project files to your PC and in your command line navigate to the project folder.
+- Finally run `ng serve` to run dev server and navigate to `http://localhost:4200/`
 
 
 ## For Developers
