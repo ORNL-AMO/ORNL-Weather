@@ -12,7 +12,11 @@ This program is for requesting weather data from National Centers for Environmen
 - [Angular CLI](https://github.com/angular/angular-cli)
 
 ## Build
-- To install all required packages: `npm install`
+- To install all required packages: 
+- First download and install node.js from above link.
+- Next open a command line terminal and run `npm install - g @angular/cli`
+- Pull the project files to your PC and in your command line navigate to the project folder.
+- Finally run `npm install` to install all packages associated with the project.
 
 
 ## For Developers
