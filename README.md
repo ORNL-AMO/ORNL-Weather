@@ -1,3 +1,9 @@
+# ORNL-Weather
+
+
+# NCEI/NOAA Local Climatological Data Retrieval
+### About 
+
 This program is for requesting weather data from National Centers for Environmental Information (NCEI). Same as the [NCEI LCD Website](https://www.ncei.noaa.gov/maps/lcd/) this program will give the user the option to select a weather station they wish to receive data from, choose the dataset elements, the timeframe over which they need their data and will give the user the ability to download the csv for that selected data. This program will give the user the ability to instantly receive this data rather then waiting for the NCEI Website to send it to them. 
 
 
@@ -8,6 +14,7 @@ This program is for requesting weather data from National Centers for Environmen
 ## Build
 - To install all required packages: 
 - First download and install node.js from above link.
+- Open a command line and in your home directory run `npm install -g @angular/cli` to install angular
 - Pull the project files to your PC and in your command line navigate to the project folder.
 - Finally run `ng serve` to run dev server and navigate to `http://localhost:4200/`
 
@@ -29,3 +36,4 @@ This program has been made by senior Computer Science students from Tennessee Te
 - Brian Kemp
 - Bryce McDonald
 - Grant Qualls
+
