@@ -14,7 +14,9 @@ This program is for requesting weather data from National Centers for Environmen
 ## Build
 - To install all required packages: 
 - First download and install node.js from above link.
-- Pull the project files to your PC and in your command line navigate to the project folder.
+- Run `npm install @angular/cli` to install angular.
+- Run `npm install` to install all the packages required for the program.
+- Open a command line and navigate to the product folder.
 - Finally run `ng serve` to run dev server and navigate to `http://localhost:4200/`
 
 

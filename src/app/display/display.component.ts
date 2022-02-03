@@ -10,6 +10,8 @@ export class DisplayComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    
+    this.fetchCSV(74795012867);
   }
   
   //declaring headers for data table display
@@ -23,23 +25,26 @@ export class DisplayComponent implements OnInit {
     fetch(`https://www.ncei.noaa.gov/data/local-climatological-data/access/2022/${val}.csv`)
     .then((res) => res.text())
     .then((data) =>{
-      var jData = JSON.stringify(data);
-      var pData = JSON.parse(jData);
-      var list = pData.split("\n");
-      list.forEach( (e: any) => {
-        object.push(e);
-      })
 
-      for (let i = 1; i < object.length; i++){
-        var tempObj: any[] = [];
-        list = object[i].split(',');
-        list.forEach( (e: any) => {
-          
-          tempObj.push(e)
-          
-      })
-      this.dataObj.push(tempObj);
-      }
+      let csv = data
+        //Remove "" that are automatically added
+        csv = csv.replace(/['"]+/g, '')
+  
+        let lines = csv.split("\n")
+        let headers = lines[0].split(",")
+        for(let i = 1; i < lines.length; i++) {
+          let obj: any = []
+          let currLine = lines[i].split(",")
+          for(let j = 0; j < 4; j++) {
+            obj[j] = currLine[j];
+          }
+          obj[5] = currLine[5] + currLine[6];
+          for(let j = 7; j < headers.length; j++) {
+            obj[j] = currLine[j+1];
+          }
+          this.dataObj.push(obj)
+        }
+        
     })
-    }
+    }    
 }

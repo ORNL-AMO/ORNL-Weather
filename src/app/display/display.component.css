@@ -1,50 +1,120 @@
-table {
-    width: 80%;
-    margin: 20px auto;
-  }
-
-  h1{
-        text-align: center;
-        color:rgb(0, 0, 0);
-        padding: 15px 32px;
-        text-decoration: none;
-        margin: 4px 2px;
-        
+h1{
+      text-align: center;
+      color:rgb(0, 0, 0);
+      padding: 15px 32px;
+      text-decoration: none;
+      margin: 4px 2px;
+      
 }
 
-  table{
-      font-family: 'Trebuchet MS', Arial, Arial, Helvetica, sans-serif;
-      border-collapse: collapse;
-      width: 100%;
-      
-  }
+table{
+    font-family: 'Trebuchet MS', Arial, Arial, Helvetica, sans-serif;
+    border-collapse: separate;
+    width: 100%;
+    border-radius:6px;
+}
 
+
+td{
+  padding: 8px;
+  align-content: center;
+  text-align: center;
+  background-color: white;
+} 
+th{
+  padding: 8px;
+  align-content: center;
+  text-align: center;
+  background-color: white;
+  color: black;
+  position: sticky;
+  top: 0;
+}
+
+#scrollable-area {
+  margin: auto;
+  width: 80%;
+  height: 400px;
+  border: 2px solid #ccc;
+  overflow-y: scroll;
+  border-radius: 20px;
+  border-left:solid black 9px;
+  border-top:solid black 9px;
+  border-bottom: solid black 1px;
+  border-right: solid black 1px;
+  background-color: rgb(172, 169, 169);
+}
+#scrollable-area::-webkit-scrollbar {
+  width: 9px;               /* width of the entire scrollbar */
+  height: 9px;
+}
+#scrollable-area::-webkit-scrollbar-corner{
+  background: black;
+  border-bottom-right-radius: 20px;
+}
+#scrollable-area::-webkit-scrollbar-track {
+  background: black;
+  border-radius: 50px;
+  border: double black 1px;
+}
+
+#scrollable-area::-webkit-scrollbar-thumb {
+  background-color: rgb(0, 0, 0);
+  border-radius: 20px;
+  border: 3px solid rgb(255, 255, 255);
   
-  td{
-    padding: 8px;
-    align-content: center;
-  } 
-  th{
-    padding: 8px;
-    align-content: center;
-    text-align: center;
-    background-color: black;
-    color: white;
-  }
+}
 
-  tr:nth-child(even){
-      background-color: #f2f2f2;
-  }
+.loading{
+  padding: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
 
-  tr:hover{
-      background-color: #ddd;
-  }
-  #scrollable-area {
-    margin: auto;
-    width: 80%;
-    height: 300px;
-    border: 2px solid #ccc;
-    overflow-y: scroll;
-  }
+.circle{
+  content: "";
+  width: 20px;
+  height: 20px;
+  border: 5px solid #dddddd;
+  border-top-color: rgb(88, 118, 86);
+  border-radius: 50%;
+  animation: loading 1.5s ease infinite;
+}
 
-  
+@keyframes loading{
+  to {
+    transform: rotate(1turn)}
+}
+
+.hide {
+  -webkit-animation: seconds 1.0s forwards;
+  -webkit-animation-iteration-count: 1;
+  -webkit-animation-delay: 5s;
+  animation: seconds 1.0s forwards;
+  animation-iteration-count: 1;
+  animation-delay: 5s;
+  position: relative;
+}
+@-webkit-keyframes seconds {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    display: none;
+    left: -9999px; 
+  }
+}
+@keyframes seconds {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    display: none;
+    left: -9999px; 
+  }
+}
+
