@@ -4,6 +4,7 @@ h1{
       padding: 15px 32px;
       text-decoration: none;
       margin: 4px 2px;
+      font-size: xx-large;
       
 }
 
@@ -13,7 +14,6 @@ table{
     width: 100%;
     border-radius:6px;
 }
-
 
 td{
   padding: 8px;
@@ -45,7 +45,7 @@ th{
   background-color: rgb(172, 169, 169);
 }
 #scrollable-area::-webkit-scrollbar {
-  width: 9px;               /* width of the entire scrollbar */
+  width: 9px;   /* width of the entire scrollbar */
   height: 9px;
 }
 #scrollable-area::-webkit-scrollbar-corner{
@@ -87,34 +87,3 @@ th{
   to {
     transform: rotate(1turn)}
 }
-
-.hide {
-  -webkit-animation: seconds 1.0s forwards;
-  -webkit-animation-iteration-count: 1;
-  -webkit-animation-delay: 5s;
-  animation: seconds 1.0s forwards;
-  animation-iteration-count: 1;
-  animation-delay: 5s;
-  position: relative;
-}
-@-webkit-keyframes seconds {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    display: none;
-    left: -9999px; 
-  }
-}
-@keyframes seconds {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    display: none;
-    left: -9999px; 
-  }
-}
-

@@ -1,7 +1,14 @@
 <!-- Displaying Data from NCEI Data Pull -->
-<h1>Preview Data</h1>
+<h1 class="center">Preview Data</h1>
+
 <div id="scrollable-area">
-    <table class="table">
+    
+    <!-- Display Loading Circle -->
+    <div class="loading" *ngIf="isLoading" >
+        <div class="circle"></div>
+    </div>
+
+    <table class="table" *ngIf="!isLoading">
     
         <!-- Display Headers -->
         <th *ngFor = "let row of headers">
@@ -13,9 +20,4 @@
             <td *ngFor = "let column of row" class="rows">{{ column }}</td>
         </tr>
     </table>
-</div>
-
-<!-- Display Loading Circle -->
-<div class="loading hide">
-    <div class="circle"></div>
 </div>
