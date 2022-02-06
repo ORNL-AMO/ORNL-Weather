@@ -1,5 +1,10 @@
 <!-- Displaying Data from NCEI Data Pull -->
-<h1 class="center">Preview Data</h1>
+
+<div class="right">
+    <button class="button button1" (click)="downloadCSV()">Download as CSV</button>
+    <!-- <button class="button button1">Download as JSON</button> -->
+</div>
+<h1>Preview Data</h1>
 
 <div id="scrollable-area">
     
@@ -10,13 +15,13 @@
 
     <table class="table" *ngIf="!isLoading">
     
-        <!-- Display Headers -->
+     <!-- Display Headers -->
         <th *ngFor = "let row of headers">
             {{row}}
         </th>
     
         <!-- Display Data -->
-        <tr *ngFor = "let row of dataObj">
+        <tr *ngFor = "let row of displayObj">
             <td *ngFor = "let column of row" class="rows">{{ column }}</td>
         </tr>
     </table>

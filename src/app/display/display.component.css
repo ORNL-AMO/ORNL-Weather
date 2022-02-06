@@ -1,3 +1,26 @@
+.button { /* default button */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 22px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.button1 { /* color and styling of station select button */
+  border-radius: 25px; 
+  background-color: #F44848;
+}
+
+.right { /* right side align */
+  display: flex;
+  justify-content: right;
+  margin-right: 150px;
+}
+
 h1{
       text-align: center;
       color:rgb(0, 0, 0);
