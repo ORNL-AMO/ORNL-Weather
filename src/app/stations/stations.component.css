@@ -1,81 +1,79 @@
 table {
-    width: 80%;
-    
-  }
+  width: 80%;
+}
 
-  h1{
-        text-align: center;
-        color:rgb(0, 0, 0);
-        padding: 15px 32px;
-        text-decoration: none;
-        margin: 4px 2px;
+h1{
+  text-align: center;
+  color: #2b376b;
+  font-size: 30px;
+  font-family: 'Lato', sans-serif;
         
 }
 
-  table{
-      font-family: 'Trebuchet MS', Arial, Arial, Helvetica, sans-serif;
-      border-collapse: collapse;
-      width: 100%;
-      
+table{
+  font-family: 'Lato', sans-serif;
+  border-collapse: collapse;
+   width: 100%;    
   }
 
   
-  td{
-    padding: 8px;
-    align-content: center;
-    text-align: left;
-  } 
-  th{
-    padding: 8px;
-    text-align: left;
-    align-content: center;
-    background-color: black;
-    color: white;
-    position: -webkit-sticky;
-    position: sticky;
-    top: 0;
-    
-  }
+td{
+  padding: 8px;
+  align-content: center;
+  text-align: left;
+} 
+th{
+  padding: 8px;
+  text-align: left;
+  align-content: center;
+  background-color: #5a7255;
+  color: white;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;  
+}
 
+tr:nth-child(even){
+  background-color: #f2f2f2;
+}
 
-  tr:nth-child(even){
-      background-color: #f2f2f2;
-  }
+tr:hover{
+  background-color: #ddd;
+}
+#scrollable-area {
+  margin: auto;
+  width: 80%;
+  height: 450px;
+  border: 2px solid #2b376b;
+  overflow-y: scroll;
+  border-radius: 8px;
+}
 
-  tr:hover{
-      background-color: #ddd;
-  }
-  #scrollable-area {
-    margin: auto;
-    width: 80%;
-    height: 450px;
-    border: 2px solid black;
-    overflow-y: scroll;
-    border-radius: 8px;
-  }
+.center {
+  display: flex;
+  justify-content: center;
+}
 
-  .center {
-    display: flex;
-    justify-content: center;
-    }
+.button1 {
+  border-radius: 60px; 
+  background-color: #F44848;
+} 
 
-    .button1 {
-        border-radius: 12px; 
-        background-color: #F44848;
-    } 
+.button {
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 19px;
+  margin: 4px 2px;
+  cursor: pointer;
+  margin-right: 250px;
+  margin-left: 250px;
+  margin-top: 10px;
+}
 
-     .button {
-        border: none;
-        color: white;
-        padding: 15px 32px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 4px 2px;
-        cursor: pointer;
-    }
-
-    .button:hover {
-      background-color: #4F7942;
-    }
+.button:hover {
+  background-color: #839c7c;
+}
