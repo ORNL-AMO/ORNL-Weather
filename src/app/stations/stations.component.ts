@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./stations.component.css']
 })
 export class StationsComponent implements OnInit {
+  headers = ['Station ID', 'Station Name', 'Distance(Miles)']
   constructor() { }
 
   ngOnInit(): void {

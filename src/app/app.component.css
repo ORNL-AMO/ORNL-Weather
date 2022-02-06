@@ -1,0 +1,17 @@
+.footer{
+    margin: 0px;
+    position: absolute;
+    padding: 0;
+    bottom: 0; 
+    width: auto;
+    display: flex;
+    justify-content: center;
+ }
+ 
+ .img{
+     width: auto;
+     height: auto;
+     display: flex;
+     justify-content: center;
+ }
+ 
