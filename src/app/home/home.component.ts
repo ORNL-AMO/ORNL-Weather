@@ -16,8 +16,8 @@ export class HomeComponent implements OnInit {
   errors: string = ""
   private stationsJSON: any
   private zipJSON: any;
-  startDate: any;
-  endDate: any;
+  startDate: any[] = [];
+  endDate: any[] = [];
 
    constructor() {
     this.lat = null
@@ -60,13 +60,32 @@ export class HomeComponent implements OnInit {
     }
     console.log(this.stationsJSON)
   }
+
+  //accepts the variables being entered. converts date into a usable array for month, day and year. Also passes zip code or station id on to next function for processing.
   acceptVariables(val: any, SD: any, ED: any){
-    this.startDate = SD;
-    this.endDate = ED;
-    console.log(this.startDate);
-    console.log(this.endDate);
+    //splitting start and end date values into separate elements
+    let tempStart = SD.split("-");
+    let tempEnd = ED.split("-")
+
+    //creating temp objs 
+    let tempHead: any[] = ['year', 'month', 'day']
+    let sObj: any[] = []
+    let eObj: any[] = []
+
+    //assigning month, day, year into to objects with respective value meanings
+    for(let i = 0; i < 3; i++){
+      sObj[tempHead[i]] = tempStart[i];
+      eObj[tempHead[i]] = tempEnd[i];
+    }
+
+    //pushing into start and end date objects
+    this.startDate.push(sObj);
+    this.endDate.push(eObj);
+
+    //passing station ID or zip code 
     this.getCoords(val);
   }
+  
   //Validate input and check if Zip or Station ID
   getCoords(val: any) {
     var num: string = val
@@ -93,6 +112,7 @@ export class HomeComponent implements OnInit {
         this.errors = this.errors + "Invalid format for a zip code or station ID. Please enter a 5 or 11 digit number."
       }
     }
+    
   }
 
   //Get coordinates for center of input zip code
