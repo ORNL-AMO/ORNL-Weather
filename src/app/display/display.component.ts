@@ -10,9 +10,16 @@ export class DisplayComponent implements OnInit {
 
   constructor() { }
 
+  //page variables
+  yearsObj: any[] = [];
+  stationsIdObj: any[] = [];
+
+
   ngOnInit(): void {
     
     this.fetchCSV(2010, 91772099999);
+    this.fetchCSV(2011, 91772099999);
+
   }
   
   //declaring headers for data table display
@@ -23,6 +30,19 @@ export class DisplayComponent implements OnInit {
 
   //making boolean for loading spinner
   isLoading: boolean = true;
+
+  //checking the number of year
+  checkYears(){
+    let len = this.yearsObj.length
+    if (this.yearsObj[0].year == this.yearsObj[len-1].year){
+      for (let i = 0; i < len; i++){
+        this.fetchCSV(this.yearsObj[i], this.stationsIdObj[i]);
+      }
+    }
+    else{
+      this.fetchCSV(this.yearsObj[0].year, this.stationsIdObj[0]);
+    }
+  }
 
   //takes in station id and attaches it to the end of the http links to pull the required csv. then the csv data is received as text and is converted into json for and placed in an array for display/printing/download purposes. 
   fetchCSV(year: any,val: any){
@@ -55,31 +75,27 @@ export class DisplayComponent implements OnInit {
         //seperating the date element into date and time elements
         let a = currLine[1].replace("T", " ")
         let b = a.split(" ")
-        currLine.splice(1,0)
+        currLine.splice(1,0, "")
         
         //pushing the station ID, dat, and time into the first three array elements
-        obj[0] = currLine[0];
-        dObj[headers[0]] = currLine[0];
-        obj[1] = b[0];
-        dObj[headers[1]] = b[0];
-        obj[2] = b[1];
-        dObj[headers[2]] = b[1];
-        
+        currLine[1] = b[0];
+        currLine[2] = b[1];
+        console.log(currLine[5]);
         //now pushing the rest of the split data into remaining array
-        for(let j = 3; j < 5; j++) {
+        for(let j = 0; j < 6; j++) {
           obj[j] = currLine[j];
           dObj[headers[j]] = currLine[j];
         }
-        obj[5] = currLine[5] + currLine[6];
-        dObj[headers[5]] = currLine[5] + currLine[6];
-        for(let j = 6; j < headers.length; j++) {
+        obj[6] = currLine[6] + currLine[7];
+        dObj[headers[6]] = currLine[6] + currLine[7];
+        for(let j = 7; j < headers.length; j++) {
           obj[j] = currLine[j+1];
           dObj[headers[j]] = currLine[j+1];
         }
         this.displayObj.push(obj);
         this.dataObj.push(dObj);
       }
-      this.dataObj.pop();
+      // this.dataObj.pop();
       
       console.log(this.dataObj)
       
