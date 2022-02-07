@@ -65,7 +65,11 @@ th{
   border-top:solid black 9px;
   border-bottom: solid black 1px;
   border-right: solid black 1px;
-  background-color: rgb(172, 169, 169);
+  background-color: rgb(0, 0, 0);
+
+  /* For Spinner and DOE Image */
+  /* background-color: rgb(172, 169, 169); */
+
 }
 #scrollable-area::-webkit-scrollbar {
   width: 9px;   /* width of the entire scrollbar */
@@ -89,7 +93,7 @@ th{
 }
 
 .loading{
-  padding: 8px;
+  /* padding: 8px; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -98,15 +102,113 @@ th{
 
 .circle{
   content: "";
-  width: 20px;
+
+  /* spinner */
+  /* width: 20px;
   height: 20px;
   border: 5px solid #dddddd;
   border-top-color: rgb(88, 118, 86);
   border-radius: 50%;
-  animation: loading 1.5s ease infinite;
+  animation: loading 1.5s ease infinite; */
+  
+  /* DoE Leaf */
+  /* background-image: url('/assets/leaf_invis.png');
+  width: 32px;
+  height: 32px;
+  transform: scale(0);
+  animation: grow 2.5s linear infinite; */
 }
 
 @keyframes loading{
   to {
     transform: rotate(1turn)}
 }
+
+@keyframes grow {
+  50% {
+    transform: scale(1);
+  }
+}
+
+/* Loading Cricle */
+.ring
+{
+  position:absolute;
+  left:50%;
+  transform:translate(-50%,-50%);
+  width:100px;
+  height:100px;
+  background:transparent;
+  border:3px solid #3c3c3c;
+  border-radius:50%;
+  text-align:center;
+  line-height:100px;
+  font-family:sans-serif;
+  font-size:10px;
+  color:rgb(88, 118, 86);
+  letter-spacing:4px;
+  text-transform:uppercase;
+  text-shadow:0 0 10px #ffffff;
+  box-shadow:0 0 20px rgba(255, 255, 255, 0.5);
+}
+.ring:before
+{
+  content:'';
+  position:absolute;
+  top:-3px;
+  left:-3px;
+  width:100%;
+  height:100%;
+  border:3px solid transparent;
+  border-top:3px solid rgb(88, 118, 86);
+  border-right:3px solid rgb(88, 118, 86);
+  border-radius:50%;
+  animation:animateC 2s linear infinite;
+}
+span
+{
+  display:block;
+  position:absolute;
+  top:calc(50% - 2px);
+  left:50%;
+  width:50%;
+  height:4px;
+  background:transparent;
+  transform-origin:left;
+  animation:animate 2s linear infinite;
+}
+span:before
+{
+  content:'';
+  position:absolute;
+  width:16px;
+  height:16px;
+  border-radius:50%;
+  background:rgb(88, 118, 86);
+  top:-6px;
+  right:-8px;
+  box-shadow:0 0 20px #ffffff;
+}
+@keyframes animateC
+{
+  0%
+  {
+    transform:rotate(0deg);
+  }
+  100%
+  {
+    transform:rotate(360deg);
+  }
+}
+@keyframes animate
+{
+  0%
+  {
+    transform:rotate(45deg);
+  }
+  100%
+  {
+    transform:rotate(405deg);
+  }
+}
+

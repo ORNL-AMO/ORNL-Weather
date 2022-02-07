@@ -10,7 +10,11 @@
     
     <!-- Display Loading Circle -->
     <div class="loading" *ngIf="isLoading" >
-        <div class="circle"></div>
+        <!-- <div class="circle"></div> -->
+        <div class="ring">Loading
+            <span></span>
+        </div>
+        
     </div>
 
     <table class="table" *ngIf="!isLoading">

@@ -19,6 +19,8 @@ This program is for requesting weather data from National Centers for Environmen
 - Open a command line and navigate to the product folder.
 - Finally run `ng serve` to run dev server and navigate to `http://localhost:4200/`
 
+## Bugs/Non-Working Features
+- Please report bugs to `bkemp42@tntech.edu`
 
 ## For Developers
 - Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
