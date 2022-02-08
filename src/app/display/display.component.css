@@ -9,45 +9,41 @@
   margin: 4px 2px;
   cursor: pointer;
 }
-
+.button:hover { /* Change to green on hover */
+  background-color: #839c7c;
+}
 .button1 { /* color and styling of station select button */
   border-radius: 25px; 
   background-color: #F44848;
 }
-
 .right { /* right side align */
   display: flex;
   justify-content: right;
   margin-right: 150px;
 }
-
 h1{
       text-align: center;
       color:rgb(0, 0, 0);
       padding: 15px 32px;
       text-decoration: none;
       margin: 4px 2px;
-      font-size: xx-large;
-      
+      font-size: xx-large;     
 }
-
 table{
   font-family: 'Lato', sans-serif;
-  
   width: 100%;
   border-radius:6px;
 }
-
 td{
   padding: 8px;
   align-content: center;
-  text-align: left;
-  background-color: white;
+  text-align: center;
   border-collapse: collapse;
+  white-space: nowrap;
 } 
 th{
   padding: 8px;
-  text-align: left;
+  text-align: center;
   align-content: center;
   background-color: #5a7255;
   color: white;
@@ -56,7 +52,15 @@ th{
   top: 0; 
   border-collapse: separate;
 }
-
+tr:nth-child(even){
+  background-color: #f2f2f2;
+}
+tr:nth-child(odd){
+  background-color: rgb(180, 162, 162);
+}
+tr:hover{
+  background-color: rgb(160, 167, 231);
+}
 #scrollable-area {
   margin: auto;
   width: 80%;
@@ -64,9 +68,6 @@ th{
   border: 2px solid #2b376b;
   overflow-y: scroll;
   border-radius: 8px;
-
-  /* For Spinner and DOE Image */
-  /* background-color: rgb(172, 169, 169); */
 
 }
 #scrollable-area::-webkit-scrollbar {
@@ -78,7 +79,7 @@ th{
   border-bottom-right-radius: 20px;
 }
 #scrollable-area::-webkit-scrollbar-track {
-  /* background: black; */
+  
   border-radius: 50px;
   border: double black 1px;
 }
@@ -89,7 +90,6 @@ th{
   border: 3px solid rgb(255, 255, 255);
   
 }
-
 .loading{
   /* padding: 8px; */
   display: flex;
@@ -98,115 +98,66 @@ th{
   height: 100%;
 }
 
-.circle{
-  content: "";
-
-  /* spinner */
-  /* width: 20px;
-  height: 20px;
-  border: 5px solid #dddddd;
-  border-top-color: rgb(88, 118, 86);
-  border-radius: 50%;
-  animation: loading 1.5s ease infinite; */
-  
-  /* DoE Leaf */
-  /* background-image: url('/assets/leaf_invis.png');
-  width: 32px;
-  height: 32px;
-  transform: scale(0);
-  animation: grow 2.5s linear infinite; */
+/* Hourglass Loader */
+.cell {
+	flex-basis: 50%;
+	padding: 1.5em;
 }
-
-@keyframes loading{
-  to {
-    transform: rotate(1turn)}
+.pl, .pl:before, .pl:after {
+	animation-duration: 3s;
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
 }
-
-@keyframes grow {
-  50% {
-    transform: scale(1);
-  }
+.pl {
+	margin: 0 auto 1.5em auto;
+	position: relative;
+	width: 3em;
+	height: 3em;
 }
-
-/* Loading Cricle */
-.ring
-{
-  position:absolute;
-  left:50%;
-  transform:translate(-50%,-50%);
-  width:100px;
-  height:100px;
-  background:transparent;
-  border:3px solid #3c3c3c;
-  border-radius:50%;
-  text-align:center;
-  line-height:100px;
-  font-family:sans-serif;
-  font-size:10px;
-  color:rgb(88, 118, 86);
-  letter-spacing:4px;
-  text-transform:uppercase;
-  text-shadow:0 0 10px #ffffff;
-  box-shadow:0 0 20px rgba(255, 255, 255, 0.5);
+.pl:before, .pl:after {
+	background: currentColor;
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 50%;
+	transform-origin: 50% 100%;	
+	clip-path: polygon(0 0,100% 0,50% 100%);
+	-webkit-clip-path: polygon(0 0,100% 0,50% 100%);
 }
-.ring:before
-{
-  content:'';
-  position:absolute;
-  top:-3px;
-  left:-3px;
-  width:100%;
-  height:100%;
-  border:3px solid transparent;
-  border-top:3px solid rgb(88, 118, 86);
-  border-right:3px solid rgb(88, 118, 86);
-  border-radius:50%;
-  animation:animateC 2s linear infinite;
+.pl-name {
+	text-align: center;
+  text-shadow:0 0 10px rgb(151, 73, 73);
+  font-size: medium;
 }
-span
-{
-  display:block;
-  position:absolute;
-  top:calc(50% - 2px);
-  left:50%;
-  width:50%;
-  height:4px;
-  background:transparent;
-  transform-origin:left;
-  animation:animate 2s linear infinite;
+.pl-hourglass {
+	animation-name: hourglassA;
+	background: rgb(88, 118, 86);
+	clip-path: polygon(0 0,100% 0,50% 50%,100% 100%,0 100%,50% 50%);
+	-webkit-clip-path: polygon(0 0,100% 0,50% 50%,100% 100%,0 100%,50% 50%);
 }
-span:before
-{
-  content:'';
-  position:absolute;
-  width:16px;
-  height:16px;
-  border-radius:50%;
-  background:rgb(88, 118, 86);
-  top:-6px;
-  right:-8px;
-  box-shadow:0 0 20px #ffffff;
+.pl-hourglass:before, .pl-hourglass:after {
+	position: static;
+	clip-path: none;
+	-webkit-clip-path: none;
 }
-@keyframes animateC
-{
-  0%
-  {
-    transform:rotate(0deg);
-  }
-  100%
-  {
-    transform:rotate(360deg);
-  }
+.pl-hourglass:before {
+	animation-name: hourglassB;
 }
-@keyframes animate
-{
-  0%
-  {
-    transform:rotate(45deg);
-  }
-  100%
-  {
-    transform:rotate(405deg);
-  }
+.pl-hourglass:after {
+	animation-name: hourglassC;
 }
-
+@keyframes hourglassA {
+	from, 75% { transform: rotate(0) }
+	to { transform: rotate(180deg) }
+}
+@keyframes hourglassB {
+	from { transform: scaleY(1) }
+	50%, to { transform: scaleY(0) }
+}
+@keyframes hourglassC {
+	from { transform: scaleY(0) }
+	50%, to { transform: scaleY(1) }
+}

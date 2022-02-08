@@ -11,10 +11,13 @@
     <!-- Display Loading Circle -->
     <div class="loading" *ngIf="isLoading" >
         <!-- <div class="circle"></div> -->
-        <div class="ring">Loading
+        <!-- <div class="ring">Loading
             <span></span>
+        </div> -->
+        <div class="cell">
+            <div class="pl pl-hourglass"></div>
+            <div class="pl-name">Compiling your Data...</div>
         </div>
-        
     </div>
 
     <table class="table" *ngIf="!isLoading">
