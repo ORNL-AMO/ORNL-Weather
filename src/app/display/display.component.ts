@@ -38,7 +38,8 @@ export class DisplayComponent implements OnInit {
     for(let k = 0; k < this.years; k++){
       this.yearsObj[k] = this.year + k;
     }
-    if (this.years > 1){
+    //for multiple csv pulls of same station
+    if (this.years > 1){ 
       for (let i = 0; i < this.years; i++){
         this.fetchCSV(this.yearsObj[i], this.stationId);
       }
@@ -81,17 +82,24 @@ export class DisplayComponent implements OnInit {
         let b = a.split(" ")
         currLine.splice(1,0, "")
         
-        //pushing the station ID, dat, and time into the first three array elements
+        //pushing the station ID, dat, and time into the currLine postitions to match headers.
         currLine[1] = b[0];
         currLine[2] = b[1];
         console.log(currLine[5]);
-        //now pushing the rest of the split data into remaining array
+
+        //begin pushing lines into elements of array.
+
+        //station id through elevation.
         for(let j = 0; j < 6; j++) {
           obj[j] = currLine[j];
           dObj[headers[j]] = currLine[j];
         }
+
+        //for some reason the names gets split twice for had to add to parts of the line to one element of the array
         obj[6] = currLine[6] + currLine[7];
         dObj[headers[6]] = currLine[6] + currLine[7];
+
+        //pushing the rest. 
         for(let j = 7; j < headers.length; j++) {
           obj[j] = currLine[j+1];
           dObj[headers[j]] = currLine[j+1];
@@ -99,7 +107,6 @@ export class DisplayComponent implements OnInit {
         this.displayObj.push(obj);
         this.dataObj.push(dObj);
       }
-      // this.dataObj.pop();
       
       console.log(this.dataObj)
       
@@ -108,6 +115,7 @@ export class DisplayComponent implements OnInit {
     })
   }
 
+  //triggers download of array data into a csv to users computer. 
   downloadCSV(){
     let filename = this.dataObj[0].STATION;
 
