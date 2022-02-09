@@ -34,7 +34,13 @@
   </div>
 
   <div class="center">
-    <input class="zip" name="distance" #distance id="distance">
+    <select class="zip" name="distance" #distance id="distance">
+      <option value=" ">Select Distance</option>
+      <option value="10">10 miles</option>
+      <option value="25">25 miles</option>
+      <option value="50">50 miles</option>
+      <option value="100">100 miles</option>
+    </select>
   </div>
   <div *ngIf="isError" class="alert center">
     {{ dError }}

@@ -79,12 +79,13 @@ export class HomeComponent implements OnInit {
   //accepts the variables being entered. converts date into a usable array for month, day and year. Also passes zip code or station id on to next function for processing. Also checks for input errors
   acceptVariables(val: any, dist: any, SD: any, ED: any){
     console.log(val);
+    console.log(dist);
     console.log(SD);
     console.log(ED);
     if(val == ""){
       this.checkZErrors();
     }
-    if(dist == ""){
+    if(dist == " "){
       this.checkDErrors();
     }
     if(SD == ""){
