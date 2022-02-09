@@ -14,6 +14,15 @@ body{ /* overall default styling for this page */
     text-align: center;
 }
 
+/* Alert message styling */
+.alert {
+    padding-top: 5px;
+    color: red;
+    font-style: italic;
+    /* animation: hide 1s linear 3s 1 forwards; */
+    
+}
+
 .endDate{ /* styling for end date button */
     margin-left: 50px;
     padding:10px;

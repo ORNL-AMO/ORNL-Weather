@@ -9,23 +9,38 @@ import { Router } from "@angular/router";
 
 export class HomeComponent implements OnInit {
   //Declare required variables
+
+  //variables to be transfered to other components
   lat: any
   long: any
   zip: any;
   stationID: string = ""
-  errors: string = ""
-  private stationsJSON: any
-  private zipJSON: any;
   startDate: any[] = [];
   endDate: any[] = [];
+  numYears: number = 0;
+  
+  //other variables
+  errors: string = ""
+  sError: string = ""
+  eError: string = ""
+  zError: string = ""
+  dError: string = ""
+  
 
-   constructor() {
+  isError: boolean = false;
+  private stationsJSON: any
+  private zipJSON: any;
+  
+  
+
+   constructor(private router: Router) {
     this.lat = null
     this.long = null
     this.stationID = ""
     this.errors = ""
     this.stationsJSON = []
     this.zipJSON = []
+    
   }
 
   async ngOnInit() {
@@ -61,9 +76,25 @@ export class HomeComponent implements OnInit {
     console.log(this.stationsJSON)
   }
 
-  //accepts the variables being entered. converts date into a usable array for month, day and year. Also passes zip code or station id on to next function for processing.
-  acceptVariables(val: any, SD: any, ED: any){
-    //splitting start and end date values into separate elements
+  //accepts the variables being entered. converts date into a usable array for month, day and year. Also passes zip code or station id on to next function for processing. Also checks for input errors
+  acceptVariables(val: any, dist: any, SD: any, ED: any){
+    console.log(val);
+    console.log(SD);
+    console.log(ED);
+    if(val == ""){
+      this.checkZErrors();
+    }
+    if(dist == ""){
+      this.checkDErrors();
+    }
+    if(SD == ""){
+      this.checkSErrors();
+    }
+    if(ED == ""){
+      this.checkEErrors();
+    }
+    else{
+      //splitting start and end date values into separate elements
     let tempStart = SD.split("-");
     let tempEnd = ED.split("-")
 
@@ -82,8 +113,12 @@ export class HomeComponent implements OnInit {
     this.startDate.push(sObj);
     this.endDate.push(eObj);
 
+    this.getYears();
+    console.log(this.numYears);
     //passing station ID or zip code 
     this.getCoords(val);
+    }
+    
   }
   
   //Validate input and check if Zip or Station ID
@@ -98,6 +133,10 @@ export class HomeComponent implements OnInit {
     if(isNaN(+num)) {
       console.log("Input is NaN")
       this.errors = this.errors + "Please enter a number."
+      let context = this;
+      setTimeout(function(){
+        context.errors = ""
+      }, 3000)
     }
     else {
       console.log("Input: " + num);
@@ -110,6 +149,10 @@ export class HomeComponent implements OnInit {
       else {
         console.log("Invalid format for zip code or station ID")
         this.errors = this.errors + "Invalid format for a zip code or station ID. Please enter a 5 or 11 digit number."
+        let context = this;
+        setTimeout(function(){
+          context.errors = ""
+        }, 3000)
       }
     }
     
@@ -129,6 +172,10 @@ export class HomeComponent implements OnInit {
     if(this.lat == null) {
       console.log("Invalid zip code")
       this.errors = this.errors + "Zip code entered does not exist. Please enter a valid zip code."
+      let context = this;
+      setTimeout(function(){
+        context.errors = ""
+      }, 3000)
     }
     else {
       console.log("Lat: " + this.lat + " Lon: " + this.long)
@@ -150,6 +197,10 @@ export class HomeComponent implements OnInit {
     if (this.stationID == "") {
       console.log("Station not found")
       this.errors = this.errors + "Station not found. Please enter a zip code or valid station ID."
+      let context = this;
+      setTimeout(function(){
+        context.errors = ""
+      }, 3000)
     }
     else {
       console.log("Station found")
@@ -206,6 +257,62 @@ export class HomeComponent implements OnInit {
       zipcode.style.backgroundColor="initial"
     }
   }
+
+  getYears(){
+    if(this.startDate[0].year != this.endDate[0].year){
+      this.numYears = this.endDate[0].year - this.startDate[0].year + 1;
+    }
+    else{
+      this.numYears = 1;
+    }
+  }
+
+  //error checks for empty field for zip, distance, and dates
+  checkZErrors(){
+    this.isError = true;
+    this.zError = "This is a required input"
+
+    let context = this;
+    context.isError = true;
+    setTimeout(function(){
+      context.isError = false;
+      context.zError = ""
+    }, 3000)
+  }
+  checkSErrors(){
+    this.isError = true;
+    this.sError = "This is a required input"
+
+    let context = this;
+    context.isError = true;
+    setTimeout(function(){
+      context.isError = false;
+      context.sError = ""
+    }, 3000)
+  }
+  checkEErrors(){
+    this.isError = true;
+    this.eError = "This is a required input"
+
+    let context = this;
+    context.isError = true;
+    setTimeout(function(){
+      context.isError = false;
+      context.eError = ""
+    }, 3000)
+  }
+  checkDErrors(){
+    this.isError = true;
+    this.dError = "This is a required input"
+
+    let context = this;
+    context.isError = true;
+    setTimeout(function(){
+      context.isError = false;
+      context.dError = ""
+    }, 3000)
+  }
+
 }
 
 function getStations(){}
