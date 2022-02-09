@@ -12,7 +12,9 @@ export class DisplayComponent implements OnInit {
 
   //page variables
   yearsObj: any[] = [];
-  stationsIdObj: any[] = [];
+  years: number = 0;
+  stationId: string = "";
+  year: number = 0;
 
 
   ngOnInit(): void {
@@ -33,21 +35,23 @@ export class DisplayComponent implements OnInit {
 
   //checking the number of year
   checkYears(){
-    let len = this.yearsObj.length
-    if (this.yearsObj[0].year == this.yearsObj[len-1].year){
-      for (let i = 0; i < len; i++){
-        this.fetchCSV(this.yearsObj[i], this.stationsIdObj[i]);
+    for(let k = 0; k < this.years; k++){
+      this.yearsObj[k] = this.year + k;
+    }
+    if (this.years > 1){
+      for (let i = 0; i < this.years; i++){
+        this.fetchCSV(this.yearsObj[i], this.stationId);
       }
     }
     else{
-      this.fetchCSV(this.yearsObj[0].year, this.stationsIdObj[0]);
+      this.fetchCSV(this.yearsObj[0].year, this.stationId);
     }
   }
 
   //takes in station id and attaches it to the end of the http links to pull the required csv. then the csv data is received as text and is converted into json for and placed in an array for display/printing/download purposes. 
-  fetchCSV(year: any,val: any){
+  fetchCSV(year: any,stationID: any){
     
-    fetch(`https://www.ncei.noaa.gov/data/local-climatological-data/access/${year}/${val}.csv`)
+    fetch(`https://www.ncei.noaa.gov/data/local-climatological-data/access/${year}/${stationID}.csv`)
     .then((res) => res.text())
     .then((data) =>{
 
