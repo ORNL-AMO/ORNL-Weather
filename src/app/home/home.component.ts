@@ -12,16 +12,18 @@ export class HomeComponent implements OnInit {
   lat: any
   long: any
   zip: any;
+  dist: any;
   stationID: string = ""
   errors: string = ""
   private stationsJSON: any
   private zipJSON: any;
-  startDate: any;
-  endDate: any;
+  startDate: any[] = [];
+  endDate: any[] = [];
 
-   constructor() {
+   constructor(private router: Router) {
     this.lat = null
     this.long = null
+    this.dist = null;
     this.stationID = ""
     this.errors = ""
     this.stationsJSON = []
@@ -60,11 +62,30 @@ export class HomeComponent implements OnInit {
     }
     console.log(this.stationsJSON)
   }
-  acceptVariables(val: any, SD: any, ED: any){
-    this.startDate = SD;
-    this.endDate = ED;
-    console.log(this.startDate);
-    console.log(this.endDate);
+  acceptVariables(val: any, dist: any, SD: any, ED: any){
+    console.log(val);
+    console.log(dist);
+    console.log(SD);
+    console.log(ED);
+
+    //splitting start and end date values into separate elements
+    let tempStart = SD.split("-");
+    let tempEnd = ED.split("-")
+
+    //creating temp objs
+    let tempHead: any[] = ['year', 'month', 'day']
+    let sObj: any[] = []
+    let eObj: any[] = []
+
+    //assigning month, day, year into to objects with respective value meanings
+    for(let i = 0; i < 3; i++){
+     sObj[tempHead[i]] = tempStart[i];
+     eObj[tempHead[i]] = tempEnd[i];
+    }
+
+    //pushing into start and end date objects
+    this.startDate.push(sObj);
+    this.endDate.push(eObj);
     this.getCoords(val);
   }
   //Validate input and check if Zip or Station ID
@@ -74,7 +95,6 @@ export class HomeComponent implements OnInit {
     this.long = null
     this.stationID = ""
     this.errors = ""
-    getStations()
     //Ensure user input is a 5 or 11 digit number
     if(isNaN(+num)) {
       console.log("Input is NaN")
@@ -92,6 +112,8 @@ export class HomeComponent implements OnInit {
         console.log("Invalid format for zip code or station ID")
         this.errors = this.errors + "Invalid format for a zip code or station ID. Please enter a 5 or 11 digit number."
       }
+    console.log(this.endDate);
+    this.router.navigate(["/stations"], {state: { dataLat: this.lat, dataLong: this.long, dataDist: this.dist, dataStationID: this.stationID, dataStartDate: this.startDate, dataEndDate: this.endDate}})
     }
   }
 
@@ -187,5 +209,3 @@ export class HomeComponent implements OnInit {
     }
   }
 }
-
-function getStations(){}
