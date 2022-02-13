@@ -4,15 +4,11 @@
 /dist
 /tmp
 /out-tsc
-/.angular
 # Only exists if Bazel was run
 /bazel-out
 
 # dependencies
 /node_modules
-=======
-/node_modules
->>>>>>> ba91231e7ec4f5d1155c8d967ff13920ee93e5f2
 
 # profiling files
 chrome-profiler-events*.json
