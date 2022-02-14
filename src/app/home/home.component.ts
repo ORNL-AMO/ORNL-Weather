@@ -73,6 +73,7 @@ export class HomeComponent implements OnInit {
     }
     console.log(this.stationsJSON)
   }
+
   acceptVariables(val: any, dist: any, SD: any, ED: any){
     this.lat = null
     this.long = null
@@ -108,6 +109,7 @@ export class HomeComponent implements OnInit {
     this.dist = dist;
     this.getCoords(val);
   }
+
   //Validate input and check if Zip or Station ID
   getCoords(val: any) {
     let num: string = val;
@@ -115,30 +117,37 @@ export class HomeComponent implements OnInit {
     this.long = null;
     this.stationID = "";
     this.errors = "";
-    let tmpstart:string = "";
-    tmpstart = tmpstart.concat(String(this.startDate[0].year) + String(this.startDate[0].month) + String(this.startDate[0].day));
-    let tmpend:string = "";
-    tmpend = tmpend.concat(String(this.endDate[0].year) + String(this.endDate[0].month) + String(this.endDate[0].day));
+    let startStr:string = "";
+    startStr = startStr.concat(String(this.startDate[0].year) + String(this.startDate[0].month) + String(this.startDate[0].day));
+    let endStr:string = "";
+    endStr = endStr.concat(String(this.endDate[0].year) + String(this.endDate[0].month) + String(this.endDate[0].day));
     console.log("Distance")
     console.log(this.dist)
-    //Ensure user input is a 5 or 11 digit number
+
+    // Input Validation
+
+    // Zip/S-ID should be a number
     if(isNaN(+num)) {
       console.log("Input is NaN")
       this.errors = this.errors + "Please enter a valid Zip Code or 11-digit Station ID."
     }
-    else if(tmpstart>tmpend) {
+    // Start date should be prior to end date
+    else if(startStr>endStr) {
       console.log("Start Date cannot be later than End Date")
       this.errors = this.errors + "Start Date cannot be later than End Date."
     }
-    else if(isNaN(Number(tmpstart)) || isNaN(Number(tmpend))) {
+    // Start and end dates should be numbers
+    else if(isNaN(Number(startStr)) || isNaN(Number(endStr))) {
       console.log("Date(s) missing")
       this.errors = this.errors + "Please enter a valid date range."
     }
+    // Distance should be selected if searching by zip code
     else if(num.length == 5 && !this.dist) {
       console.log("Distance missing for zip")
       this.errors = this.errors + "Please select a distance when using a zip code."
     }
-    else if(tmpstart>this.currDate || tmpend>this.currDate) {
+    // Dates shouldn't be in the future
+    else if(startStr>this.currDate || endStr>this.currDate) {
       console.log("Future dates selected")
       this.errors = this.errors + "Please enter a valid date range."
     }
@@ -149,7 +158,7 @@ export class HomeComponent implements OnInit {
         this.getCoordsZip(num)
       }
       else if(num.length == 11) {
-        this.getStationID(num)
+        this.getStationID(num, startStr, endStr)
       }
       else {
         console.log("Invalid format for zip code or station ID")
@@ -182,20 +191,30 @@ export class HomeComponent implements OnInit {
   }
 
   //Check if input station ID valid
-  getStationID(val: any){
+  getStationID(val: any, startStr: string, endStr: string){
     var num: string = val
-    this.stationsJSON.forEach((station: any) => {
-      if(station.USAF.concat(station.WBAN) == num){           //Each Station ID consists of a USAF + WBAN code
-        this.stationID = station.USAF.concat(station.WBAN)
-        this.lat = station.LAT
-        this.long = station.LON
+    this.stationsJSON.every((station: any) => {
+      if(station.USAF.concat(station.WBAN) == num){     //Each Station ID consists of a USAF + WBAN code
+        if((station.BEGIN<=startStr) && (station.END>=endStr)) {
+          this.stationID = station.USAF.concat(station.WBAN)
+          this.lat = station.LAT
+          this.long = station.LON
+        }
+        else {
+          console.log("Station doesn't report data within the selected period")
+          let tmpBegin = station.BEGIN.substr(0,4) + "-" + station.BEGIN.substr(4,2) + "-" + station.BEGIN.substr(6,2)
+          let tmpEnd = station.END.substr(0,4) + "-" + station.END.substr(4,2) + "-" + station.END.substr(6,2)
+          this.errors = this.errors + "Station reporting period (" + tmpBegin + ", " + tmpEnd + ") is not compatible with selected dates."
+        }
+        return false
       }
+      return true
     })
 
-    //Check if input station ID found in stations list
-    if (this.stationID == "") {
-      console.log("Station not found")
-      this.errors = this.errors + "Station not found. Please enter a zip code or valid station ID."
+    //Error checking
+    if (this.stationID == "" && this.errors == "") {
+      console.log("Station ID not found")
+      this.errors = this.errors + "Station ID not found. Please enter a zip code or a different station ID."
     }
     else {
       console.log("Station found")
