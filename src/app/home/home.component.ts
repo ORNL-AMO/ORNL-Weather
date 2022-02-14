@@ -11,7 +11,6 @@ export class HomeComponent implements OnInit {
   //Declare required variables
   lat: any
   long: any
-  zip: any;
   dist: any;
   stationID: string = ""
   errors: string = ""
@@ -19,6 +18,7 @@ export class HomeComponent implements OnInit {
   private zipJSON: any;
   startDate: any[] = [];
   endDate: any[] = [];
+  currDate: string = ""
 
    constructor(private router: Router) {
     this.lat = null
@@ -28,9 +28,20 @@ export class HomeComponent implements OnInit {
     this.errors = ""
     this.stationsJSON = []
     this.zipJSON = []
+
+    let today = new Date();
+    let dd = String(today.getDate()).padStart(2, '0')
+    let mm = String(today.getMonth() + 1).padStart(2, '0')
+    let yyyy = today.getFullYear()
+    this.currDate = this.currDate.concat(String(yyyy), String(mm), String(dd))
   }
 
   async ngOnInit() {
+    // Set max dates for date selection boxes
+    let today = new Date().toISOString().split('T')[0];
+    document.getElementsByName("start-date")[0].setAttribute('max', today);
+    document.getElementsByName("end-date")[0].setAttribute('max', today);
+
     //Preload Zip Code and Station data into memory
 
     //Load zip code JSON
@@ -63,6 +74,14 @@ export class HomeComponent implements OnInit {
     console.log(this.stationsJSON)
   }
   acceptVariables(val: any, dist: any, SD: any, ED: any){
+    this.lat = null
+    this.long = null
+    this.dist = null
+    this.stationID = ""
+    this.startDate = []
+    this.endDate = []
+    this.errors = ""
+
     console.log(val);
     console.log(dist);
     console.log(SD);
@@ -70,7 +89,7 @@ export class HomeComponent implements OnInit {
 
     //splitting start and end date values into separate elements
     let tempStart = SD.split("-");
-    let tempEnd = ED.split("-")
+    let tempEnd = ED.split("-");
 
     //creating temp objs
     let tempHead: any[] = ['year', 'month', 'day']
@@ -86,20 +105,44 @@ export class HomeComponent implements OnInit {
     //pushing into start and end date objects
     this.startDate.push(sObj);
     this.endDate.push(eObj);
+    this.dist = dist;
     this.getCoords(val);
   }
   //Validate input and check if Zip or Station ID
   getCoords(val: any) {
-    var num: string = val
-    this.lat = null
-    this.long = null
-    this.stationID = ""
-    this.errors = ""
+    let num: string = val;
+    this.lat = null;
+    this.long = null;
+    this.stationID = "";
+    this.errors = "";
+    let tmpstart:string = "";
+    tmpstart = tmpstart.concat(String(this.startDate[0].year) + String(this.startDate[0].month) + String(this.startDate[0].day));
+    let tmpend:string = "";
+    tmpend = tmpend.concat(String(this.endDate[0].year) + String(this.endDate[0].month) + String(this.endDate[0].day));
+    console.log("Distance")
+    console.log(this.dist)
     //Ensure user input is a 5 or 11 digit number
     if(isNaN(+num)) {
       console.log("Input is NaN")
-      this.errors = this.errors + "Please enter a number."
+      this.errors = this.errors + "Please enter a valid Zip Code or 11-digit Station ID."
     }
+    else if(tmpstart>tmpend) {
+      console.log("Start Date cannot be later than End Date")
+      this.errors = this.errors + "Start Date cannot be later than End Date."
+    }
+    else if(isNaN(Number(tmpstart)) || isNaN(Number(tmpend))) {
+      console.log("Date(s) missing")
+      this.errors = this.errors + "Please enter a valid date range."
+    }
+    else if(num.length == 5 && !this.dist) {
+      console.log("Distance missing for zip")
+      this.errors = this.errors + "Please select a distance when using a zip code."
+    }
+    else if(tmpstart>this.currDate || tmpend>this.currDate) {
+      console.log("Future dates selected")
+      this.errors = this.errors + "Please enter a valid date range."
+    }
+
     else {
       console.log("Input: " + num);
       if(num.length == 5) {
@@ -112,8 +155,9 @@ export class HomeComponent implements OnInit {
         console.log("Invalid format for zip code or station ID")
         this.errors = this.errors + "Invalid format for a zip code or station ID. Please enter a 5 or 11 digit number."
       }
-    console.log(this.endDate);
-    this.router.navigate(["/stations"], {state: { dataLat: this.lat, dataLong: this.long, dataDist: this.dist, dataStationID: this.stationID, dataStartDate: this.startDate, dataEndDate: this.endDate}})
+      if(this.errors == "") {
+        this.router.navigate(["/stations"], {state: { dataLat: this.lat, dataLong: this.long, dataDist: this.dist, dataStationID: this.stationID, dataStartDate: this.startDate, dataEndDate: this.endDate}})
+      }
     }
   }
 
@@ -196,7 +240,7 @@ export class HomeComponent implements OnInit {
     let zipcode = document.getElementById("zipcode") as HTMLInputElement
     let val = zipcode.value.toString()
     if(val.length == 0) {
-      zipcode.style.backgroundColor="initial"
+      zipcode.style.backgroundColor="white"
     }
     else if(isNaN(+val) || (val.length != 5 && val.length != 11)) {
       zipcode.style.backgroundColor="#ff9191"
@@ -205,7 +249,7 @@ export class HomeComponent implements OnInit {
       zipcode.style.backgroundColor="#82ed80"
     }
     else {
-      zipcode.style.backgroundColor="initial"
+      zipcode.style.backgroundColor="white"
     }
   }
 }

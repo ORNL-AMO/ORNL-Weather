@@ -11,7 +11,7 @@
 
   <div class="center">
       <input class="zip" name="zipcode" #zipcode id="zipcode" type="text"
-      maxlength="11" size=18 (keyup)="checkInput()" (keyup.enter)="getCoords(zipcode.value)">
+      maxlength="11" size=18 (cut)="checkInput()" (paste)="checkInput()" (keyup)="checkInput()" (keyup.enter)="getCoords(zipcode.value)"> <!-- BUG: Cut/Paste event listeners don't work -->
   </div>
 
   <div class="center" style="margin-top:50px;">

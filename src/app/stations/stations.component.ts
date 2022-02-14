@@ -25,9 +25,9 @@ export class StationsComponent implements OnInit {
 
   stationsArray: any[] = [];
 
-  constructor(private routerSelect: Router) {
+  constructor(private router: Router) {
     // Get data from home page
-      let state:any = this.routerSelect.getCurrentNavigation()!.extras.state;
+      let state:any = this.router.getCurrentNavigation()!.extras.state;
       if(state) {
         this.lat = state.dataLat;
         this.long = state.dataLong;
@@ -37,12 +37,8 @@ export class StationsComponent implements OnInit {
         this.endDate = state.dataEndDate;
       }
       else {
-        this.lat = null
-        this.long = null
-        this.dist = null
-        this.stationID = null
-        this.startDate = null
-        this.endDate = null
+        // NOTE: See if would rather redirect away if no data from home or initialize with no data
+        this.router.navigate(["/home"])
       }
   }
 

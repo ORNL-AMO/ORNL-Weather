@@ -33,7 +33,7 @@ body{ /* overall default styling for this page */
     margin-left: 115px;
 }
 
-.zip { /* zip code and distance input boxes stling and padding */
+.zip { /* zip code and distance input boxes styling and padding */
     width: 225px;
     padding:10px;
     border-radius:60px;
@@ -56,20 +56,20 @@ body{ /* overall default styling for this page */
     font-size: 22px;
     margin: 4px 2px;
     cursor: pointer;
-    
+
 }
 
 
-  
+
 .center { /* centering */
     display: flex;
     justify-content: center;
 }
 
 .button1 { /* color and styling of station select button */
-    border-radius: 25px; 
+    border-radius: 25px;
     background-color: #F44848;
-} 
+}
 
 
 .button:hover { /* change color on station select button hover */
@@ -79,4 +79,4 @@ body{ /* overall default styling for this page */
 /* Remove annoying blue highlight when input box selected */
 input:focus {
         outline: black;
-    }
+}
