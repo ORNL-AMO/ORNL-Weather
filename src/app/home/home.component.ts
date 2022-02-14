@@ -165,7 +165,7 @@ export class HomeComponent implements OnInit {
         this.errors = this.errors + "Invalid format for a zip code or station ID. Please enter a 5 or 11 digit number."
       }
       if(this.errors == "") {
-        this.router.navigate(["/stations"], {state: { dataLat: this.lat, dataLong: this.long, dataDist: this.dist, dataStationID: this.stationID, dataStartDate: this.startDate, dataEndDate: this.endDate}})
+        this.router.navigate(["/stations"], {state: { dataLat: this.lat, dataLong: this.long, dataDist: this.dist, dataStationID: this.stationID, dataStartDate: this.startDate, dataEndDate: this.endDate, dataStationsJSON: this.stationsJSON}})
       }
     }
   }

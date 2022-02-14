@@ -22,6 +22,7 @@ export class StationsComponent implements OnInit {
   startDate:any;
   endDate:any;
   LCDStationsList:any;
+  stationsJSON:any;
 
   stationsArray: any[] = [];
 
@@ -35,6 +36,7 @@ export class StationsComponent implements OnInit {
         this.stationID = state.dataStationID;
         this.startDate = state.dataStartDate;
         this.endDate = state.dataEndDate;
+        this.stationsJSON = state.dataStationsJSON
       }
       else {
         // NOTE: See if would rather redirect away if no data from home or initialize with no data
@@ -44,7 +46,6 @@ export class StationsComponent implements OnInit {
 
   async ngOnInit() {
     // Get list of stations reporting LCD for endDate year
-    // TODO: Try-Catch for empty state
     let fetchUrl:any = "https://www.ncei.noaa.gov/data/local-climatological-data/access/" + this.endDate[0].year + "/";
     console.log(fetchUrl);
     await fetch(fetchUrl)
@@ -57,7 +58,7 @@ export class StationsComponent implements OnInit {
   }
 
   getStations() {
-    if(this.stationID != null){
+    if(this.stationID != ""){
       if(this.LCDStationsList.includes(this.stationID)) {
         // TODO: Route to data
       }
@@ -71,12 +72,35 @@ export class StationsComponent implements OnInit {
   }
 
   getStationsZip() {
-
+    this.stationsJSON.forEach((station: any) => {
+      if(this.LCDStationsList.includes(this.stationID)) {
+        let distance = this.Haversine(this.lat, this.long, station.LAT, station.LON)
+        if(distance < this.dist) {
+          station["dist"] = distance
+          this.stationsArray.push(station)
+        }
+      }
+    });
+    console.log(this.stationsArray)
   }
 
-  getDistance() {
+  //Utility Functions
+  Haversine(lat1:any, lon1:any, lat2:any, lon2:any) {
+    let distance = -1;
 
+    const R = 3958.8; // average radius of Earth in miles
+    const φ1 = lat1 * Math.PI/180; // φ, λ in radians
+    const φ2 = lat2 * Math.PI/180;
+    const Δφ = (lat2-lat1) * Math.PI/180;
+    const Δλ = (lon2-lon1) * Math.PI/180;
+
+    const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+            Math.cos(φ1) * Math.cos(φ2) *
+            Math.sin(Δλ/2) * Math.sin(Δλ/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+    distance = R * c;
+
+    return distance
   }
-
-
 }
