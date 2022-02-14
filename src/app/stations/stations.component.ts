@@ -21,9 +21,7 @@ export class StationsComponent implements OnInit {
   stationID:any;
   startDate:any;
   endDate:any;
-  LCDStationsList:any;
   stationsJSON:any;
-
   stationsArray: any[] = [];
 
   constructor(private router: Router) {
@@ -39,52 +37,57 @@ export class StationsComponent implements OnInit {
         this.stationsJSON = state.dataStationsJSON
       }
       else {
-        // NOTE: See if would rather redirect away if no data from home or initialize with no data
+        // XXX: See if would rather redirect away if no data from home or initialize with no data
         this.router.navigate(["/home"])
       }
   }
 
   async ngOnInit() {
-    // Get list of stations reporting LCD for endDate year
-    let fetchUrl:any = "https://www.ncei.noaa.gov/data/local-climatological-data/access/" + this.endDate[0].year + "/";
-    console.log(fetchUrl);
-    await fetch(fetchUrl)
-    .then((res) => res.text())
-    .then((data) =>{
-      this.LCDStationsList = data;
-    })
-    console.log(this.LCDStationsList)
     this.getStations();
   }
 
   getStations() {
     if(this.stationID != ""){
-      if(this.LCDStationsList.includes(this.stationID)) {
-        // TODO: Route to data
-      }
+      this.router.navigate(["/data"], {state: { dataStationID: this.stationID}})  // Go directly to data if provided station id
     }
     else if(this.lat != null && this.long != null) {
-      this.getStationsZip();
+      this.getStationsZip();  // Get local stations list
     }
     else {
-      // FIXME: Add error message, potentially route back to home
+      console.log("Required data missing. Routing back to home.")
+      this.router.navigate(["/home"])
     }
   }
 
   getStationsZip() {
+    // Check each station for distance, date range
     this.stationsJSON.forEach((station: any) => {
-      if(this.LCDStationsList.includes(this.stationID)) {
-        let distance = this.Haversine(this.lat, this.long, station.LAT, station.LON)
-        if(distance < this.dist) {
-          station["dist"] = distance
-          this.stationsArray.push(station)
-        }
+      // Get station distance from zip code coordinates
+      let distance = this.Haversine(this.lat, this.long, station.LAT, station.LON)
+
+      // Format dates for comparison
+      let startStr:string = "";
+      startStr = startStr.concat(String(this.startDate[0].year) + String(this.startDate[0].month) + String(this.startDate[0].day));
+      let endStr:string = "";
+      endStr = endStr.concat(String(this.endDate[0].year) + String(this.endDate[0].month) + String(this.endDate[0].day));
+
+      // Store valid stations and data required for display
+      if(distance<this.dist && startStr>station.BEGIN && endStr<station.END) {
+        let tmp: any[] = []
+        let headers: any[] = ['NAME', 'ID', 'DIST']
+        let id:string = ""
+        id = id.concat(String(station.USAF), String(station.WBAN))
+        tmp[headers[0]] = station["STATION NAME"]
+        tmp[headers[1]] = id
+        tmp[headers[2]] = distance.toFixed(2)
+        this.stationsArray.push(tmp)
       }
     });
     console.log(this.stationsArray)
   }
 
-  //Utility Functions
+  //// Utility Functions
+  /// Haversine formula to calculate approximate distances between coordinate pairs
   Haversine(lat1:any, lon1:any, lat2:any, lon2:any) {
     let distance = -1;
 

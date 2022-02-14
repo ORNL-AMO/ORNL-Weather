@@ -29,6 +29,8 @@ export class HomeComponent implements OnInit {
     this.stationsJSON = []
     this.zipJSON = []
 
+    // Get current date
+    // XXX: timezones?
     let today = new Date();
     let dd = String(today.getDate()).padStart(2, '0')
     let mm = String(today.getMonth() + 1).padStart(2, '0')
@@ -42,9 +44,9 @@ export class HomeComponent implements OnInit {
     document.getElementsByName("start-date")[0].setAttribute('max', today);
     document.getElementsByName("end-date")[0].setAttribute('max', today);
 
-    //Preload Zip Code and Station data into memory
+    // Preload Zip Code and Station data into memory
 
-    //Load zip code JSON
+    // Load zip code JSON
     await fetch("assets/ZipCodes.json")
     .then((res) => res.json())
     .then((data) =>{
@@ -55,11 +57,11 @@ export class HomeComponent implements OnInit {
       console.log(this.zipJSON)
     }
 
-    //Fetch newest station list data from NOAA
+    // Fetch newest station list data from NOAA
     this.stationsJSON = JSON.parse(await this.CSVtoJSON("https://www1.ncdc.noaa.gov/pub/data/noaa/isd-history.csv"))
 
-    //If fetch failed, fall back to older list
-    //Note: may need to set flag to correctly filter by date if requesting data newer than included file
+    // If fetch failed, fall back to older list
+    // XXX: may need to set flag to correctly filter by date if requesting data newer than included file
     if(this.stationsJSON.length == 0) {
       console.log("Unable to fetch current station list. Using older data set.")
       await fetch("assets/isd-history.json")
@@ -83,48 +85,43 @@ export class HomeComponent implements OnInit {
     this.endDate = []
     this.errors = ""
 
-    console.log(val);
-    console.log(dist);
-    console.log(SD);
-    console.log(ED);
-
-    //splitting start and end date values into separate elements
+    // Splitting start and end date values into separate elements
     let tempStart = SD.split("-");
     let tempEnd = ED.split("-");
 
-    //creating temp objs
+    // Creating temp objs
     let tempHead: any[] = ['year', 'month', 'day']
     let sObj: any[] = []
     let eObj: any[] = []
 
-    //assigning month, day, year into to objects with respective value meanings
+    // Assigning month, day, year into to objects with respective value meanings
     for(let i = 0; i < 3; i++){
      sObj[tempHead[i]] = tempStart[i];
      eObj[tempHead[i]] = tempEnd[i];
     }
 
-    //pushing into start and end date objects
+    // Pushing into start and end date objects
     this.startDate.push(sObj);
     this.endDate.push(eObj);
     this.dist = dist;
     this.getCoords(val);
   }
 
-  //Validate input and check if Zip or Station ID
+  // Validate input and check if Zip or Station ID
   getCoords(val: any) {
     let num: string = val;
     this.lat = null;
     this.long = null;
     this.stationID = "";
     this.errors = "";
+
+    // Format dates for easier comparison
     let startStr:string = "";
     startStr = startStr.concat(String(this.startDate[0].year) + String(this.startDate[0].month) + String(this.startDate[0].day));
     let endStr:string = "";
     endStr = endStr.concat(String(this.endDate[0].year) + String(this.endDate[0].month) + String(this.endDate[0].day));
-    console.log("Distance")
-    console.log(this.dist)
 
-    // Input Validation
+    //// Input Validation
 
     // Zip/S-ID should be a number
     if(isNaN(+num)) {
@@ -154,23 +151,27 @@ export class HomeComponent implements OnInit {
 
     else {
       console.log("Input: " + num);
+      // Evaluate input as zip code
       if(num.length == 5) {
         this.getCoordsZip(num)
       }
+      // Evaluate input as station id
       else if(num.length == 11) {
         this.getStationID(num, startStr, endStr)
       }
+      // Incorrect input length
       else {
         console.log("Invalid format for zip code or station ID")
         this.errors = this.errors + "Invalid format for a zip code or station ID. Please enter a 5 or 11 digit number."
       }
+      // Pass data to stations page if no errors
       if(this.errors == "") {
         this.router.navigate(["/stations"], {state: { dataLat: this.lat, dataLong: this.long, dataDist: this.dist, dataStationID: this.stationID, dataStartDate: this.startDate, dataEndDate: this.endDate, dataStationsJSON: this.stationsJSON}})
       }
     }
   }
 
-  //Get coordinates for center of input zip code
+  // Get coordinates for center of input zip code
   getCoordsZip(zip: any){
     var num: string = zip
     this.zipJSON.forEach((zipcode: any) => {
@@ -180,7 +181,7 @@ export class HomeComponent implements OnInit {
       }
     })
 
-    //Check if input zip code found
+    // Check if input zip code found
     if(this.lat == null) {
       console.log("Invalid zip code")
       this.errors = this.errors + "Zip code entered does not exist. Please enter a valid zip code."
@@ -190,17 +191,18 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  //Check if input station ID valid
+  // Check if input station ID valid
   getStationID(val: any, startStr: string, endStr: string){
     var num: string = val
     this.stationsJSON.every((station: any) => {
-      if(station.USAF.concat(station.WBAN) == num){     //Each Station ID consists of a USAF + WBAN code
+      if(station.USAF.concat(station.WBAN) == num){     // Each Station ID consists of a USAF + WBAN code
         if((station.BEGIN<=startStr) && (station.END>=endStr)) {
           this.stationID = station.USAF.concat(station.WBAN)
+          // NOTE: below lat/long can be removed if not searching for stations near selected station
           this.lat = station.LAT
           this.long = station.LON
         }
-        else {
+        else {    // Error if station exists but invalid date range
           console.log("Station doesn't report data within the selected period")
           let tmpBegin = station.BEGIN.substr(0,4) + "-" + station.BEGIN.substr(4,2) + "-" + station.BEGIN.substr(6,2)
           let tmpEnd = station.END.substr(0,4) + "-" + station.END.substr(4,2) + "-" + station.END.substr(6,2)
@@ -211,24 +213,22 @@ export class HomeComponent implements OnInit {
       return true
     })
 
-    //Error checking
-    if (this.stationID == "" && this.errors == "") {
+    if (this.stationID == "" && this.errors == "") {    // Error if no matching station found for given ID
       console.log("Station ID not found")
       this.errors = this.errors + "Station ID not found. Please enter a zip code or a different station ID."
     }
     else {
-      console.log("Station found")
       console.log("Station ID: " + this.stationID + " Lat: " + this.lat + " Lon: " + this.long)
     }
   }
 
 
 
-  //Utility Functions
+  //// Utility Functions
 
-  //Converts updated isd-history.csv to JSON for processing
-  //Call using var = JSON.parse(await this.CSVtoJSON(filepath))
-  //Note: DO NOT use as-is for final data output
+  // Converts updated isd-history.csv to JSON for processing
+  // Call using var = JSON.parse(await this.CSVtoJSON(filepath))
+  // NOTE: DO NOT use as-is for final data output
   //      Needs to be reviewed for data containing , and ""
   async CSVtoJSON(val: string):Promise<string> {
     let path: string = val
@@ -254,7 +254,7 @@ export class HomeComponent implements OnInit {
     return JSON.stringify(jsonFile)
   }
 
-  //Change input text box background color depending on validity of input
+  // Change input text box background color depending on validity of input
   checkInput() {
     let zipcode = document.getElementById("zipcode") as HTMLInputElement
     let val = zipcode.value.toString()
