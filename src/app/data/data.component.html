@@ -1,1 +1,54 @@
-<p>data works!</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <style>
+        .center {
+        display: flex;
+        justify-content: center;
+        }
+  
+        .button1 {
+            border-radius: 12px; background-color: #F44848;
+        } 
+
+         .button {
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 12px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+
+    </style>
+    
+</head>
+<body>
+    <h1>Available Data Types for Selection</h1>
+    <div id="scrollable-area">
+        <table fixed-table-headers="scrollable-area">
+            <tr>
+                <input type="checkbox" [(ngModel)]="masterSelected" name="list_name" value="m1"
+                    (change)="checkUncheckAll()" /> <strong>Select All</strong>
+                <th *ngFor = "let column of headers">
+                    {{column}}
+                </th>
+            </tr>
+
+            <tr class="checkbox" *ngFor="let item of checklist">
+                <input type="checkbox" [(ngModel)]="item.isSelected" name="list_name" value="{{item.id}}"
+                    (change)="isAllSelected()" />
+                    {{item.value}}
+            </tr>
+        </table>
+    </div>
+    <div class="col-md-6">
+        <code>{{checkedList}}</code>
+      </div>
+</body>
+
+</html>
