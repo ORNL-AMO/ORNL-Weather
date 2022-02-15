@@ -80,3 +80,10 @@ tr:hover{
 .button:hover {
   background-color: #839c7c;
 }
+
+.footer {
+  height: auto;
+  width:100%;
+  margin-bottom:0;
+  position:absolute;
+}

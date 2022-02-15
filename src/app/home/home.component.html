@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 
-
+  <link rel="stylesheet" href="home.component.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <body>
 
 
 
-  <div class="center" style="margin-top:20px;">
+  <div class="center" style="margin-top:40px;">
       <label for="ZipCode"><b>Zip Code/Station ID</b></label>        
   </div>
 
@@ -44,9 +44,9 @@
   </div>
 
   <div class="center">
-    <input class='startDate' #startdate type="date" id="start-date" name="start-date" placeholder="mm/dd/yyyy" style="width: 200px;">
+    <input class='startDate' #startdate type="date" id="start-date" name="start-date" placeholder="mm/dd/yyyy" >
 
-    <input class='endDate' #enddate type="date" id="end-date" name="end-date" placeholder="mm/dd/yyyy" style="width: 200px;">
+    <input class='endDate' #enddate type="date" id="end-date" name="end-date" placeholder="mm/dd/yyyy" >
   </div>
   <div class="center" style="margin-top: 80px;">
         <button class="button button1" (click)="acceptVariables(zipcode.value, startdate.value, enddate.value)" ><b>Station Select</b></button>
@@ -55,6 +55,10 @@
   <div *ngIf="errors" class="alert alert-danger" class="center">
     {{ errors }}
   </div>
+
+  <img src= "/assets/industrial-skyline.png" class="footer"/>
+
+                
 
 
     

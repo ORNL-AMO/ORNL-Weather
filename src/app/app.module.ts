@@ -20,7 +20,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CommonModule } from '@angular/common';
-import { FooterComponent } from './footer/footer.component';
+
 
 @NgModule({
   declarations: [
@@ -30,7 +30,7 @@ import { FooterComponent } from './footer/footer.component';
     DataComponent,
     DisplayComponent,
     NavbarComponent,
-    FooterComponent
+
   ],
   imports: [
     BrowserModule,
