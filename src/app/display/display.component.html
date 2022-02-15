@@ -1,1 +1,35 @@
-<p>display works!</p>
+<!-- displaying code to confirm test pull of data from NCEI servers -->
+<!DOCTYPE html>
+<html lang="en">
+    <body>
+        <div class="center" style="margin-top: 0px;">
+            <h1><b>Your Selected Data</b></h1>
+        </div>
+
+        <div id="scrollable-area">
+
+            <table>
+
+                 <tr>
+                     <th *ngFor = "let row of headers">
+                        {{row}}
+                     </th>
+                </tr>
+
+                <tr *ngFor = "let row of dataObj">
+                    <td *ngFor = "let i of row" class="rows">{{i}}</td>
+                 </tr>
+
+            </table>
+
+        </div>
+
+        <div class="center">
+            <button class="button button1"><b>Back</b></button>
+            <button class="button button1"><b>Download JSON</b></button>
+            <button class="button button1"><b>Download CSV</b></button>
+        </div>
+
+    </body>
+
+</html>

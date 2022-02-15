@@ -1,1 +1,30 @@
-<p>data works!</p>
+<!DOCTYPE html>
+<html lang="en">
+
+    <body>
+
+        <div class ="center" style="margin-top: 0px;">
+            <h1><b>Data Selection</b></h1>
+        </div>
+
+        <div id="scrollable-area">
+            <table fixed-table-headers="scrollable-area">
+
+                <tr>
+                    <th *ngFor = "let column of headers">
+                        {{column}}
+                    </th>
+                </tr>
+
+            </table>
+        </div>
+
+        <div class="center">
+            <button class="button button1"><b>Back</b></button>
+
+            <button class="button button1"><b>Display Data</b></button>
+
+        </div>
+    </body>
+
+</html>

@@ -1,0 +1,54 @@
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  color: rgb(253, 253, 253);
+
+}
+
+.spacer {
+  flex: 1 1 auto;
+
+}
+
+.mat-toolbar {
+  background-color: rgb(88, 118, 86);
+  height: 50px;
+}
+
+.mat-toolbar a {
+  display: inline-block;
+  margin: 0 10px;
+  color: rgb(253, 253, 253);
+  text-decoration: none; 
+}
+
+.mat-toolbar dev {
+  display: inline-block;
+  margin-left: 20px;
+  color: rgb(253, 253, 253);
+  text-decoration: underline; 
+  text-decoration-color: red;
+  text-align: center;
+}
+
+div.cent cent {text-align: center;}
+
+.navbtn { /* home button styling*/
+  background-color: #587656; 
+  border: none; 
+  color: white; /* White text */
+  padding: 12px 16px; 
+  font-size: 22px; 
+  cursor: pointer; 
+  border-radius: 50%;
+  margin-top: 12px;
+  margin-left: 12px;
+  margin-right: 12px;
+  margin-right: 12px;
+}
+
+
+.navbtn:hover { /* Change to green on hover */
+  background-color: #839c7c;
+}
