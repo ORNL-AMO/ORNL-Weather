@@ -38,27 +38,30 @@
     </div> -->
 
     <div class="center" style="margin-top:0px;">
-        <h1><b>Stations in Area</b></h1>        
+        <h1><b>Stations in Area</b></h1>
     </div>
     <div id="scrollable-area">
         <table fixed-table-headers="scrollable-area">
-            
+
             <tr>
-                <th ><input type="checkbox" ></th>
                 <th *ngFor = "let column of headers">
                     {{column}}
                 </th>
-                
-                
             </tr>
 
+            <tr *ngFor = "let row of stationsArray">
+                <td class="center"><input type="checkbox" (change)="getSelect($event, row.ID)"></td>
+                <td class="rows">{{row.ID}}</td>
+                <td class="rows">{{row.NAME}}</td>
+                <td class="rows">{{row.DIST}}</td>
+            </tr>
 
         </table>
     </div>
     <div class="center">
-        <button class="button button1" ><b>Back</b></button>
+        <button class="button button1" (click)="goBack()" ><b>Back</b></button>
 
-        <button class="button button1" ><b>Data</b></button>
+        <button class="button button1" (click)="sendToData()"><b>Data</b></button>
     </div>
     <img src= "/assets/industrial-skyline.png" class="footer"/>
 </body>
