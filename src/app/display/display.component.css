@@ -3,20 +3,20 @@ h1{
   color: #2b376b;
   font-size: 30px;
   font-family: 'Lato', sans-serif;
-        
+
 }
 
 table{
   font-family: 'Lato', sans-serif;
   border-collapse: collapse;
-  width: 100%;    
+  width: 100%;
 }
-  
+
 td{
   padding: 8px;
   align-content: center;
   text-align: left;
-} 
+}
 
 th{
   padding: 8px;
@@ -26,7 +26,7 @@ th{
   color: white;
   position: -webkit-sticky;
   position: sticky;
-  top: 0;  
+  top: 0;
 }
 
 tr:nth-child(even){
@@ -68,12 +68,12 @@ tr:hover{
   min-width: 202px;
 }
 
-.button1 { 
-  border-radius: 60px; 
+.button1 {
+  border-radius: 60px;
   background-color: #587656;
 }
 
-.button:hover { 
+.button:hover {
   background-color: #839c7c;
 }
 #scrollable-area::-webkit-scrollbar {
@@ -85,7 +85,7 @@ tr:hover{
   border-bottom-right-radius: 20px;
 }
 #scrollable-area::-webkit-scrollbar-track {
-  
+
   border-radius: 50px;
   border: double black 1px;
 }
@@ -94,7 +94,7 @@ tr:hover{
   /* background-color: rgb(0, 0, 0); */
   border-radius: 20px;
   border: 3px solid rgb(255, 255, 255);
-  
+
 }
 .loading{
   /* padding: 8px; */
@@ -129,7 +129,7 @@ tr:hover{
 	left: 0;
 	width: 100%;
 	height: 50%;
-	transform-origin: 50% 100%;	
+	transform-origin: 50% 100%;
 	clip-path: polygon(0 0,100% 0,50% 100%);
 	-webkit-clip-path: polygon(0 0,100% 0,50% 100%);
 }
@@ -166,4 +166,11 @@ tr:hover{
 @keyframes hourglassC {
 	from { transform: scaleY(0) }
 	50%, to { transform: scaleY(1) }
+}
+
+.footer {
+  height: auto;
+  width:100%;
+  margin-bottom:0;
+  position:absolute;
 }

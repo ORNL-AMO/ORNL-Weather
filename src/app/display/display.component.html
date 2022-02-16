@@ -7,7 +7,7 @@
 <h1>Preview Data</h1>
 
 <div id="scrollable-area">
-    
+
     <!-- Display Loading Circle -->
     <div class="loading" *ngIf="isLoading" >
         <!-- Hourglass Loading Spinner -->
@@ -18,15 +18,16 @@
     </div>
 
     <table class="table" *ngIf="!isLoading">
-    
+
      <!-- Display Headers -->
         <th *ngFor = "let row of headers">
             {{row}}
         </th>
-    
+
         <!-- Display Data -->
         <tr *ngFor = "let row of displayObj" >
             <td *ngFor = "let column of row" class="rows">{{ column }}</td>
         </tr>
     </table>
 </div>
+<img src= "/assets/industrial-skyline.png" class="footer"/>

@@ -8,7 +8,7 @@ h1{
     color: #2b376b;
     font-size: 30px;
     font-family: 'Lato', sans-serif;
-          
+
 }
 
 .center { /* centering */
@@ -24,7 +24,7 @@ h1{
     text-decoration: none;
     display: inline-block;
     font-size: 20px;
-    
+
     cursor: pointer;
     margin-top: 10px;
     width: 10%;
@@ -33,13 +33,13 @@ h1{
     min-width: 167px;
 }
 
-.button1 { 
-    border-radius: 60px; 
+.button1 {
+    border-radius: 60px;
     background-color: #587656;
-} 
+}
 
 
-.button:hover { 
+.button:hover {
     background-color: #839c7c;
 }
 
@@ -64,7 +64,7 @@ th{
     color: white;
     position: -webkit-sticky;
     position: sticky;
-    top: 0; 
+    top: 0;
 }
 
 tr:nth-child(even){
@@ -82,4 +82,11 @@ tr:hover{
   border: 2px solid #2b376b;
   overflow-y: scroll;
   border-radius: 8px;
-}   
+}
+
+.footer {
+  height: auto;
+  width:100%;
+  margin-bottom:0;
+  position:absolute;
+}

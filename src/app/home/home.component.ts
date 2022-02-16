@@ -18,14 +18,14 @@ export class HomeComponent implements OnInit {
   startDate: any[] = [];
   endDate: any[] = [];
   numYears: number = 0;
-  
+
   //other variables
   errors: string = ""
   sError: string = ""
   eError: string = ""
   zError: string = ""
   dError: string = ""
-  
+
 
   isError: boolean = false;
   private stationsJSON: any
@@ -97,10 +97,24 @@ export class HomeComponent implements OnInit {
 
   //accepts the variables being entered. converts date into a usable array for month, day and year. Also passes zip code or station id on to next function for processing. Also checks for input errors
   acceptVariables(val: any, dist: any, SD: any, ED: any){
+    this.lat = null
+    this.long = null
+    this.dist = dist
+    this.stationID = ""
+    this.startDate = []
+    this.endDate = []
+    this.errors = ""
+
+    sessionStorage.setItem('zipcode', val);
+    sessionStorage.setItem('distance', dist);
+    sessionStorage.setItem('start-date', SD);
+    sessionStorage.setItem('end-date', ED);
+
     console.log(val);
     console.log(dist);
     console.log(SD);
     console.log(ED);
+
     if(val == ""){
       this.checkZErrors();
     }
@@ -114,11 +128,12 @@ export class HomeComponent implements OnInit {
       this.checkEErrors();
     }
     else{
+
       //splitting start and end date values into separate elements
     let tempStart = SD.split("-");
     let tempEnd = ED.split("-")
 
-    //creating temp objs 
+    //creating temp objs
     let tempHead: any[] = ['year', 'month', 'day']
     let sObj: any[] = []
     let eObj: any[] = []
@@ -135,49 +150,10 @@ export class HomeComponent implements OnInit {
 
     this.getYears();
     console.log(this.numYears);
-    //passing station ID or zip code 
+    //passing station ID or zip code
     this.getCoords(val);
     }
-    
-  }
-  
-  //Validate input and check if Zip or Station ID
-  getCoords(val: any) {
-    var num: string = val
-    this.lat = null
-    this.long = null
-    this.dist = null
-    this.stationID = ""
-    this.startDate = []
-    this.endDate = []
-    this.errors = ""
 
-    sessionStorage.setItem('zipcode', val);
-    sessionStorage.setItem('distance', dist);
-    sessionStorage.setItem('start-date', SD);
-    sessionStorage.setItem('end-date', ED);
-
-
-    // Splitting start and end date values into separate elements
-    let tempStart = SD.split("-");
-    let tempEnd = ED.split("-");
-
-    // Creating temp objs
-    let tempHead: any[] = ['year', 'month', 'day']
-    let sObj: any[] = []
-    let eObj: any[] = []
-
-    // Assigning month, day, year into to objects with respective value meanings
-    for(let i = 0; i < 3; i++){
-     sObj[tempHead[i]] = tempStart[i];
-     eObj[tempHead[i]] = tempEnd[i];
-    }
-
-    // Pushing into start and end date objects
-    this.startDate.push(sObj);
-    this.endDate.push(eObj);
-    this.dist = dist;
-    this.getCoords(val);
   }
 
   // Validate input and check if Zip or Station ID
@@ -250,7 +226,7 @@ export class HomeComponent implements OnInit {
         this.router.navigate(["/stations"], {state: { dataLat: this.lat, dataLong: this.long, dataDist: this.dist, dataStationID: this.stationID, dataStartDate: this.startDate, dataEndDate: this.endDate, dataStationsJSON: this.stationsJSON}})
       }
     }
-    
+
   }
 
   // Get coordinates for center of input zip code
@@ -417,8 +393,6 @@ export class HomeComponent implements OnInit {
       context.dError = ""
     }, 3000)
   }
-
-}
 
   getFormData(str:any) {
     if(sessionStorage.getItem(str) != null) {
