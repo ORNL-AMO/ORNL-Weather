@@ -44,6 +44,7 @@ export class HomeComponent implements OnInit {
     this.getFormData("distance")
     this.getFormData("start-date")
     this.getFormData("end-date")
+    this.checkInput()
 
     // Set max dates for date selection boxes
     let today = new Date().toISOString().split('T')[0];

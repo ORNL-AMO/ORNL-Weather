@@ -37,11 +37,16 @@ export class StationsComponent implements OnInit {
         this.stationID = state.dataStationID;
         this.startDate = state.dataStartDate;
         this.endDate = state.dataEndDate;
-        this.stationsJSON = state.dataStationsJSON
+        this.stationsJSON = state.dataStationsJSON;
       }
       else {
-        // XXX: See if would rather redirect away if no data from home or initialize with no data
-        this.router.navigate(["/home"])
+        this.lat = null;
+        this.long = null;
+        this.dist = null;
+        this.stationID = "";
+        this.startDate = null;
+        this.endDate = null;
+        this.stationsJSON = null;
       }
   }
 
@@ -59,8 +64,7 @@ export class StationsComponent implements OnInit {
       this.getStationsZip();  // Get local stations list
     }
     else {
-      console.log("Required data missing. Routing back to home.")
-      this.router.navigate(["/home"])
+      console.log("Required data missing.")
     }
   }
 
