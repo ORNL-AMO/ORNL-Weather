@@ -1,3 +1,9 @@
+body{ /* overall default styling for this page */
+  color: #2c386b;
+  font-size: 22px;
+
+}
+
 .mat-toolbar.mat-primary {
   position: sticky;
   top: 0;

@@ -1,7 +1,12 @@
+
 body{ /* overall default styling for this page */
     color: #2c386b;
     font-size: 23px;
+
 }
+
+
+
 .startDate{ /* styling for start date button */
     margin-right: 50px;
     padding:10px;
@@ -14,6 +19,7 @@ body{ /* overall default styling for this page */
     font-size: 17.4px;
     text-align: center;
     margin-top: 3px;
+    width: 200px;
 }
 
 .endDate{ /* styling for end date button */
@@ -28,14 +34,18 @@ body{ /* overall default styling for this page */
     font-size: 17.4px;
     text-align: center;
     margin-top: 3px;
+    width: 200px;
+    
 }
 
 .labelStartDate{ /* margin for start date label */
     margin-right: 110px;
+    margin-left: 53px;
 }
 
 .labelEndDate{ /* margin for end date label */
     margin-left: 113px;
+    margin-right: 40px;
 }
 
 .zip { /* zip code and distance input boxes stling and padding */
@@ -132,3 +142,12 @@ select {
 select:focus {
     outline: black;
 }
+
+.footer {
+    height: auto;
+    width:100%;
+    margin-bottom:0;
+    position:absolute;
+ }
+
+  
