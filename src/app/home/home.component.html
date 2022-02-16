@@ -1,19 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+  <meta charset="utf-8"/>
+  <link rel="stylesheet" href="/home/home.reset.css" media="screen" />
+  <link rel="stylesheet" href="/home/home.component.css" media="screen" />
+</head>
 <body>
 
-
-
+  <div class="center" style="width:800px; margin:0 auto;">
+  </div>
   <div class="center" style="margin-top:20px;">
       <label for="ZipCode"><b>Zip Code/Station ID</b></label>        
   </div>
 
   <div class="center">
       <input class="zip" name="zipcode" #zipcode id="zipcode" type="text"
-      maxlength="11" size=18 (keyup)="checkInput()" (keyup.enter)="getCoords(zipcode.value)">
+
+      maxlength="11" size=18 (keyup)="checkInput()" (keyup.enter)="getCoords(zipcode.value)" autocomplete="none">
+  </div>
+  <!-- Display potential errors regarding input data to user -->
+  <div *ngIf="errors" class="alert center">
+    {{ errors }}
+  </div>
+  <div *ngIf="isError" class="alert center">
+    {{ zError }}
   </div>
 
   <div class="center" style="margin-top:80px;">
@@ -44,19 +54,18 @@
   </div>
 
   <div class="center">
-    <input class='startDate' #startdate type="date" id="start-date" name="start-date" placeholder="mm/dd/yyyy" style="width: 200px;">
+    <input class='startDate' #startdate type="date" id="start-date" name="start-date" style="width: 200px;">
+    <div *ngIf="isError" class="alert center">
+      {{ sError }}
+    </div>
 
-    <input class='endDate' #enddate type="date" id="end-date" name="end-date" placeholder="mm/dd/yyyy" style="width: 200px;">
+    <input class='endDate' #enddate type="date" id="end-date" name="end-date" style="width: 200px;">
+    <div *ngIf="isError" class="alert center">
+      {{ eError }}
+    </div>
   </div>
-  <div class="center" style="margin-top: 80px;">
-        <button class="button button1" (click)="acceptVariables(zipcode.value, startdate.value, enddate.value)" ><b>Station Select</b></button>
+  <div class="center" style="margin-top: 100px;">
+        <button class="button button1" (click)="acceptVariables(zipcode.value, distance.value, startdate.value, enddate.value)" ><b>Station Select</b></button>
   </div>
-  <!-- Display potential errors regarding input data to user -->
-  <div *ngIf="errors" class="alert alert-danger" class="center">
-    {{ errors }}
-  </div>
-
-
-    
 </body>
 
