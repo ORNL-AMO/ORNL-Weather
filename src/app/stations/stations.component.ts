@@ -23,6 +23,9 @@ export class StationsComponent implements OnInit {
   endDate:any;
   stationsJSON:any;
   stationsArray: any[] = [];
+  selectedArray: any[] = [];
+  sendingArray: any[] = [];
+  headers = ['', 'Station ID', 'Station Name', 'Distance(Miles)']
 
   constructor(private router: Router) {
     // Get data from home page
@@ -47,8 +50,10 @@ export class StationsComponent implements OnInit {
   }
 
   getStations() {
-    if(this.stationID != ""){
-      this.router.navigate(["/data"], {state: { dataStationID: this.stationID}})  // Go directly to data if provided station id
+    if(this.stationID != ""){   // Go directly to data if provided station id
+      this.sendingArray.push(this.stationID)
+      console.log(this.sendingArray);
+      this.router.navigate(["/data"], {state: { dataSelect: this.sendingArray }})
     }
     else if(this.lat != null && this.long != null) {
       this.getStationsZip();  // Get local stations list
@@ -83,8 +88,55 @@ export class StationsComponent implements OnInit {
         this.stationsArray.push(tmp)
       }
     });
+    this.stationsArray.sort(this.sortJSON("DIST"))
     console.log(this.stationsArray)
   }
+
+  //// Selection Functions
+  getSelect(ev: any, val: String){
+      let obj = {
+        ID: val,
+      };
+
+      if(ev.target.checked){
+        this.selectedArray.push(obj);
+        console.log(this.selectedArray);
+      }
+      else{
+        let el = this.selectedArray.find((itm) => itm.ID === val);
+        if (el) this.selectedArray.splice(this.selectedArray.indexOf(el), 1);
+        console.log(this.selectedArray);
+      }
+
+    }
+
+    selectAll(ev: any){
+      if(ev.target.checked){
+        for(let index in this.stationsArray){
+          this.getSelect(ev, index)
+        }
+      }
+      else{
+        for(let index in this.stationsArray){
+          this.getSelect(ev, index)
+        }
+      }
+    }
+
+    sendToData(){
+      console.log(this.selectedArray);
+      for(let index in this.selectedArray){
+        this.sendingArray.push(this.selectedArray[index].ID)
+      }
+      console.log(this.sendingArray);
+      this.router.navigate(["/data"], {state: { dataSelect: this.sendingArray }})
+    }
+
+    goBack(){
+      this.router.navigate(["/home"])
+    }
+
+
 
   //// Utility Functions
   /// Haversine formula to calculate approximate distances between coordinate pairs
@@ -106,4 +158,15 @@ export class StationsComponent implements OnInit {
 
     return distance
   }
+
+  sortJSON(key:string) {
+    return function(a:any, b:any) {
+        if (a[key] > b[key]) {
+            return 1;
+        } else if (a[key] < b[key]) {
+            return -1;
+        }
+        return 0;
+    }
+}
 }
