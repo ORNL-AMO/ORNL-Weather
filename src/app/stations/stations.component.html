@@ -1,1 +1,66 @@
-<p>stations works!</p>
+<!DOCTYPE html>
+<html lang="en">
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="js/checkAll.min.js"></script>
+    <script>
+        $('.checkAll').checkAll({
+              name : 'checkGroup',
+              inverter: '.invert',
+              vagueCls: 'indeterminate',
+              onInit : function(len,count,ids,nodes,value){
+                  // init callback
+                  // params : len, count, length , ids, value, nodes
+                  $('.statusbar').text(len+' items, checked '+count+' item');
+              },
+              onCheck: function(id,val,len,count,ids,nodes,value){
+                  // checking callback
+                  // params : id,val,len,count,ids,value,nodes
+                  $('.statusbar').text(len+' items, checked '+count+' item');
+              },
+              onFull : function (count,ids,nodes) {
+                  // all in checked callback
+                  // params : count|len, length , ids, value, nodes
+                  $('.statusbar').text(count+' items, checked '+count+' item');
+              },
+              onEmpty : function (len) {
+                  //no checked items callback
+                  // params : len
+                  $('.statusbar').text(len+' items, checked 0 item');
+              }
+        });
+        </script>
+
+
+<body>
+    <!-- <div class="center" style="margin-top:100px;">
+        <button class="button button1" (click)="getStations()"><b>Get Stations</b></button>
+    </div> -->
+
+    <div class="center" style="margin-top:0px;">
+        <h1><b>Stations in Area</b></h1>        
+    </div>
+    <div id="scrollable-area">
+        <table fixed-table-headers="scrollable-area">
+            
+            <tr>
+                
+                <th *ngFor = "let column of headers">
+                    {{column}}
+                </th>
+                
+                
+            </tr>
+
+
+        </table>
+    </div>
+    <div class="center">
+        <button class="button button1" ><b>Back</b></button>
+
+        <button class="button button1" ><b>Data</b></button>
+    </div>
+
+</body>
+
+</html>

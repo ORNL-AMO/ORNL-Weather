@@ -1,56 +1,55 @@
-
 body{ /* overall default styling for this page */
-    color: #2b376b;
-    font-size: 22px;
+    color: #2c386b;
+    font-size: 23px;
 }
 .startDate{ /* styling for start date button */
     margin-right: 50px;
     padding:10px;
-    border-radius:60px;
-    border: 1.5px solid #5a7255;
-    color: #2b376b;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border-radius:9px;
+    border: 1.5px solid #587656;
+    color: #2c386b;
     justify-content: center;
-    font-size: 16px;
+    font-size: 17.4px;
     text-align: center;
-}
-
-/* Alert message styling */
-.alert {
-    padding-top: 5px;
-    color: red;
-    font-style: italic;
-    /* animation: hide 1s linear 3s 1 forwards; */
-    
+    margin-top: 3px;
 }
 
 .endDate{ /* styling for end date button */
     margin-left: 50px;
     padding:10px;
-    border-radius:60px;
-    border: 1.5px solid #5a7255;
-    color: #2b376b;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border-radius:9px;
+    border: 1.5px solid #587656;
+    color: #2c386b;
     justify-content: center;
-    font-size: 16px;
+    font-size: 17.4px;
     text-align: center;
+    margin-top: 3px;
 }
 
 .labelStartDate{ /* margin for start date label */
-    margin-right: 115px;
+    margin-right: 110px;
 }
 
 .labelEndDate{ /* margin for end date label */
-    margin-left: 115px;
+    margin-left: 113px;
 }
 
 .zip { /* zip code and distance input boxes stling and padding */
-    width: 225px;
+    width: 220px;
     padding:10px;
-    border-radius:60px;
-    border: 1.5px solid #5a7255;
-    color: #2b376b;
+    border-radius:9px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border: 1.5px solid #587656;
+    color: #2c386b;
     justify-content: center;
-    font-size: 16px;
+    font-size: 17.4px;
     text-align: center;
+    margin-top: 5px;
 }
 
 
@@ -62,7 +61,7 @@ body{ /* overall default styling for this page */
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 22px;
+    font-size: 20px;
     margin: 4px 2px;
     cursor: pointer;
     
@@ -76,8 +75,8 @@ body{ /* overall default styling for this page */
 }
 
 .button1 { /* color and styling of station select button */
-    border-radius: 25px; 
-    background-color: #F44848;
+    border-radius: 60px; 
+    background-color: #587656;
 } 
 
 
@@ -89,3 +88,47 @@ body{ /* overall default styling for this page */
 input:focus {
         outline: black;
     }
+
+input[type="date"]{
+
+    padding:10px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border-radius:9px;
+    border: 1.5px solid #587656;
+    color: #2c386b;
+    justify-content: center;
+    font-size: 17.4px;
+    text-align: left;
+    font-family: 'Lato', sans-serif;
+}
+
+::-webkit-calendar-picker-indicator{
+    color: #2c386b;
+    cursor: pointer;
+}
+
+select {
+    width: 240px;
+    padding:10px;
+    border-radius:9px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border: 1.5px solid #587656;
+    color: #2c386b;
+    justify-content: center;
+    font-size: 17.4px;
+    text-align: center;
+    margin-top: 5px;
+    font-family: 'Lato', sans-serif;
+    background-color: white;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    background: url("/assets/arrow.png")96% / 6% no-repeat white;
+}
+
+select:focus {
+    outline: black;
+}
