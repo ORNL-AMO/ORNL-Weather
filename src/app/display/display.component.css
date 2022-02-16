@@ -16,6 +16,7 @@ td{
   padding: 8px;
   align-content: center;
   text-align: left;
+  white-space: nowrap;
 }
 
 th{
