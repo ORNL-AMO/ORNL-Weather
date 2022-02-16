@@ -1,5 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+  <meta charset="utf-8"/>
+
+  <title>HTML Page for Testing CSS</title>
+
+  <link rel="stylesheet" href="/home/home.reset.css" media="screen" />
+  <link rel="stylesheet" href="/home/home.component.css" media="screen" />
+</head>
 <body>
 
   <div class="center" style="width:800px; margin:0 auto;">
@@ -11,7 +19,14 @@
 
   <div class="center">
       <input class="zip" name="zipcode" #zipcode id="zipcode" type="text"
-      maxlength="11" size=18 (keyup)="checkInput()" (keyup.enter)="getCoords(zipcode.value)">
+      maxlength="11" size=18 (keyup)="checkInput()" (keyup.enter)="getCoords(zipcode.value)" autocomplete="none">
+  </div>
+  <!-- Display potential errors regarding input data to user -->
+  <div *ngIf="errors" class="alert center">
+    {{ errors }}
+  </div>
+  <div *ngIf="isError" class="alert center">
+    {{ zError }}
   </div>
 
   <div class="center" style="margin-top:50px;">
@@ -19,7 +34,16 @@
   </div>
 
   <div class="center">
-    <input class="zip" name="distance" #distance id="distance">
+    <select class="zip" name="distance" #distance id="distance">
+      <option value=" ">Select Distance</option>
+      <option value="10">10 miles</option>
+      <option value="25">25 miles</option>
+      <option value="50">50 miles</option>
+      <option value="100">100 miles</option>
+    </select>
+  </div>
+  <div *ngIf="isError" class="alert center">
+    {{ dError }}
   </div>
   
 
@@ -35,16 +59,17 @@
 
   <div class="center">
     <input class='startDate' #startdate type="date" id="start-date" name="start-date" style="width: 200px;">
+    <div *ngIf="isError" class="alert center">
+      {{ sError }}
+    </div>
 
     <input class='endDate' #enddate type="date" id="end-date" name="end-date" style="width: 200px;">
+    <div *ngIf="isError" class="alert center">
+      {{ eError }}
+    </div>
   </div>
   <div class="center" style="margin-top: 100px;">
-        <button class="button button1" (click)="acceptVariables(zipcode.value, startdate.value, enddate.value)" ><b>Station Select</b></button>
+        <button class="button button1" (click)="acceptVariables(zipcode.value, distance.value, startdate.value, enddate.value)" ><b>Station Select</b></button>
   </div>
-  <!-- Display potential errors regarding input data to user -->
-  <div *ngIf="errors" class="alert alert-danger" class="center">
-    {{ errors }}
-  </div>
-    
-
+  
 </body>

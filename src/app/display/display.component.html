@@ -1,16 +1,32 @@
-<!-- displaying code to confirm test pull of data from NCEI servers -->
-<h1>Your Selected Data</h1>
-    <div>
-        <table>
-            <tr>
-                <th *ngFor = "let row of headers">
-                    {{row}}
-                </th>
-                
-            </tr>
+<!-- Displaying Data from NCEI Data Pull -->
 
-            <tr *ngFor = "let row of dataObj">
-                <td *ngFor = "let i of row" class="rows">{{i}}</td>
-            </tr>
-        </table>
+<div class="right">
+    <button class="button button1" (click)="downloadCSV()">Download as CSV</button>
+    <!-- <button class="button button1">Download as JSON</button> -->
+</div>
+<h1>Preview Data</h1>
+
+<div id="scrollable-area">
+    
+    <!-- Display Loading Circle -->
+    <div class="loading" *ngIf="isLoading" >
+        <!-- Hourglass Loading Spinner -->
+        <div class="cell">
+            <div class="pl pl-hourglass"></div>
+            <div class="pl-name">Compiling your Data...</div>
+        </div>
     </div>
+
+    <table class="table" *ngIf="!isLoading">
+    
+     <!-- Display Headers -->
+        <th *ngFor = "let row of headers">
+            {{row}}
+        </th>
+    
+        <!-- Display Data -->
+        <tr *ngFor = "let row of displayObj" >
+            <td *ngFor = "let column of row" class="rows">{{ column }}</td>
+        </tr>
+    </table>
+</div>
