@@ -39,6 +39,12 @@ export class HomeComponent implements OnInit {
   }
 
   async ngOnInit() {
+    // FIXME: TESTING
+    this.getFormData("zipcode")
+    this.getFormData("distance")
+    this.getFormData("start-date")
+    this.getFormData("end-date")
+
     // Set max dates for date selection boxes
     let today = new Date().toISOString().split('T')[0];
     document.getElementsByName("start-date")[0].setAttribute('max', today);
@@ -84,6 +90,12 @@ export class HomeComponent implements OnInit {
     this.startDate = []
     this.endDate = []
     this.errors = ""
+
+    sessionStorage.setItem('zipcode', val);
+    sessionStorage.setItem('distance', dist);
+    sessionStorage.setItem('start-date', SD);
+    sessionStorage.setItem('end-date', ED);
+
 
     // Splitting start and end date values into separate elements
     let tempStart = SD.split("-");
@@ -271,4 +283,12 @@ export class HomeComponent implements OnInit {
       zipcode.style.backgroundColor="white"
     }
   }
+
+  getFormData(str:any) {
+    if(sessionStorage.getItem(str) != null) {
+      let a:any = document.getElementById(str) as HTMLInputElement
+      a.value = sessionStorage.getItem(str);
+    }
+  }
+
 }
