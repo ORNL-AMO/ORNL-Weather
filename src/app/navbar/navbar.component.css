@@ -1,3 +1,9 @@
+body{ /* overall default styling for this page */
+  color: #2c386b;
+  font-size: 22px;
+
+}
+
 .mat-toolbar.mat-primary {
   position: sticky;
   top: 0;
@@ -35,7 +41,7 @@
 div.cent cent {text-align: center;}
 
 .navbtn { /* home button styling*/
-  background-color: #F44848; 
+  background-color: #587656; 
   border: none; 
   color: white; /* White text */
   padding: 12px 16px; 

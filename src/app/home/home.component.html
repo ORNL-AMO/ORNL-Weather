@@ -1,29 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+
+  <link rel="stylesheet" href="home.component.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <body>
 
-  <div class="center" style="width:800px; margin:0 auto;">
-  </div>
 
-  <div class="center" style="margin-top:0px;">
+
+  <div class="center" style="margin-top:40px;">
       <label for="ZipCode"><b>Zip Code/Station ID</b></label>
   </div>
 
   <div class="center">
       <input class="zip" name="zipcode" #zipcode id="zipcode" type="text"
-      maxlength="11" size=18 (cut)="checkInput()" (paste)="checkInput()" (keyup)="checkInput()" (keyup.enter)="getCoords(zipcode.value)"> <!-- BUG: Cut/Paste event listeners don't work -->
+
+      maxlength="11" size=18 (keyup)="checkInput()" (keyup.enter)="getCoords(zipcode.value)" autocomplete="none">
+  </div>
+  <!-- Display potential errors regarding input data to user -->
+  <div *ngIf="errors" class="alert center">
+    {{ errors }}
+  </div>
+  <div *ngIf="isError" class="alert center">
+    {{ zError }}
   </div>
 
-  <div class="center" style="margin-top:50px;">
+  <div class="center" style="margin-top:80px;">
     <label for="Distance"><b>Distance (miles)</b></label>
   </div>
 
   <div class="center">
-    <input class="zip" name="distance" #distance id="distance">
+    <label class = select>
+    <select name="distance" #distance id="distance">
+      <option value=" ">Select Distance</option>
+        <option value="10">10 miles</option>
+        <option value="25">25 miles</option>
+        <option value="50">50 miles</option>
+        <option value="100">100 miles</option>
+    </select>
+  </label>
+  </div>
+
+  <div *ngIf="isError" class="alert center">
+    {{ dError }}
   </div>
 
 
-  <div class="center" style="margin-top:100px;">
+  <div class="center" style="margin-top:80px;">
     <label class='labelStartDate'>
       <b>Start Date</b>
     </label>
@@ -35,16 +57,17 @@
 
   <div class="center">
     <input class='startDate' #startdate type="date" id="start-date" name="start-date" style="width: 200px;">
+    <div *ngIf="isError" class="alert center">
+      {{ sError }}
+    </div>
 
     <input class='endDate' #enddate type="date" id="end-date" name="end-date" style="width: 200px;">
+    <div *ngIf="isError" class="alert center">
+      {{ eError }}
+    </div>
   </div>
   <div class="center" style="margin-top: 100px;">
         <button class="button button1" (click)="acceptVariables(zipcode.value, distance.value, startdate.value, enddate.value)" ><b>Station Select</b></button>
   </div>
-  <!-- Display potential errors regarding input data to user -->
-  <div *ngIf="errors" class="alert alert-danger" class="center">
-    {{ errors }}
-  </div>
-
-
+  <img src= "/assets/industrial-skyline.png" class="footer"/>
 </body>

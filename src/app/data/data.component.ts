@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DataComponent implements OnInit {
 
+  headers = []
+
   constructor() { }
 
   ngOnInit(): void {
