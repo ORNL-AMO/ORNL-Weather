@@ -223,7 +223,7 @@ export class HomeComponent implements OnInit {
       }
       // Pass data to stations page if no errors
       if(this.errors == "") {
-        this.router.navigate(["/stations"], {state: { dataLat: this.lat, dataLong: this.long, dataDist: this.dist, dataStationID: this.stationID, dataStartDate: this.startDate, dataEndDate: this.endDate, dataStationsJSON: this.stationsJSON}})
+        this.router.navigate(["/stations"], {state: { dataLat: this.lat, dataLong: this.long, dataDist: this.dist, dataStationID: this.stationID, dataStartDate: this.startDate, dataEndDate: this.endDate, dataStationsJSON: this.stationsJSON, years: this.numYears}})
       }
     }
 
@@ -342,9 +342,12 @@ export class HomeComponent implements OnInit {
   getYears(){
     if(this.startDate[0].year != this.endDate[0].year){
       this.numYears = this.endDate[0].year - this.startDate[0].year + 1;
+      console.log(this.numYears)
     }
     else{
       this.numYears = 1;
+      console.log(this.numYears)
+
     }
   }
 
