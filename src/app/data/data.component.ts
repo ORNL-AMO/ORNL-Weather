@@ -144,7 +144,7 @@ export class DataComponent implements OnInit {
         {id:113,value:'BackupLatitude',isSelected:false},
         {id:114,value:'BackupLongitude',isSelected:false},
         {id:115,value:'BackupName',isSelected:false},
-        {id:116,value:'WindEquipmentChangeDate',isSelected:false},
+        {id:116,value:'WindEquipmentChangeDate',isSelected:false}
 
       ];
       this.getCheckedItemList();
