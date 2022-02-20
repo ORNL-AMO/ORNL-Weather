@@ -54,7 +54,6 @@ export class DisplayComponent implements OnInit {
     for(let k = 0; k < this.years; k++){
       this.yearsObj[k] = Number(this.startDate[0].year) + k;
     }
-    console.log(this.yearsObj)
     //for multiple csv pulls of same station
     if (this.years > 1){
       for (let i = 0; i < this.years; i++){
@@ -69,9 +68,6 @@ export class DisplayComponent implements OnInit {
   
   //takes in station id and attaches it to the end of the http links to pull the required csv. then the csv data is received as text and is converted into json for and placed in an array for display/printing/download purposes.
   fetchCSV(year: any,stationID: any){
-    console.log(year);
-    console.log(stationID)
-    console.log(`https://www.ncei.noaa.gov/data/local-climatological-data/access/${year}/${stationID}.csv`)
     fetch(`https://www.ncei.noaa.gov/data/local-climatological-data/access/${year}/${stationID}.csv`)
     .then((res) => res.text())
     .then((data) =>{
@@ -112,7 +108,6 @@ export class DisplayComponent implements OnInit {
           for(let j = 0; j < 6; j++) {
             obj[j] = currLine[j];
             dObj[headers[j]] = currLine[j];
-            console.log(obj)
           }
 
           //for some reason the names gets split twice for had to add to parts of the line to one element of the array
@@ -125,7 +120,6 @@ export class DisplayComponent implements OnInit {
             dObj[headers[j]] = currLine[j+1];
           }
           this.displayObj.push(obj);
-          console.log(this.displayObj)
           this.dataObj.push(dObj);
         }
       }
