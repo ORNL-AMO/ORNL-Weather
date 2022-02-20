@@ -25,6 +25,7 @@ export class StationsComponent implements OnInit {
   stationsArray: any[] = [];
   selectedArray: any[] = [];
   sendingArray: any[] = [];
+  numYears: any;
   headers = ['', 'Station ID', 'Station Name', 'Distance(Miles)']
 
   constructor(private router: Router) {
@@ -38,6 +39,7 @@ export class StationsComponent implements OnInit {
         this.startDate = state.dataStartDate;
         this.endDate = state.dataEndDate;
         this.stationsJSON = state.dataStationsJSON;
+        this.numYears = state.years;
       }
       else {
         this.lat = null;
@@ -47,6 +49,7 @@ export class StationsComponent implements OnInit {
         this.startDate = null;
         this.endDate = null;
         this.stationsJSON = null;
+        this.numYears = null;
       }
   }
 
@@ -58,7 +61,7 @@ export class StationsComponent implements OnInit {
     if(this.stationID != ""){   // Go directly to data if provided station id
       this.sendingArray.push(this.stationID)
       console.log(this.sendingArray);
-      this.router.navigate(["/data"], {state: { dataSelect: this.sendingArray }})
+      this.router.navigate(["/data"], {state: { stationID: this.sendingArray }})
     }
     else if(this.lat != null && this.long != null) {
       this.getStationsZip();  // Get local stations list
@@ -94,6 +97,7 @@ export class StationsComponent implements OnInit {
     });
     this.stationsArray.sort(this.sortJSON("DIST"))
     console.log(this.stationsArray)
+    console.log(this.sendingArray)
   }
 
   //// Selection Functions
@@ -133,7 +137,7 @@ export class StationsComponent implements OnInit {
         this.sendingArray.push(this.selectedArray[index].ID)
       }
       console.log(this.sendingArray);
-      this.router.navigate(["/data"], {state: { dataSelect: this.sendingArray }})
+      this.router.navigate(["/display"], {state: { stationID: this.sendingArray, startDate: this.startDate, endDate: this.endDate, years: this.numYears }})
     }
 
     goBack(){
