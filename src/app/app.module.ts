@@ -44,6 +44,7 @@ import { CommonModule } from '@angular/common';
     MatCheckboxModule,
     MatListModule,
     CommonModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
