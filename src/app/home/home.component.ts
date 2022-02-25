@@ -16,7 +16,9 @@ export class HomeComponent implements OnInit {
   dist: any;
   stationID: string = ""
   startDate: any[] = [];
+  startStr:string = "";
   endDate: any[] = [];
+  endStr:string = "";
   numYears: number = 0;
 
   //other variables
@@ -165,10 +167,8 @@ export class HomeComponent implements OnInit {
     this.errors = "";
 
     // Format dates for easier comparison
-    let startStr:string = "";
-    startStr = startStr.concat(String(this.startDate[0].year) + String(this.startDate[0].month) + String(this.startDate[0].day));
-    let endStr:string = "";
-    endStr = endStr.concat(String(this.endDate[0].year) + String(this.endDate[0].month) + String(this.endDate[0].day));
+    this.startStr = this.startStr.concat(String(this.startDate[0].year) + String(this.startDate[0].month) + String(this.startDate[0].day));
+    this.endStr = this.endStr.concat(String(this.endDate[0].year) + String(this.endDate[0].month) + String(this.endDate[0].day));
 
     //// Input Validation
 
@@ -182,12 +182,12 @@ export class HomeComponent implements OnInit {
       }, 3000)
     }
     // Start date should be prior to end date
-    else if(startStr>endStr) {
+    else if(this.startStr>this.endStr) {
       console.log("Start Date cannot be later than End Date")
       this.errors = this.errors + "Start Date cannot be later than End Date."
     }
     // Start and end dates should be numbers
-    else if(isNaN(Number(startStr)) || isNaN(Number(endStr))) {
+    else if(isNaN(Number(this.startStr)) || isNaN(Number(this.endStr))) {
       console.log("Date(s) missing")
       this.errors = this.errors + "Please enter a valid date range."
     }
@@ -197,7 +197,7 @@ export class HomeComponent implements OnInit {
       this.errors = this.errors + "Please select a distance when using a zip code."
     }
     // Dates shouldn't be in the future
-    else if(startStr>this.currDate || endStr>this.currDate) {
+    else if(this.startStr>this.currDate || this.endStr>this.currDate) {
       console.log("Future dates selected")
       this.errors = this.errors + "Please enter a valid date range."
     }
@@ -210,7 +210,7 @@ export class HomeComponent implements OnInit {
       }
       // Evaluate input as station id
       else if(num.length == 11) {
-        this.getStationID(num, startStr, endStr)
+        this.getStationID(num)
       }
       // Incorrect input length
       else {
@@ -223,7 +223,7 @@ export class HomeComponent implements OnInit {
       }
       // Pass data to stations page if no errors
       if(this.errors == "") {
-        this.router.navigate(["/stations"], {state: { dataLat: this.lat, dataLong: this.long, dataDist: this.dist, dataStationID: this.stationID, dataStartDate: this.startDate, dataEndDate: this.endDate, dataStationsJSON: this.stationsJSON, years: this.numYears}})
+        this.router.navigate(["/stations"], {state: { dataLat: this.lat, dataLong: this.long, dataDist: this.dist, dataStationID: this.stationID, dataStartDate: this.startDate, dataEndDate: this.endDate, dataStationsJSON: this.stationsJSON, years: this.numYears, dataStartStr: this.startStr, dataEndStr: this.endStr}})
       }
     }
 
@@ -254,11 +254,11 @@ export class HomeComponent implements OnInit {
   }
 
   // Check if input station ID valid
-  getStationID(val: any, startStr: string, endStr: string){
+  getStationID(val: any){
     var num: string = val
     this.stationsJSON.every((station: any) => {
       if(station.USAF.concat(station.WBAN) == num){     // Each Station ID consists of a USAF + WBAN code
-        if((station.BEGIN<=startStr) && (station.END>=endStr)) {
+        if((station.BEGIN<=this.startStr) && (station.END>=this.endStr)) {
           this.stationID = station.USAF.concat(station.WBAN)
           // NOTE: below lat/long can be removed if not searching for stations near selected station
           this.lat = station.LAT
