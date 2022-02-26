@@ -20,7 +20,9 @@ export class StationsComponent implements OnInit {
   dist:any;
   stationID:any;
   startDate:any;
+  startStr:string;
   endDate:any;
+  endStr:string;
   stationsJSON:any;
   stationsArray: any[] = [];
   selectedArray: any[] = [];
@@ -40,6 +42,8 @@ export class StationsComponent implements OnInit {
         this.endDate = state.dataEndDate;
         this.stationsJSON = state.dataStationsJSON;
         this.numYears = state.years;
+        this.startStr = state.dataStartStr;
+        this.endStr = state.dataEndStr;
       }
       else {
         this.lat = null;
@@ -50,6 +54,8 @@ export class StationsComponent implements OnInit {
         this.endDate = null;
         this.stationsJSON = null;
         this.numYears = null;
+        this.startStr = "";
+        this.endStr = "";
       }
   }
 
@@ -61,7 +67,7 @@ export class StationsComponent implements OnInit {
     if(this.stationID != ""){   // Go directly to data if provided station id
       this.sendingArray.push(this.stationID)
       console.log(this.sendingArray);
-      this.router.navigate(["/data"], {state: { stationID: this.sendingArray }})
+      this.router.navigate(["/display"], {state: { stationID: this.sendingArray, startDate: this.startDate, endDate: this.endDate, years: this.numYears, startStr: this.startStr, endStr: this.endStr}})
     }
     else if(this.lat != null && this.long != null) {
       this.getStationsZip();  // Get local stations list
@@ -77,14 +83,8 @@ export class StationsComponent implements OnInit {
       // Get station distance from zip code coordinates
       let distance = this.Haversine(this.lat, this.long, station.LAT, station.LON)
 
-      // Format dates for comparison
-      let startStr:string = "";
-      startStr = startStr.concat(String(this.startDate[0].year) + String(this.startDate[0].month) + String(this.startDate[0].day));
-      let endStr:string = "";
-      endStr = endStr.concat(String(this.endDate[0].year) + String(this.endDate[0].month) + String(this.endDate[0].day));
-
       // Store valid stations and data required for display
-      if(distance<this.dist && startStr>station.BEGIN && endStr<station.END) {
+      if(distance<this.dist && this.startStr>station.BEGIN && this.endStr<station.END) {
         let tmp: any[] = []
         let headers: any[] = ['NAME', 'ID', 'DIST']
         let id:string = ""
@@ -137,7 +137,7 @@ export class StationsComponent implements OnInit {
         this.sendingArray.push(this.selectedArray[index].ID)
       }
       console.log(this.sendingArray);
-      this.router.navigate(["/display"], {state: { stationID: this.sendingArray, startDate: this.startDate, endDate: this.endDate, years: this.numYears }})
+      this.router.navigate(["/display"], {state: { stationID: this.sendingArray, startDate: this.startDate, endDate: this.endDate, years: this.numYears, startStr: this.startStr, endStr: this.endStr}})
     }
 
     goBack(){
