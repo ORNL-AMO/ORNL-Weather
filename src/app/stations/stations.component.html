@@ -1,37 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="js/checkAll.min.js"></script>
-    <script>
-        $('.checkAll').checkAll({
-              name : 'checkGroup',
-              inverter: '.invert',
-              vagueCls: 'indeterminate',
-              onInit : function(len,count,ids,nodes,value){
-                  // init callback
-                  // params : len, count, length , ids, value, nodes
-                  $('.statusbar').text(len+' items, checked '+count+' item');
-              },
-              onCheck: function(id,val,len,count,ids,nodes,value){
-                  // checking callback
-                  // params : id,val,len,count,ids,value,nodes
-                  $('.statusbar').text(len+' items, checked '+count+' item');
-              },
-              onFull : function (count,ids,nodes) {
-                  // all in checked callback
-                  // params : count|len, length , ids, value, nodes
-                  $('.statusbar').text(count+' items, checked '+count+' item');
-              },
-              onEmpty : function (len) {
-                  //no checked items callback
-                  // params : len
-                  $('.statusbar').text(len+' items, checked 0 item');
-              }
-        });
-        </script>
-
-
 <body>
     <!-- <div class="center" style="margin-top:100px;">
         <button class="button button1" (click)="getStations()"><b>Get Stations</b></button>
@@ -50,10 +18,10 @@
             </tr>
 
             <tr *ngFor = "let row of stationsArray">
-                <td class="center"><input type="checkbox" (change)="getSelect($event, row.ID)"></td>
-                <td class="rows">{{row.ID}}</td>
-                <td class="rows">{{row.NAME}}</td>
-                <td class="rows">{{row.DIST}}</td>
+                <label><td class="center"><input type="checkbox" id="{{row.ID}}" (change)="getSelect($event, row.ID)"></td></label>
+                <td class="rows"><label for="{{row.ID}}">{{row.ID}}</label></td>
+                <td class="rows"><label for="{{row.ID}}">{{row.NAME}}</label></td>
+                <td class="rows"><label for="{{row.ID}}">{{row.DIST}}</label></td>
             </tr>
 
         </table>
