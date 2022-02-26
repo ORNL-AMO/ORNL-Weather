@@ -69,5 +69,8 @@
   <div class="center" style="margin-top: 100px;">
         <button class="button button1" (click)="acceptVariables(zipcode.value, distance.value, startdate.value, enddate.value)" ><b>Station Select</b></button>
   </div>
+  <div *ngIf="stationsError" class="alert center">
+    {{ stationsError }}
+  </div>
   <img src= "/assets/industrial-skyline.png" class="footer"/>
 </body>

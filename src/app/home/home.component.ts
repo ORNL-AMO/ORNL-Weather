@@ -27,6 +27,7 @@ export class HomeComponent implements OnInit {
   eError: string = ""
   zError: string = ""
   dError: string = ""
+  stationsError: string = ""
 
 
   isError: boolean = false;
@@ -50,10 +51,25 @@ export class HomeComponent implements OnInit {
     let mm = String(today.getMonth() + 1).padStart(2, '0')
     let yyyy = today.getFullYear()
     this.currDate = this.currDate.concat(String(yyyy), String(mm), String(dd))
+
+    // Print error if returning from empty stations dataset
+    let state:any = null;
+    try {
+      state = this.router.getCurrentNavigation()!.extras.state
+      if(state) {
+        if(state.err){
+          this.stationsError = state.err
+          let context = this;
+          setTimeout(function(){
+            context.stationsError = ""
+          }, 5000)
+        }
+      }
+    } catch (e){}
   }
 
   async ngOnInit() {
-    // FIXME: TESTING
+    // Load previous input if applicable
     this.getFormData("zipcode")
     this.getFormData("distance")
     this.getFormData("start-date")
