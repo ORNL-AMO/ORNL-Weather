@@ -100,8 +100,10 @@ export class StationsComponent implements OnInit {
     });
     console.log(this.stationsArray)
     console.log(this.sendingArray)
-    let error:string = "No matching stations found. Try increasing distance."
-    this.router.navigate(["/home"], {state: {err: error}})
+    if(this.stationsArray.length == 0) {
+      let error:string = "No matching stations found. Try increasing distance."
+      this.router.navigate(["/home"], {state: {err: error}})
+    }
   }
 
   //// Selection Functions
