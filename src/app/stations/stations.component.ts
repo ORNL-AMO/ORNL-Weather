@@ -95,7 +95,9 @@ export class StationsComponent implements OnInit {
         this.stationsArray.push(tmp)
       }
     });
-    this.stationsArray.sort(this.sortJSON("DIST"))
+    this.stationsArray.sort(function(a,b) {
+      return a.DIST - b.DIST
+    });
     console.log(this.stationsArray)
     console.log(this.sendingArray)
   }
@@ -166,15 +168,4 @@ export class StationsComponent implements OnInit {
 
     return distance
   }
-
-  sortJSON(key:string) {
-    return function(a:any, b:any) {
-        if (a[key] > b[key]) {
-            return 1;
-        } else if (a[key] < b[key]) {
-            return -1;
-        }
-        return 0;
-    }
-}
 }
