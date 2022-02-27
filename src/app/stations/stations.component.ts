@@ -19,6 +19,7 @@ export class StationsComponent implements OnInit {
   long:any;
   dist:any;
   stationID:any;
+  state:any;
   startDate:any;
   startStr:string;
   endDate:any;
@@ -28,7 +29,7 @@ export class StationsComponent implements OnInit {
   selectedArray: any[] = [];
   sendingArray: any[] = [];
   numYears: any;
-  headers = ['', 'Station ID', 'Station Name', 'Distance(Miles)']
+  headers: any;
 
   constructor(private router: Router) {
     // Get data from home page
@@ -38,6 +39,7 @@ export class StationsComponent implements OnInit {
         this.long = state.dataLong;
         this.dist = state.dataDist;
         this.stationID = state.dataStationID;
+        this.state = state.dataState;
         this.startDate = state.dataStartDate;
         this.endDate = state.dataEndDate;
         this.stationsJSON = state.dataStationsJSON;
@@ -50,6 +52,7 @@ export class StationsComponent implements OnInit {
         this.long = null;
         this.dist = null;
         this.stationID = "";
+        this.state = "";
         this.startDate = null;
         this.endDate = null;
         this.stationsJSON = null;
@@ -72,6 +75,9 @@ export class StationsComponent implements OnInit {
     else if(this.lat != null && this.long != null) {
       this.getStationsZip();  // Get local stations list
     }
+    else if(this.state != "") {
+      this.getStationsState();
+    }
     else {
       console.log("Required data missing.")
     }
@@ -86,7 +92,8 @@ export class StationsComponent implements OnInit {
       // Store valid stations and data required for display
       if(distance<this.dist && this.startStr>station.BEGIN && this.endStr<station.END) {
         let tmp: any[] = []
-        let headers: any[] = ['NAME', 'ID', 'DIST']
+        this.headers = ['', 'Station ID', 'Station Name', 'Distance(Miles)']
+        let headers: any[] = ['NAME', 'ID', 'OTHER']
         let id:string = ""
         id = id.concat(String(station.USAF), String(station.WBAN))
         tmp[headers[0]] = station["STATION NAME"]
@@ -99,9 +106,35 @@ export class StationsComponent implements OnInit {
       return a.DIST - b.DIST
     });
     console.log(this.stationsArray)
-    console.log(this.sendingArray)
     if(this.stationsArray.length == 0) {
       let error:string = "No matching stations found. Try increasing distance."
+      this.router.navigate(["/home"], {state: {err: error}})
+    }
+  }
+
+  getStationsState() {
+    this.stationsJSON.forEach((station: any) => {
+      // Store valid stations and data required for display
+      if(station.CTRY=="US" && this.state==station.STATE && this.startStr>station.BEGIN && this.endStr<station.END) {
+        let tmp: any[] = []
+        this.headers = ['', 'Station ID', 'Station Name', 'Coordinates']
+        let headers: any[] = ['NAME', 'ID', 'OTHER']
+        let id:string = ""
+        id = id.concat(String(station.USAF), String(station.WBAN))
+        let coords:string = ""
+        coords = coords.concat(String(station.LAT), ", ", String(station.LON))
+        tmp[headers[0]] = station["STATION NAME"]
+        tmp[headers[1]] = id
+        tmp[headers[2]] = coords
+        this.stationsArray.push(tmp)
+      }
+    });
+    this.stationsArray.sort(function(a, b) {
+      return compareStrings(a.NAME, b.NAME);
+    })
+    console.log(this.stationsArray)
+    if(this.stationsArray.length == 0) {
+      let error:string = "No matching stations found. Try another search method"
       this.router.navigate(["/home"], {state: {err: error}})
     }
   }
@@ -172,4 +205,10 @@ export class StationsComponent implements OnInit {
 
     return distance
   }
+}
+
+function compareStrings(a:any, b:any) {
+  a = a.toLowerCase();
+  b = b.toLowerCase();
+  return (a < b) ? -1 : (a > b) ? 1 : 0;
 }

@@ -14,7 +14,7 @@
   <div class="center">
       <input class="zip" name="zipcode" #zipcode id="zipcode" type="text"
 
-      maxlength="11" size=18 (keyup)="checkInput()" (keyup.enter)="getCoords(zipcode.value)" autocomplete="none">
+      maxlength="23" size=18 (keyup)="checkInput()" (keyup.enter)="acceptVariables(zipcode.value, distance.value, startdate.value, enddate.value)" autocomplete="none">
   </div>
   <!-- Display potential errors regarding input data to user -->
   <div *ngIf="errors" class="alert center">

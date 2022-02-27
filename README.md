@@ -42,6 +42,7 @@ This program has been made by senior Computer Science students from Tennessee Te
 
 ### Sources
  - Zip Code data compiled from data provided by [GeoNames](https://download.geonames.org/export/zip/) and [The United States Census Bureau](https://www.census.gov/geographies/reference-files/time-series/geo/gazetteer-files.html)
+ - City information provided by [kelvins/US-Cities-Database](https://github.com/kelvins/US-Cities-Database)
  - Stations information provided by [National Climatic Data Center](https://www.ncei.noaa.gov/pub/data/noaa/)
  - Local Climatological Data provided by [National Centers for Environmental Information](https://www.ncei.noaa.gov/data/local-climatological-data/)
  - Additional information regarding the Local Climatological Data dataset can be found [here](https://www.ncei.noaa.gov/data/local-climatological-data/doc/LCD_documentation.pdf)
