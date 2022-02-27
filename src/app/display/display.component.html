@@ -6,6 +6,10 @@
 </div>
 <h1>Preview Data</h1>
 
+<div class="tabs" *ngFor="let id of stationID">
+  <div class="tab" (click)=changeStation(id) id={{id}}><label for={{id}}>{{id}}</label></div>
+</div>
+
 <div id="scrollable-area">
 
     <!-- Display Loading Circle -->
@@ -25,9 +29,10 @@
         </th>
 
         <!-- Display Data -->
-        <tr *ngFor = "let row of displayObj" >
+        <tr *ngFor = "let row of displayObj[displayIndex]">
             <td *ngFor = "let column of row" class="rows">{{ column }}</td>
         </tr>
     </table>
 </div>
+
 <img src= "/assets/industrial-skyline.png" class="footer"/>

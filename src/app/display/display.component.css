@@ -32,7 +32,7 @@ th{
   color: white;
   position: -webkit-sticky;
   position: sticky;
-  top: 0; 
+  top: 0;
   border-collapse: separate;
 }
 
@@ -44,6 +44,14 @@ tr:nth-child(odd){
 }
 tr:hover{
   background-color: #839c7c;
+}
+
+label {
+  display: block;
+  padding: 8px;
+  min-height: 100%;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
 }
 
 #scrollable-area {
@@ -58,6 +66,29 @@ tr:hover{
 .center {
   display: flex;
   justify-content: center;
+}
+
+.tabs {
+  font-size: 20px;
+  display: inline-block;
+  align-content: center;
+  text-align: left;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+.tabs:nth-child(even){
+  background-color: #f2f2f2;
+}
+.tabs:nth-child(odd){
+  background-color: rgb(180, 162, 162);
+}
+.tabs:hover {
+  background-color: #839c7c;
+}
+.tab{
+  border: 2px solid #2b376b;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
 }
 
 .button {

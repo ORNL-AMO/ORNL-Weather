@@ -11,11 +11,12 @@ export class DisplayComponent implements OnInit {
     //page variables
     yearsObj: any[] = [];
     years: number = 0;
-    stationId: any;
+    stationID: any;
     startDate: any[] = [];
     endDate: any[] = [];
     startStr:string = "";
     endStr:string = "";
+    displayIndex:number = 0;
 
    //declaring headers for data table display
    displayObj: any[] = [];
@@ -30,7 +31,7 @@ export class DisplayComponent implements OnInit {
       if(state) {
         this.startDate = state.startDate;
         this.endDate = state.endDate;
-        this.stationId = state.stationID;
+        this.stationID = state.stationID;
         this.years = state.years;
         this.startStr = state.startStr;
         this.endStr = state.endStr;
@@ -38,7 +39,7 @@ export class DisplayComponent implements OnInit {
       else {
         this.startDate = [];
         this.endDate = [];
-        this.stationId = null;
+        this.stationID = null;
       }
    }
 
@@ -56,17 +57,21 @@ export class DisplayComponent implements OnInit {
     }
     //for multiple csv pulls of same station
     for(let i=0; i<this.years; i++) {
-      await this.fetchCSV(this.yearsObj[i].toString(), Number(this.stationId[0]));
+      for(let j=0; j<this.stationID.length; j++) {
+        await this.fetchCSV(this.yearsObj[i].toString(), Number(this.stationID[j]), j);
+      }
     }
     //sets loading spinner to false when the data is ready to be displayed
-    this.displayObj = this.displayObj.slice(0, 100);  //TEST: Fake paging
+    for(let i=0; i<this.displayObj.length; i++) {
+      this.displayObj[i] = this.displayObj[i].slice(0, 100);  //TEST: Fake paging
+    }
     this.isLoading = false;
   }
 
 
 
   //takes in station id and attaches it to the end of the http links to pull the required csv. then the csv data is received as text and is converted into json for and placed in an array for display/printing/download purposes.
-  async fetchCSV(year:any, stationID:any){
+  async fetchCSV(year:any, stationID:any, ind:any){
     await fetch(`https://www.ncei.noaa.gov/data/local-climatological-data/access/${year}/${stationID}.csv`)
     .then((res) => res.text())
     .then((data) =>{
@@ -96,7 +101,7 @@ export class DisplayComponent implements OnInit {
       //making headers global
       this.headers = headers;
 
-
+      let stationObj:any[] = [];
       //loop for pushing csv data into array for processing
       for(let i = 1; i < lines.length-1; i++) {
         let obj: any = [];
@@ -129,10 +134,11 @@ export class DisplayComponent implements OnInit {
             obj[j] = currLine[j+1];
             dObj[headers[j]] = currLine[j+1];
           }
-          this.displayObj.push(obj);
+          stationObj.push(obj);
           this.dataObj.push(dObj);
         }
       }
+      this.displayObj.push(stationObj);
       console.log(this.dataObj)
     })
   }
@@ -154,6 +160,16 @@ export class DisplayComponent implements OnInit {
   emptyValues(obj: any){
     let checking: Boolean = true;
 
+  }
+
+  changeStation(id:any) {
+    this.displayIndex = this.stationID.indexOf(id)
+    let tab:any = document.getElementById(id)
+    let allTabs:any = document.getElementsByClassName("tab")
+    for(let i=0; i<allTabs.length; i++) {
+      allTabs[i].style.backgroundColor=null;
+    }
+    tab.style.backgroundColor="#839c7c";
   }
 
 
