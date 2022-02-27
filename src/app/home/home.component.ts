@@ -377,20 +377,31 @@ export class HomeComponent implements OnInit {
   checkInput() {
     let zipcode = document.getElementById("zipcode") as HTMLInputElement
     let val = zipcode.value.toString()
+    let dist = document.getElementById("distance") as HTMLInputElement;
     if(val.length == 0) {
       zipcode.style.backgroundColor="white"
+      dist.style.backgroundColor="#A9A9A9"
+      dist.disabled = true;
     }
-    else if(this.isAlpha(val)) {
+    else if(this.isAlpha(val)) {  // City or State
       zipcode.style.backgroundColor="#82ed80" // Green
+      dist.style.backgroundColor="#A9A9A9"  // NOTE: Split this when adding city search
+      dist.disabled = true;
     }
-    else if(!isNaN(+val) && (val.length == 5 || val.length == 11)){
+    else if(!isNaN(+val) && (val.length == 5)){ // Zip Code
       zipcode.style.backgroundColor="#82ed80" // Green
+      dist.style.backgroundColor="white"
+      dist.disabled = false;
     }
-    else if(val.length == 11 && !isNaN(+(val.substring(1))) && (val[0] == 'A' || val[0] == 'a')) {  // Some station IDs start with an A apparently... don't ask me why, I have no idea
+    else if(val.length == 11 && !isNaN(+(val.substring(1))) && (val[0] == 'A' || val[0] == 'a')) {  // Station ID
       zipcode.style.backgroundColor="#82ed80" // Green
+      dist.style.backgroundColor="#A9A9A9"
+      dist.disabled = true;
     }
     else {
       zipcode.style.backgroundColor="#ff9191" // Red
+      dist.style.backgroundColor="#A9A9A9"
+      dist.disabled = true;
     }
   }
 
