@@ -21,6 +21,8 @@ export class HomeComponent implements OnInit {
   endDate: any[] = [];
   endStr:string = "";
   numYears: number = 0;
+  matchList: string[] = [];
+  distDropdown: boolean = false;
 
   //other variables
   errors: string = ""
@@ -49,6 +51,7 @@ export class HomeComponent implements OnInit {
     this.zipJSON = []
     this.statesJSON = []
     this.citiesJSON = []
+    this.distDropdown = false;
 
     // Get current date
     // XXX: timezones?
@@ -142,7 +145,16 @@ export class HomeComponent implements OnInit {
   }
 
   //accepts the variables being entered. converts date into a usable array for month, day and year. Also passes zip code or station id on to next function for processing. Also checks for input errors
-  acceptVariables(val: any, dist: any, SD: any, ED: any){
+  acceptVariables(){
+    let tmp:any = document.getElementById("zipcode") as HTMLInputElement;
+    let val:string = tmp.value.toString();
+    tmp = document.getElementById("distance") as HTMLInputElement;
+    let dist:any = tmp.value;
+    tmp = document.getElementById("start-date") as HTMLInputElement;
+    let SD:any = tmp.value;
+    tmp = document.getElementById("end-date") as HTMLInputElement;
+    let ED:any = tmp.value;
+
     this.lat = null
     this.long = null
     this.dist = dist
@@ -150,6 +162,7 @@ export class HomeComponent implements OnInit {
     this.startDate = []
     this.endDate = []
     this.errors = ""
+    this.distDropdown = false;
 
     sessionStorage.setItem('zipcode', val);
     sessionStorage.setItem('distance', dist);
@@ -216,7 +229,7 @@ export class HomeComponent implements OnInit {
     //// Input Validation
 
     // Zip/S-ID should be a number
-    if(isNaN(+val) && !this.isAlpha(val) && val[0]!='A') {
+    if(isNaN(+val) && !this.isCity(val) && val[0]!='A') {
       console.log("Input format unknown")
       this.errors = this.errors + "Please enter a valid State, Zip Code, or 11-digit Station ID."
     }
@@ -252,9 +265,11 @@ export class HomeComponent implements OnInit {
         this.getStationID(val)
       }
       // Parse as City or State
-      else if(this.isAlpha(val)){
+      else if(this.isState(val)){
         this.getState(val)
-        // TODO: Add city here if state not found
+      }
+      else if(this.isCity(val)) {
+        this.getCity(val)
       }
       // Incorrect input length
       else {
@@ -276,17 +291,18 @@ export class HomeComponent implements OnInit {
   // Get coordinates for center of input zip code
   getCoordsZip(zip: any){
     var num: string = zip
-    this.zipJSON.forEach((zipcode: any) => {
+    this.zipJSON.every((zipcode: any) => {
       if(zipcode.ZIPCODE == num){
         this.lat = zipcode.LAT
         this.long = zipcode.LONG
+        return false
       }
+      return true
     })
-
     // Check if input zip code found
     if(this.lat == null) {
       console.log("Invalid zip code")
-      this.errors = this.errors + "Zip code entered does not exist. Please enter a valid zip code."
+      this.errors = this.errors + "Zip code not found. Please try again."
       let context = this;
       setTimeout(function(){
         context.errors = ""
@@ -318,11 +334,10 @@ export class HomeComponent implements OnInit {
       }
       return true
     })
-
     //Check if input station ID found in stations list
     if (this.stationID == "") {
       console.log("Station not found")
-      this.errors = this.errors + "Station not found. Please enter a zip code or valid station ID."
+      this.errors = this.errors + "Station not found. Please try again."
       let context = this;
       setTimeout(function(){
         context.errors = ""
@@ -334,11 +349,47 @@ export class HomeComponent implements OnInit {
   }
 
   getState(str:string) {
-    this.statesJSON.forEach((state: any) => {
+    this.statesJSON.every((state: any) => {
       if(state.CODE.toUpperCase() == str.toUpperCase() || state.STATE.toUpperCase() == str.toUpperCase()){
         this.state = state.CODE;
+        return false
       }
+      return true
     })
+    if(this.state=="") {
+      console.log("State not found")
+      this.errors = this.errors + "Input not found. Please try again."
+      let context = this;
+      setTimeout(function(){
+        context.errors = ""
+      }, 3000)
+    }
+    else {
+      console.log("State: " + this.state)
+    }
+  }
+
+  getCity(str:string) {
+    this.citiesJSON.every((city: any) => {
+      let citystate:string = city.CITY.toUpperCase() + ", " + city.STATE.toUpperCase()
+      if(str.toUpperCase() == citystate){
+        this.lat = city.LAT
+        this.long = city.LONG
+        return false
+      }
+      return true
+    })
+    if(this.lat==null) {
+      console.log("City not found")
+      this.errors = this.errors + "City not found. Please try again or select one from the dropdown."
+      let context = this;
+      setTimeout(function(){
+        context.errors = ""
+      }, 3000)
+    }
+    else {
+      console.log(console.log("Lat: " + this.lat + " Lon: " + this.long))
+    }
   }
 
 
@@ -376,17 +427,29 @@ export class HomeComponent implements OnInit {
   // Change input text box background color depending on validity of input
   checkInput() {
     let zipcode = document.getElementById("zipcode") as HTMLInputElement
-    let val = zipcode.value.toString()
-    let dist = document.getElementById("distance") as HTMLInputElement;
+    let val = zipcode.value.toString().trim()
+    let dist = document.getElementById("distance") as HTMLInputElement
+    this.distDropdown = true;
+
+    if(val.length >= 4) {
+      this.matchList = []
+      this.listCities(val)
+    }
+
     if(val.length == 0) {
       zipcode.style.backgroundColor="white"
       dist.style.backgroundColor="#A9A9A9"
       dist.disabled = true;
     }
-    else if(this.isAlpha(val)) {  // City or State
+    else if(this.isState(val)) {  // City or State
       zipcode.style.backgroundColor="#82ed80" // Green
-      dist.style.backgroundColor="#A9A9A9"  // NOTE: Split this when adding city search
+      dist.style.backgroundColor="#A9A9A9"
       dist.disabled = true;
+    }
+    else if(this.isCity(val)) {  // City or State
+      zipcode.style.backgroundColor="#82ed80" // Green
+      dist.style.backgroundColor="white"
+      dist.disabled = false;
     }
     else if(!isNaN(+val) && (val.length == 5)){ // Zip Code
       zipcode.style.backgroundColor="#82ed80" // Green
@@ -405,7 +468,26 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  isAlpha(str:string){
+  listCities(val:string) {
+    this.citiesJSON.every((city: any) => {
+      let citystate:string = city.CITY + ", " + city.STATE
+      if(citystate.toUpperCase().includes(val.toUpperCase())) {
+        this.matchList.push(citystate)
+      }
+      return true
+    })
+  }
+
+  setCity(val:string) {
+    let zipcode = document.getElementById("zipcode") as HTMLInputElement
+    zipcode.value = val;
+    this.checkInput();
+  }
+
+  isCity(str:string){
+    return /^[A-Z\s,]+$/i.test(str);
+  }
+  isState(str:string){
     return /^[A-Z]+$/i.test(str);
   }
 
