@@ -103,7 +103,7 @@ export class StationsComponent implements OnInit {
       }
     });
     this.stationsArray.sort(function(a,b) {
-      return a.DIST - b.DIST
+      return a.OTHER - b.OTHER
     });
     console.log(this.stationsArray)
     if(this.stationsArray.length == 0) {
