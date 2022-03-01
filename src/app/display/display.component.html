@@ -6,33 +6,36 @@
 </div>
 <h1>Preview Data</h1>
 
-<div class="tabs" *ngFor="let id of stationID">
-  <div class="tab" (click)=changeStation(id) id={{id}}><label for={{id}}>{{id}}</label></div>
-</div>
+<div class="tableParent">
+  <!-- TODO: Figure out something for potential tab overflow here -->
+  <div class="tabs" *ngFor="let id of stationID">
+    <div class="tab" (click)=changeStation(id) id={{id}}><label for={{id}}>{{id}}</label></div>
+  </div>
 
-<div id="scrollable-area">
+  <div id="scrollable-area">
 
-    <!-- Display Loading Circle -->
-    <div class="loading" *ngIf="isLoading" >
-        <!-- Hourglass Loading Spinner -->
-        <div class="cell">
-            <div class="pl pl-hourglass"></div>
-            <div class="pl-name">Compiling your Data...This May Take Several Minutes</div>
-        </div>
-    </div>
+      <!-- Display Loading Circle -->
+      <div class="loading" *ngIf="isLoading" >
+          <!-- Hourglass Loading Spinner -->
+          <div class="cell">
+              <div class="pl pl-hourglass"></div>
+              <div class="pl-name">Compiling your Data...This May Take Several Minutes</div>
+          </div>
+      </div>
 
-    <table class="table" *ngIf="!isLoading">
+      <table class="table" *ngIf="!isLoading">
 
-     <!-- Display Headers -->
-        <th *ngFor = "let row of headers">
-            {{row}}
-        </th>
+       <!-- Display Headers -->
+          <th *ngFor = "let row of headers">
+              {{row}}
+          </th>
 
-        <!-- Display Data -->
-        <tr *ngFor = "let row of displayObj[displayIndex]">
-            <td *ngFor = "let column of row" class="rows">{{ column }}</td>
-        </tr>
-    </table>
+          <!-- Display Data -->
+          <tr *ngFor = "let row of displayObj[displayIndex]">
+              <td *ngFor = "let column of row" class="rows">{{ column }}</td>
+          </tr>
+      </table>
+  </div>
 </div>
 
 <img src= "/assets/industrial-skyline.png" class="footer"/>
