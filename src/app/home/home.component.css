@@ -1,10 +1,9 @@
 
 body{ /* overall default styling for this page */
     color: #2c386b;
-    font-size: 23px;
-
+    font-size: 24px;
+    
 }
-
 
 
 .startDate{ /* styling for start date button */
@@ -38,28 +37,46 @@ body{ /* overall default styling for this page */
     
 }
 
+
+
+/*.startDate1{ 
+    margin-right: 60px;
+}
+
+.endDate1{ 
+    margin-left: 60px;
+    
+} */
+
+.distance{
+    z-index: 1;
+}
+
 .labelStartDate{ /* margin for start date label */
     margin-right: 110px;
-    margin-left: 53px;
+    margin-left: 6%;
+    z-index: 1;
 }
 
 .labelEndDate{ /* margin for end date label */
-    margin-left: 113px;
-    margin-right: 40px;
+    margin-left: 110px;
+    margin-right: 6%;
+    z-index: 1;
 }
 
 .zip { /* zip code and distance input boxes stling and padding */
     width: 220px;
     padding:10px;
     border-radius:9px;
-    padding-top: 4px;
-    padding-bottom: 4px;
+    padding-top: 5px;
+    padding-bottom: 5px;
     border: 1.5px solid #587656;
     color: #2c386b;
     justify-content: center;
-    font-size: 17.4px;
+    font-size: 18.4px;
     text-align: center;
     margin-top: 5px;
+    z-index: 1;
 }
 
 
@@ -74,6 +91,9 @@ body{ /* overall default styling for this page */
     font-size: 20px;
     margin: 4px 2px;
     cursor: pointer;
+    z-index: 1;
+    
+    
     
 }
 
@@ -82,7 +102,11 @@ body{ /* overall default styling for this page */
 .center { /* centering */
     display: flex;
     justify-content: center;
+    float: center;
+    
 }
+
+
 
 .button1 { /* color and styling of station select button */
     border-radius: 60px; 
@@ -99,35 +123,38 @@ input:focus {
         outline: black;
     }
 
-input[type="date"]{
+    input[type="date"]{
 
-    padding:10px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    border-radius:9px;
-    border: 1.5px solid #587656;
-    color: #2c386b;
-    justify-content: center;
-    font-size: 17.4px;
-    text-align: left;
-    font-family: 'Lato', sans-serif;
-}
+        padding:10px;
+        padding-top: 4px;
+        padding-bottom: 4px;
+        border-radius:9px;
+        border: 1.5px solid #587656;
+        color: #2c386b;
+        justify-content: center;
+        font-size: 17.4px;
+        text-align: left;
+        font-family: 'Lato', sans-serif;
+    }
+    
+    ::-webkit-calendar-picker-indicator{
+        color: #2c386b;
+        cursor: pointer;
+    }
 
-::-webkit-calendar-picker-indicator{
-    color: #2c386b;
-    cursor: pointer;
-}
+
 
 select {
+    
     width: 240px;
     padding:10px;
     border-radius:9px;
-    padding-top: 4px;
-    padding-bottom: 4px;
+    padding-top: 5.5px;
+    padding-bottom: 5.5px;
     border: 1.5px solid #587656;
     color: #2c386b;
     justify-content: center;
-    font-size: 17.4px;
+    font-size: 19.1px;
     text-align: center;
     margin-top: 5px;
     font-family: 'Lato', sans-serif;
@@ -137,17 +164,195 @@ select {
     appearance: none;
     cursor: pointer;
     background: url("/assets/arrow.png")96% / 6% no-repeat white;
+    
+}
+
+label
+{
+    z-index: 1;
 }
 
 select:focus {
     outline: black;
+    z-index: 1;
 }
+
+.alertcenter {
+    color: #cc0033;
+    
+    font-size: 13.5px;
+    line-height: 15px;
+    margin: 5px 0 0;
+    
+    display: flex;
+    justify-content: center;
+    float: center;
+  }
+
+  .alertcenterleft {
+    color: #cc0033;
+    
+    font-size: 13.5px;
+    line-height: 15px;
+    margin: 5px 0 0;
+    
+    margin-right: 106px;
+    margin-left: 6%;
+    z-index: 1;
+  }
+
+  .alertcenterright {
+    color: #cc0033;
+    
+    font-size: 13.5px;
+    line-height: 15px;
+    margin: 5px 0 0;
+    
+    margin-left: 106px;
+    margin-right: 6%;
+    z-index: 1;
+  }
+  
+
+  
+  
+
 
 .footer {
     height: auto;
     width:100%;
-    margin-bottom:0;
-    position:absolute;
+    bottom:0px;
+    position:fixed;
+    z-index: 0;
+    justify-content: center;
+    
  }
 
+ @media screen and (max-height: 625px) {
+
+    .footer {display:none;}
+  
+  }
+
+/*  .mat-form-field {
+    color: #2c386b;
+    justify-content: center;
+    font-size: 19.1px;
+    border: 1.5px solid #587656;
+    background-color: white;
+    padding:10px;
+    padding-top: 3.5px;
+    padding-bottom: 3.5px;
+    border-radius:9px;
+    height: auto;
+    width: 200px;
+    margin-top: 4px;
+    font-family: 'Lato', sans-serif;
+    caret-color: #2c386b;
+    z-index: 1;
+  }
+
+  input{
+    caret-color: #2c386b;
+  }
+
+  ::ng-deep .mat-form-field-wrapper{
+    margin-bottom: -1.50em;
+    margin-top: -1.1em; 
+ }
+
+
+
+  ::ng-deep.mat-datepicker-content .mat-calendar{
+    width: 220px !important;
+    
+    
+    
+}
+
+
+
+
+
+
+
+::ng-deep .mat-select-arrow {
+    color:#2c386b!important;
+}
+
+::ng-deep .mat-select-arrow.active {
+    color:#2c386b;
+}
+::ng-deep .mat-select-arrow-selected {
+    color:#2c386b;
+}
+
+
+  
+
+  ::ng-deep .mat-focused .mat-form-field-label {
+    
+    color: #2c386b !important;
+   }
+   
+   ::ng-deep.mat-form-field-underline {
+    
+    display: none;
+   } 
+   
+ 
+   
+   ::ng-deep .mat-form-field-label {
+    
+    color: #2c386b !important;
+   }
+   
+
+   
+   mat-datepicker-toggle {
+    color: #2c386b !important;
+   }
+
+
+   mat-select{
+       text-align: center;
+   }
+
+   mat-label{
+    text-align: center !important;
+}
+
+   mat-option {
+    
+    color:white!important;
+    text-align: center;
+    width: auto;
+  }
+  
+  mat-option.mat-selected {
+    color:#2c386b;
+  }
+
+  .not-empty-select.mat-selected {
+    color: #2c386b !important;
+  }
+  
+  :host /deep/ .mat-select-value-text {
+    color: #2c386b !important;
+  }
+
+  .highlight-dates{
+    background: olive;
+    border-radius: 100%;
+}
+
+.ui-datepicker {
+    background: #333;
+    border: 1px solid #555;
+    color: #EEE;
+ }
+*/
+
+
+ 
   

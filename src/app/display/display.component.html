@@ -1,10 +1,17 @@
 <!-- Displaying Data from NCEI Data Pull -->
 
-<div class="right">
-    <button class="button button1" (click)="downloadCSV()">Download as CSV</button>
-    <!-- <button class="button button1">Download as JSON</button> -->
+
+
+<body>
+    <div class="right">
+        <button class="button button1" (click)="downloadCSV()">Download as CSV</button>
+    </div>
+
+<div class="center" style="margin-top:0px;">
+    <header><b>Preview Data</b></header>
 </div>
-<h1>Preview Data</h1>
+
+
 
 <div id="scrollable-area">
 
@@ -29,5 +36,19 @@
             <td *ngFor = "let column of row" class="rows">{{ column }}</td>
         </tr>
     </table>
+
+
 </div>
-<img src= "/assets/industrial-skyline.png" class="footer"/>
+
+
+<div class="left">
+    
+</div>
+
+
+<div class="center">
+    <img src= "/assets/industrial-skyline-2.png" class="footer"/>
+</div>
+
+</body>
+

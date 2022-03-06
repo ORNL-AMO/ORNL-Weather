@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <link rel="stylesheet" href="home.component.css" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+
 <body>
-
-
-
-  <div class="center" style="margin-top:40px;">
+  <div class="center" style="margin-top:10px;">
       <label for="ZipCode"><b>Zip Code/Station ID</b></label>
   </div>
 
@@ -17,18 +16,27 @@
       maxlength="11" size=18 (keyup)="checkInput()" (keyup.enter)="getCoords(zipcode.value)" autocomplete="none">
   </div>
   <!-- Display potential errors regarding input data to user -->
-  <div *ngIf="errors" class="alert center">
+  <div *ngIf="errors" class="alertcenter">
     {{ errors }}
   </div>
-  <div *ngIf="isError" class="alert center">
+  <div *ngIf="isError" class="alertcenter">
     {{ zError }}
   </div>
 
   <div class="center" style="margin-top:80px;">
-    <label for="Distance"><b>Distance (miles)</b></label>
+    <label class="distance"><b>Distance (miles)</b></label>
   </div>
 
   <div class="center">
+    <!-- <mat-form-field appearance="legacy" floatLabel="never" style="width:220px"  style="text-align:center">
+      <mat-label>Select Distance</mat-label>
+      <mat-select name="distance" #distance id="distance">
+      <mat-option value="10">10 miles</mat-option>
+      <mat-option value="25">25 miles</mat-option>
+      <mat-option value="50">50 miles</mat-option>
+      <mat-option value="100">100 miles</mat-option>
+    </mat-select> 
+  </mat-form-field>-->
     <label class = select>
     <select name="distance" #distance id="distance">
       <option value=" ">Select Distance</option>
@@ -40,7 +48,7 @@
   </label>
   </div>
 
-  <div *ngIf="isError" class="alert center">
+  <div *ngIf="isError" class="alertcenter">
     {{ dError }}
   </div>
 
@@ -56,18 +64,56 @@
   </div>
 
   <div class="center">
-    <input class='startDate' #startdate type="date" id="start-date" name="start-date" style="width: 200px;">
-    <div *ngIf="isError" class="alert center">
-      {{ sError }}
-    </div>
+    <div class="center">
+      <input class='startDate' #startdate type="date" id="start-date" name="start-date" style="width: 200px;">
+      
+      </div>
+  
+      <input class='endDate' #enddate type="date" id="end-date" name="end-date" style="width: 200px;">
+      
+      </div>
 
-    <input class='endDate' #enddate type="date" id="end-date" name="end-date" style="width: 200px;">
-    <div *ngIf="isError" class="alert center">
-      {{ eError }}
+    <!--<div class="startDate">
+    <mat-form-field appearance="legacy" floatLabel="never">
+      <input #startdate type="date" id="start-date" name="start-date" matInput [matDatepicker]="picker1" placeholder="mm/dd/yyyy">
+      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+      <mat-datepicker #picker1 #datepickercolor color="accent"></mat-datepicker>
+    </mat-form-field>
     </div>
+    
+    <div class="endDate">
+    <mat-form-field appearance="legacy" floatLabel="never">
+      <input placeholder="mm/dd/yyyy" #enddate type="date" id="end-date" name="end-date"matInput [matDatepicker]="picker2" placeholder="mm/dd/yyyy">
+      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+      <mat-datepicker #picker2 #datepickercolor color="accent"></mat-datepicker>
+    </mat-form-field> -->
+
+    
+
+
+  <div class="center">
+  <div *ngIf="isError" class="alertcenterleft">
+    {{ sError }}
   </div>
-  <div class="center" style="margin-top: 100px;">
-        <button class="button button1" (click)="acceptVariables(zipcode.value, distance.value, startdate.value, enddate.value)" ><b>Station Select</b></button>
+
+  <div *ngIf="isError" class="alertcenterright">
+    {{ eError }}
   </div>
-  <img src= "/assets/industrial-skyline.png" class="footer"/>
+</div>
+
+
+  <div class="center" style="margin-top: 90px;">
+    <button class="button button1" (click)="acceptVariables(zipcode.value, distance.value, startdate.value, enddate.value)" ><b>Station Select</b></button>
+  </div>
+
+
+
+
+
+
 </body>
+
+
+<img src= "/assets/industrial-skyline.png" class="footer"/>
+
+</html>
