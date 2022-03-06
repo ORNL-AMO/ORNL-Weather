@@ -8,22 +8,23 @@ import { ngxCsv } from 'ngx-csv/ngx-csv';
   styleUrls: ['./display.component.css']
 })
 export class DisplayComponent implements OnInit {
-    //page variables
-    yearsObj: any[] = [];
-    years: number = 0;
-    stationId: any;
-    startDate: any[] = [];
-    endDate: any[] = [];
-    startStr:string = "";
-    endStr:string = "";
+  //page variables
+  yearsObj: any[] = [];
+  years: number = 0;
+  stationId: any;
+  startDate: any[] = [];
+  endDate: any[] = [];
+  startStr:string = "";
+  endStr:string = "";
+  config: any;
 
-   //declaring headers for data table display
-   displayObj: any[] = [];
-   dataObj: any[] = [];
-   headers: any[] = [];
+  //declaring headers for data table display
+  displayObj: any[] = [];
+  dataObj: any[] = [];
+  headers: any[] = [];
 
-   //making boolean for loading spinner
-   isLoading: boolean = true;
+  //making boolean for loading spinner
+  isLoading: boolean = true;
 
   constructor(private router: Router) {
     let state:any = this.router.getCurrentNavigation()!.extras.state;
@@ -40,6 +41,10 @@ export class DisplayComponent implements OnInit {
         this.endDate = [];
         this.stationId = null;
       }
+      this.config = {
+        itemsPerPage: 10,
+        currentPage: 1
+      };
    }
 
   async ngOnInit() {
@@ -59,7 +64,7 @@ export class DisplayComponent implements OnInit {
       await this.fetchCSV(this.yearsObj[i].toString(), Number(this.stationId[0]));
     }
     //sets loading spinner to false when the data is ready to be displayed
-    this.displayObj = this.displayObj.slice(0, 100);  //TEST: Fake paging
+    // this.displayObj = this.displayObj.slice(0, 100);  //TEST: Fake paging
     this.isLoading = false;
   }
 
@@ -156,5 +161,13 @@ export class DisplayComponent implements OnInit {
 
   }
 
+  pageChanged(event: any){
+    this.config.currentPage = event;
+  }
 
+  onChange(e: any){
+    this.config.itemsPerPage = e.target.value;
+  }
+
+  downloadJSON(){}
 }

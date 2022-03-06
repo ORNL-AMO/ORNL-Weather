@@ -25,9 +25,11 @@
     "log4js": "^6.4.1",
     "nanoid": "^3.2.0",
     "ngx-csv": "^0.3.2",
+    "ngx-pagination": "^5.1.1",
     "postcss": "^8.4.6",
     "rxjs": "^7.5.4",
     "tslib": "^2.3.0",
+    "write-file": "^1.0.0",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
@@ -37,7 +39,7 @@
     "@types/file-saver": "^2.0.5",
     "@types/jasmine": "~3.10.0",
     "@types/jquery": "^3.5.13",
-    "@types/node": "^12.11.1",
+    "@types/node": "^12.20.46",
     "file-saver": "^2.0.5",
     "jasmine-core": "^4.0.0",
     "karma": "^6.3.16",

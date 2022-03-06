@@ -2,7 +2,7 @@
 
 <div class="right">
     <button class="button button1" (click)="downloadCSV()">Download as CSV</button>
-    <!-- <button class="button button1">Download as JSON</button> -->
+    <!-- <button class="button button1" value="Download JSON" onclick="DownloadJSON()">Download as JSON</button> -->
 </div>
 <h1>Preview Data</h1>
 
@@ -25,9 +25,19 @@
         </th>
 
         <!-- Display Data -->
-        <tr *ngFor = "let row of displayObj" >
+        <tr *ngFor = "let row of displayObj | paginate: config" >
             <td *ngFor = "let column of row" class="rows">{{ column }}</td>
         </tr>
     </table>
 </div>
+<div class="right">
+    <select name="pagingValue" #pagingValue id="pagingValue" (change)="onChange($event)">
+          <option value="10">10 per page</option>
+          <option value="25">25 per page</option>
+          <option value="50">50 per page</option>
+          <option value="100">100 per page</option>
+      </select>
+    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+</div>
 <img src= "/assets/industrial-skyline.png" class="footer"/>
+
