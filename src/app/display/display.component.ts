@@ -6,6 +6,44 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./display.component.css']
 })
 export class DisplayComponent implements OnInit {
+<<<<<<< Updated upstream
+=======
+    //page variables
+    yearsObj: any[] = [];
+    years: number = 0;
+    stationId: any;
+    startDate: any[] = [];
+    endDate: any[] = [];
+    checkedList: any[] = [];
+
+   //declaring headers for data table display
+   displayObj: any[] = [];
+   dataObj: any[] = [];
+   headers: any[] = [];
+ 
+   //making boolean for loading spinner
+   isLoading: boolean = true;
+ 
+  constructor(private router: Router) {
+    let state:any = this.router.getCurrentNavigation()!.extras.state;
+      if(state) {
+        this.startDate = state.startDate;
+        this.endDate = state.endDate;
+        this.stationId = state.stationID;
+        this.years = state.years
+        this.checkedList = state.checkedList
+        console.log(this.checkedList)
+      }
+      else {
+        this.startDate = [];
+        this.endDate = [];
+        this.stationId = null;
+        this.checkedList = [];
+      }
+   }
+
+  
+>>>>>>> Stashed changes
 
   constructor() { }
 

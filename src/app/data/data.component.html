@@ -42,13 +42,23 @@
             <tr class="checkbox" *ngFor="let item of checklist">
                 <input type="checkbox" [(ngModel)]="item.isSelected" name="list_name" value="{{item.id}}"
                     (change)="isAllSelected()" />
-                    {{item.value}}
+                    {{item.title}}
             </tr>
         </table>
     </div>
+<<<<<<< Updated upstream
     <div class="col-md-6">
         <code>{{checkedList}}</code>
       </div>
+=======
+    <div class="center">
+        <button class="button button1" (click)="goBack()" ><b>Back</b></button>
+
+        <button class="button button1" (click)="sendToDisplay()"><b>Display Data</b></button>
+    </div>
+
+    
+>>>>>>> Stashed changes
 </body>
 
 </html>
