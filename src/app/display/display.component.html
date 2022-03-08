@@ -6,31 +6,38 @@
 </div>
 <h1>Preview Data</h1>
 
-<div id="scrollable-area">
-
-    <!-- Display Loading Circle -->
-    <div class="loading" *ngIf="isLoading" >
-        <!-- Hourglass Loading Spinner -->
-        <div class="cell">
-            <div class="pl pl-hourglass"></div>
-            <div class="pl-name">Compiling your Data...This May Take Several Minutes</div>
-        </div>
+<div class="tableParent">
+    <!-- TODO: Figure out something for potential tab overflow here -->
+    <div class="tabs" *ngFor="let id of stationID">
+      <div class="tab" (click)=changeStation(id) id={{id}}><label for={{id}}>{{id}}</label></div>
     </div>
-
-    <table class="table" *ngIf="!isLoading">
-
-     <!-- Display Headers -->
-        <th *ngFor = "let row of headers">
-            {{row}}
-        </th>
-
-        <!-- Display Data -->
-        <tr *ngFor = "let row of displayObj | paginate: config" >
-            <td *ngFor = "let column of row" class="rows">{{ column }}</td>
-        </tr>
-    </table>
-</div>
-<div class="center">
+  
+    <div id="scrollable-area">
+  
+        <!-- Display Loading Circle -->
+        <div class="loading" *ngIf="isLoading" >
+            <!-- Hourglass Loading Spinner -->
+            <div class="cell">
+                <div class="pl pl-hourglass"></div>
+                <div class="pl-name">Compiling your Data...This May Take Several Minutes</div>
+            </div>
+        </div>
+  
+        <table class="table" *ngIf="!isLoading">
+  
+         <!-- Display Headers -->
+            <th *ngFor = "let row of headers">
+                {{row}}
+            </th>
+  
+            <!-- Display Data -->
+            <tr *ngFor = "let row of displayObj[displayIndex] | paginate: config">
+                <td *ngFor = "let column of row" class="rows">{{ column }}</td>
+            </tr>
+        </table>
+    </div>
+  </div>
+  <div class="center">
     <select name="pagingValue" #pagingValue id="pagingValue" (change)="onChange($event)">
           <option value="10">10 per page</option>
           <option value="25">25 per page</option>

@@ -57,7 +57,7 @@ label {
 #scrollable-area {
   position: absolute;
   width: 100%;
-  height: 450px;
+  height: 425px;
   border: 2px solid #2b376b;
   overflow-y: scroll;
   border-radius: 8px;
@@ -248,33 +248,4 @@ select {
   appearance: none;
   cursor: pointer;
   background: url("/assets/arrow.png")96% / 6% no-repeat white;
-}
-
-.custom-pagination .page-number{
-  display: inline-block;
-  /* padding: 1px 4px; */
-  background: #afffe6;
-  margin: 0px 4px;
-  border-radius: 25px;
-}
-
-.page-number.current{
-  background: #587656!important;
-  border: 2px solid #458873;
-}
-
-.page-number span{
-  display: block;
-  width: 28px;
-  height: 28px;
-  font-size: 18px;
-  text-align: center;
-  padding-top: 5px;
-  padding-bottom: 0px;
-  cursor: pointer;
-}
-
-.pagination-previous,.pagination-next{
-  display: inline-block;
-  font-weight: bold;
 }

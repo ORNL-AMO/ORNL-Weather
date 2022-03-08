@@ -63,7 +63,6 @@ export class DisplayComponent implements OnInit {
   async ngOnInit() {
 
     await this.checkYears();
-    // this.fetchCSV(2021, 72427053868);
 
   }
 
@@ -160,7 +159,7 @@ export class DisplayComponent implements OnInit {
 
   //triggers download of array data into a csv to users computer.
   downloadCSV(){
-    let filename = this.dataObj[0].STATION;
+    let filename = "NCEI_Weather_Data";
 
     var options = {
       fieldSeparator: ',',
@@ -169,7 +168,7 @@ export class DisplayComponent implements OnInit {
     };
 
 
-    new ngxCsv(this.dataObj, `STATION_${filename}_DATA`, options);
+    new ngxCsv(this.dataObj, filename, options);
   }
 
   emptyValues(obj: any){
@@ -189,17 +188,21 @@ export class DisplayComponent implements OnInit {
     const { convertArrayToCSV } = require('convert-array-to-csv');
     const converter = require('convert-array-to-csv');
       
-    let filename = this.dataObj[0].STATION;
+    let filename = "NCEI_Weather_Data";
     let header = this.headers;
-    var csvFromArrayOfArrays = convertArrayToCSV(this.displayObj, {
-      header,
-      separator: ','
-    });
-    console.log(csvFromArrayOfArrays)
-    let exportData = JSON.parse(await this.CSVtoJSON(csvFromArrayOfArrays))
-    console.log(exportData)
+    var temp: string = "";
+    for(let i = 0; i < this.displayObj.length; i++){
+      var csvFromArrayOfArrays: string = convertArrayToCSV(this.displayObj[i], {
+        header,
+        separator: ','
+      });
+      temp += csvFromArrayOfArrays
+    }
+    temp = temp.substring(0, temp.length-2)
+    
+    let exportData = JSON.parse(await this.CSVtoJSON(temp))
     return saveAs(
-      new Blob([JSON.stringify(exportData, null, "...")], { type: 'JSON' }), `STATION_${filename}_DATA.json`
+      new Blob([JSON.stringify(exportData, null, 2)], { type: 'JSON' }), `${filename}.json`
     );
   }
 
