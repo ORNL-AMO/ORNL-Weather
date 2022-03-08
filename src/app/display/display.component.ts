@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ngxCsv } from 'ngx-csv/ngx-csv';
-
+import { saveAs } from "file-saver";
+declare var require: any
 @Component({
   selector: 'app-display',
   templateUrl: './display.component.html',
@@ -17,12 +18,23 @@ export class DisplayComponent implements OnInit {
   startStr:string = "";
   endStr:string = "";
   config: any;
+  public maxSize: number = 7;
+  public directionLinks: boolean = true;
+  public autoHide: boolean = false;
+  public responsive: boolean = true;
+  public labels: any = {
+      previousLabel: '<--',
+      nextLabel: '-->',
+      screenReaderPaginationLabel: 'Pagination',
+      screenReaderPageLabel: 'page',
+      screenReaderCurrentLabel: `You're on page`
+  };
 
   //declaring headers for data table display
   displayObj: any[] = [];
   dataObj: any[] = [];
   headers: any[] = [];
-
+  
   //making boolean for loading spinner
   isLoading: boolean = true;
 
@@ -169,5 +181,43 @@ export class DisplayComponent implements OnInit {
     this.config.itemsPerPage = e.target.value;
   }
 
-  downloadJSON(){}
+  async exportTojson() {
+    const { convertArrayToCSV } = require('convert-array-to-csv');
+    const converter = require('convert-array-to-csv');
+
+    
+    let filename = this.dataObj[0].STATION;
+    let header = this.headers;
+    var csvFromArrayOfArrays = convertArrayToCSV(this.displayObj, {
+      header,
+      separator: ','
+    });
+    console.log(csvFromArrayOfArrays)
+    let exportData = JSON.parse(await this.CSVtoJSON(csvFromArrayOfArrays))
+    console.log(exportData)
+    return saveAs(
+      new Blob([JSON.stringify(exportData, null, "...")], { type: 'JSON' }), `STATION_${filename}_DATA.json`
+    );
+  }
+
+  async CSVtoJSON(val: string):Promise<string> {
+    let path: string = val
+    let jsonFile: any = []
+    
+    let csv = val
+    //Remove "" that are automatically added
+    csv = csv.replace(/['"]+/g, '')
+
+    let lines = csv.split("\n")
+    let headers = lines[0].split(",")
+    for(let i=1; i<lines.length; i++) {
+      let obj: any = {}
+      let currLine = lines[i].split(",")
+      for(let j=0; j<headers.length; j++) {
+        obj[headers[j]] = currLine[j];
+      }
+      jsonFile.push(obj)
+    };
+    return JSON.stringify(jsonFile)
+  }
 }

@@ -2,7 +2,7 @@
 
 <div class="right">
     <button class="button button1" (click)="downloadCSV()">Download as CSV</button>
-    <!-- <button class="button button1" value="Download JSON" onclick="DownloadJSON()">Download as JSON</button> -->
+    <button class="button button1" value="Download JSON" (click)="exportTojson()">Download as JSON</button>
 </div>
 <h1>Preview Data</h1>
 
@@ -36,8 +36,19 @@
           <option value="25">25 per page</option>
           <option value="50">50 per page</option>
           <option value="100">100 per page</option>
-      </select>
-    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+    </select>
+    <pagination-controls 
+      [maxSize]="maxSize"
+      [directionLinks]="directionLinks"
+      [autoHide]="autoHide"
+      [responsive]="responsive"
+      [previousLabel]="labels.previousLabel"
+      [nextLabel]="labels.nextLabel"
+      [screenReaderPaginationLabel]="labels.screenReaderPaginationLabel"
+      [screenReaderPageLabel]="labels.screenReaderPageLabel"
+      [screenReaderCurrentLabel]="labels.screenReaderCurrentLabel"
+      (pageChange)="pageChanged($event)">
+    </pagination-controls>
 </div>
 <img src= "/assets/industrial-skyline.png" class="footer"/>
 

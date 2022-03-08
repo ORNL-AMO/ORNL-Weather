@@ -183,3 +183,55 @@ tr:hover{
   margin-bottom:0;
   position:absolute;
 }
+
+select {
+  width: 160px;
+  height: 30px;
+  padding:10px;
+  border-radius:9px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border: 1.5px solid #587656;
+  color: #2c386b;
+  
+  justify-content: center;
+  font-size: 17.4px;
+  text-align: center;
+  margin-top: 5px;
+  font-family: 'Lato', sans-serif;
+  background-color: white;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  background: url("/assets/arrow.png")96% / 6% no-repeat white;
+}
+
+.custom-pagination .page-number{
+  display: inline-block;
+  /* padding: 1px 4px; */
+  background: #afffe6;
+  margin: 0px 4px;
+  border-radius: 25px;
+}
+
+.page-number.current{
+  background: #587656!important;
+  border: 2px solid #458873;
+}
+
+.page-number span{
+  display: block;
+  width: 28px;
+  height: 28px;
+  font-size: 18px;
+  text-align: center;
+  padding-top: 5px;
+  padding-bottom: 0px;
+  cursor: pointer;
+}
+
+.pagination-previous,.pagination-next{
+  display: inline-block;
+  font-weight: bold;
+}
