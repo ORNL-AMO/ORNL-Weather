@@ -6,6 +6,71 @@ body{ /* overall default styling for this page */
 }
 
 
+table{
+  font-family: 'Lato', sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  opacity: 1;
+  background: white;
+}
+
+tr {
+    height: 1px;
+    background: white;
+}
+td {
+    align-content: center;
+    background: white;
+}
+.distlabel {
+    display: block;
+    min-height: 100%;
+    padding: 2px;
+    align-content: center;
+}
+
+td:hover{
+  background-color: #ddd;
+}
+#scrollable-area {
+  position: absolute;
+  margin-top: 36px;
+  width: 200px;
+  height: 180px;
+  border: 1.5px solid #587656;
+  /* border-top: 0px; */
+  overflow-y: scroll;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  background: white;
+  background: rgb(255,255,255);
+  justify-content: center;
+  font-size: 14px;
+  text-align: center;
+}
+#scrollable-area::-webkit-scrollbar {
+  width: 9px;   /* width of the entire scrollbar */
+  height: 9px;
+}
+#scrollable-area::-webkit-scrollbar-corner{
+  background: none;
+  border-bottom-right-radius: 20px;
+}
+#scrollable-area::-webkit-scrollbar-track {
+  border: 0px;
+}
+
+#scrollable-area::-webkit-scrollbar-thumb {
+  /* background-color: rgb(0, 0, 0); */
+  border-radius: 20px;
+  background: gray;
+
+}
+
+.zipParent{
+  position: relative;
+}
+
 
 .startDate{ /* styling for start date button */
     margin-right: 50px;
@@ -35,7 +100,7 @@ body{ /* overall default styling for this page */
     text-align: center;
     margin-top: 3px;
     width: 200px;
-    
+
 }
 
 .labelStartDate{ /* margin for start date label */
@@ -48,7 +113,8 @@ body{ /* overall default styling for this page */
     margin-right: 40px;
 }
 
-.zip { /* zip code and distance input boxes stling and padding */
+.zip { /* zip code and distance input boxes styling and padding */
+    position: absolute;
     width: 220px;
     padding:10px;
     border-radius:9px;
@@ -61,8 +127,9 @@ body{ /* overall default styling for this page */
     text-align: center;
     margin-top: 5px;
 }
-
-
+#distance {
+  background-color: #A9A9A9;
+}
 
 .button { /* default button */
     border: none;
@@ -74,20 +141,18 @@ body{ /* overall default styling for this page */
     font-size: 20px;
     margin: 4px 2px;
     cursor: pointer;
-    
+
 }
 
-
-  
 .center { /* centering */
     display: flex;
     justify-content: center;
 }
 
 .button1 { /* color and styling of station select button */
-    border-radius: 60px; 
+    border-radius: 60px;
     background-color: #587656;
-} 
+}
 
 
 .button:hover { /* change color on station select button hover */
@@ -149,5 +214,3 @@ select:focus {
     margin-bottom:0;
     position:absolute;
  }
-
-  

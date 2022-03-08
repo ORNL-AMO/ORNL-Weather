@@ -7,21 +7,18 @@ h1{
   color: #2b376b;
   font-size: 30px;
   font-family: 'Lato', sans-serif;
-        
+
 }
 
 table{
   font-family: 'Lato', sans-serif;
   border-collapse: collapse;
-   width: 100%;    
+   width: 100%;
   }
 
-  
-td{
-  padding: 8px;
-  align-content: center;
-  text-align: left;
-} 
+tr {
+    height: 1px;
+}
 th{
   padding: 8px;
   text-align: left;
@@ -30,7 +27,16 @@ th{
   color: white;
   position: -webkit-sticky;
   position: sticky;
-  top: 0;  
+  top: 0;
+}
+td {
+    align-content: center;
+    text-align: left;
+}
+label {
+    display: block;
+    min-height: 100%;
+    padding: 8px;
 }
 
 tr:nth-child(even){
@@ -55,9 +61,9 @@ tr:hover{
 }
 
 .button1 {
-  border-radius: 60px; 
+  border-radius: 60px;
   background-color: #587656;
-} 
+}
 
 .button {
   border: none;
@@ -67,14 +73,14 @@ tr:hover{
   text-decoration: none;
   display: inline-block;
   font-size: 120%;
-  
+
   cursor: pointer;
   margin-top: 10px;
   width: 10%;
   margin-left: 23%;
   margin-right: 23%;
   min-width: 100px;
-  
+
 }
 
 .button:hover {

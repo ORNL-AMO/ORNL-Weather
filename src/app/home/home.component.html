@@ -11,34 +11,48 @@
       <label for="ZipCode"><b>Zip Code/Station ID</b></label>
   </div>
 
-  <div class="center">
-      <input class="zip" name="zipcode" #zipcode id="zipcode" type="text"
+  <div class="zipParent">
 
-      maxlength="11" size=18 (keyup)="checkInput()" (keyup.enter)="getCoords(zipcode.value)" autocomplete="none">
-  </div>
-  <!-- Display potential errors regarding input data to user -->
-  <div *ngIf="errors" class="alert center">
-    {{ errors }}
-  </div>
-  <div *ngIf="isError" class="alert center">
-    {{ zError }}
+      <div class="center">
+          <input class="zip" name="zipcode" #zipcode id="zipcode" type="text"
+          maxlength="23" size=18 (click)="distDropdown=true" (keyup)="checkInput()" (keyup.enter)="acceptVariables()" autocomplete="none">
+      </div>
+
+      <div class="center">
+        <div id="scrollable-area" *ngIf="matchList.length>0 && zipcode.value.toString().length>=4 && !matchList.includes(zipcode.value.toString()) && distDropdown">
+            <table fixed-table-headers="scrollable-area">
+                <tr *ngFor = "let entry of matchList">
+                    <td class="rows" (click)=setCity(entry)><label class="distLabel" for="{{entry}}">{{entry}}</label></td>
+                </tr>
+            </table>
+        </div>
+      </div>
+
+      <!-- Display potential errors regarding input data to user -->
+      <div *ngIf="isError" class="zipError">
+        {{ zError }}
+      </div>
+
+      <div class="center" style="margin-top:80px;">
+        <label for="Distance"><b>Distance (miles)</b></label>
+      </div>
+
+      <div class="center">
+        <label class = select>
+        <select name="distance" #distance id="distance">
+          <option value=" ">Select Distance</option>
+            <option value="10">10 miles</option>
+            <option value="25">25 miles</option>
+            <option value="50">50 miles</option>
+            <option value="100">100 miles</option>
+        </select>
+      </label>
+      </div>
+
   </div>
 
-  <div class="center" style="margin-top:80px;">
-    <label for="Distance"><b>Distance (miles)</b></label>
-  </div>
 
-  <div class="center">
-    <label class = select>
-    <select name="distance" #distance id="distance">
-      <option value=" ">Select Distance</option>
-        <option value="10">10 miles</option>
-        <option value="25">25 miles</option>
-        <option value="50">50 miles</option>
-        <option value="100">100 miles</option>
-    </select>
-  </label>
-  </div>
+
 
   <div *ngIf="isError" class="alert center">
     {{ dError }}
@@ -67,7 +81,13 @@
     </div>
   </div>
   <div class="center" style="margin-top: 100px;">
-        <button class="button button1" (click)="acceptVariables(zipcode.value, distance.value, startdate.value, enddate.value)" ><b>Station Select</b></button>
+        <button class="button button1" (click)="acceptVariables()" ><b>Station Select</b></button>
+  </div>
+  <div *ngIf="errors" class="alert center">
+    {{ errors }}
+  </div>
+  <div *ngIf="stationsError" class="alert center">
+    {{ stationsError }}
   </div>
   <img src= "/assets/industrial-skyline.png" class="footer"/>
 </body>

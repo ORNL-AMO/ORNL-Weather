@@ -32,7 +32,7 @@ th{
   color: white;
   position: -webkit-sticky;
   position: sticky;
-  top: 0; 
+  top: 0;
   border-collapse: separate;
 }
 
@@ -46,18 +46,61 @@ tr:hover{
   background-color: #839c7c;
 }
 
+label {
+  display: block;
+  padding: 8px;
+  min-height: 100%;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
 #scrollable-area {
-  margin: auto;
-  width: 80%;
+  position: absolute;
+  width: 100%;
   height: 450px;
   border: 2px solid #2b376b;
   overflow-y: scroll;
   border-radius: 8px;
+  border-top-left-radius: 0px;
+  margin-top: -2px;
 }
 
 .center {
   display: flex;
   justify-content: center;
+}
+
+.tableParent{
+  position:relative;
+  display: block;
+  justify-content: center;
+  margin: auto;
+  width: 80%;
+  height: 490px;
+}
+
+.tabs {
+  position: relative;
+  font-size: 20px;
+  display: inline-block;
+  align-content: center;
+  text-align: left;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+.tabs:nth-child(even){
+  background-color: #f2f2f2;
+}
+.tabs:nth-child(odd){
+  background-color: rgb(180, 162, 162);
+}
+.tabs:hover {
+  background-color: #839c7c;
+}
+.tab{
+  border: 2px solid #2b376b;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
 }
 
 .button {

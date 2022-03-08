@@ -15,11 +15,14 @@ export class HomeComponent implements OnInit {
   long: any
   dist: any;
   stationID: string = ""
+  state: string = ""
   startDate: any[] = [];
   startStr:string = "";
   endDate: any[] = [];
   endStr:string = "";
   numYears: number = 0;
+  matchList: string[] = [];
+  distDropdown: boolean = false;
 
   //other variables
   errors: string = ""
@@ -27,11 +30,14 @@ export class HomeComponent implements OnInit {
   eError: string = ""
   zError: string = ""
   dError: string = ""
+  stationsError: string = ""
 
 
   isError: boolean = false;
   private stationsJSON: any
   private zipJSON: any;
+  private statesJSON: any;
+  private citiesJSON: any;
   currDate: string = ""
 
    constructor(private router: Router) {
@@ -39,9 +45,13 @@ export class HomeComponent implements OnInit {
     this.long = null
     this.dist = null;
     this.stationID = ""
+    this.state = ""
     this.errors = ""
     this.stationsJSON = []
     this.zipJSON = []
+    this.statesJSON = []
+    this.citiesJSON = []
+    this.distDropdown = false;
 
     // Get current date
     // XXX: timezones?
@@ -50,10 +60,25 @@ export class HomeComponent implements OnInit {
     let mm = String(today.getMonth() + 1).padStart(2, '0')
     let yyyy = today.getFullYear()
     this.currDate = this.currDate.concat(String(yyyy), String(mm), String(dd))
+
+    // Print error if returning from empty stations dataset
+    let state:any = null;
+    try {
+      state = this.router.getCurrentNavigation()!.extras.state
+      if(state) {
+        if(state.err){
+          this.stationsError = state.err
+          let context = this;
+          setTimeout(function(){
+            context.stationsError = ""
+          }, 5000)
+        }
+      }
+    } catch (e){}
   }
 
   async ngOnInit() {
-    // FIXME: TESTING
+    // Load previous input if applicable
     this.getFormData("zipcode")
     this.getFormData("distance")
     this.getFormData("start-date")
@@ -78,6 +103,28 @@ export class HomeComponent implements OnInit {
       console.log(this.zipJSON)
     }
 
+    // Load States JSON
+    await fetch("assets/States.json")
+    .then((res) => res.json())
+    .then((data) =>{
+        this.statesJSON = data
+    })
+    if(this.statesJSON.length > 0) {
+      console.log("States data loaded")
+      console.log(this.statesJSON)
+    }
+
+    // Load Cities JSON
+    await fetch("assets/Cities.json")
+    .then((res) => res.json())
+    .then((data) =>{
+        this.citiesJSON = data
+    })
+    if(this.citiesJSON.length > 0) {
+      console.log("Cities data loaded")
+      console.log(this.citiesJSON)
+    }
+
     // Fetch newest station list data from NOAA
     this.stationsJSON = JSON.parse(await this.CSVtoJSON("https://www1.ncdc.noaa.gov/pub/data/noaa/isd-history.csv"))
 
@@ -98,7 +145,16 @@ export class HomeComponent implements OnInit {
   }
 
   //accepts the variables being entered. converts date into a usable array for month, day and year. Also passes zip code or station id on to next function for processing. Also checks for input errors
-  acceptVariables(val: any, dist: any, SD: any, ED: any){
+  acceptVariables(){
+    let tmp:any = document.getElementById("zipcode") as HTMLInputElement;
+    let val:string = tmp.value.toString();
+    tmp = document.getElementById("distance") as HTMLInputElement;
+    let dist:any = tmp.value;
+    tmp = document.getElementById("start-date") as HTMLInputElement;
+    let SD:any = tmp.value;
+    tmp = document.getElementById("end-date") as HTMLInputElement;
+    let ED:any = tmp.value;
+
     this.lat = null
     this.long = null
     this.dist = dist
@@ -106,16 +162,17 @@ export class HomeComponent implements OnInit {
     this.startDate = []
     this.endDate = []
     this.errors = ""
+    this.distDropdown = false;
 
     sessionStorage.setItem('zipcode', val);
     sessionStorage.setItem('distance', dist);
     sessionStorage.setItem('start-date', SD);
     sessionStorage.setItem('end-date', ED);
 
-    console.log(val);
-    console.log(dist);
-    console.log(SD);
-    console.log(ED);
+    console.log("Input: " + val);
+    console.log("Distance: " + dist);
+    console.log("State Date: " + SD);
+    console.log("End Date: " + ED);
 
     if(val == ""){
       this.checkZErrors();
@@ -151,7 +208,6 @@ export class HomeComponent implements OnInit {
     this.endDate.push(eObj);
 
     this.getYears();
-    console.log(this.numYears);
     //passing station ID or zip code
     this.getCoords(val);
     }
@@ -159,8 +215,8 @@ export class HomeComponent implements OnInit {
   }
 
   // Validate input and check if Zip or Station ID
-  getCoords(val: any) {
-    let num: string = val;
+  getCoords(input: any) {
+    let val: string = input.trim();
     this.lat = null;
     this.long = null;
     this.stationID = "";
@@ -173,13 +229,9 @@ export class HomeComponent implements OnInit {
     //// Input Validation
 
     // Zip/S-ID should be a number
-    if(isNaN(+num)) {
-      console.log("Input is NaN")
-      this.errors = this.errors + "Please enter a valid Zip Code or 11-digit Station ID."
-      let context = this;
-      setTimeout(function(){
-        context.errors = ""
-      }, 3000)
+    if(isNaN(+val) && !this.isCity(val) && val[0]!='A') {
+      console.log("Input format unknown")
+      this.errors = this.errors + "Please enter a valid State, Zip Code, or 11-digit Station ID."
     }
     // Start date should be prior to end date
     else if(this.startStr>this.endStr) {
@@ -192,7 +244,7 @@ export class HomeComponent implements OnInit {
       this.errors = this.errors + "Please enter a valid date range."
     }
     // Distance should be selected if searching by zip code
-    else if(num.length == 5 && !this.dist) {
+    else if(val.length == 5 && !this.dist) {
       console.log("Distance missing for zip")
       this.errors = this.errors + "Please select a distance when using a zip code."
     }
@@ -202,15 +254,22 @@ export class HomeComponent implements OnInit {
       this.errors = this.errors + "Please enter a valid date range."
     }
 
+    // Valid Inputs
     else {
-      console.log("Input: " + num);
       // Evaluate input as zip code
-      if(num.length == 5) {
-        this.getCoordsZip(num)
+      if(val.length == 5 && !isNaN(+val)) {
+        this.getCoordsZip(val)
       }
       // Evaluate input as station id
-      else if(num.length == 11) {
-        this.getStationID(num)
+      else if(val.length == 11 && !isNaN(+val)) {
+        this.getStationID(val)
+      }
+      // Parse as City or State
+      else if(this.isState(val)){
+        this.getState(val)
+      }
+      else if(this.isCity(val)) {
+        this.getCity(val)
       }
       // Incorrect input length
       else {
@@ -223,7 +282,7 @@ export class HomeComponent implements OnInit {
       }
       // Pass data to stations page if no errors
       if(this.errors == "") {
-        this.router.navigate(["/stations"], {state: { dataLat: this.lat, dataLong: this.long, dataDist: this.dist, dataStationID: this.stationID, dataStartDate: this.startDate, dataEndDate: this.endDate, dataStationsJSON: this.stationsJSON, years: this.numYears, dataStartStr: this.startStr, dataEndStr: this.endStr}})
+        this.router.navigate(["/stations"], {state: { dataLat: this.lat, dataLong: this.long, dataDist: this.dist, dataStationID: this.stationID, dataState: this.state, dataStartDate: this.startDate, dataEndDate: this.endDate, dataStationsJSON: this.stationsJSON, years: this.numYears, dataStartStr: this.startStr, dataEndStr: this.endStr}})
       }
     }
 
@@ -232,17 +291,18 @@ export class HomeComponent implements OnInit {
   // Get coordinates for center of input zip code
   getCoordsZip(zip: any){
     var num: string = zip
-    this.zipJSON.forEach((zipcode: any) => {
+    this.zipJSON.every((zipcode: any) => {
       if(zipcode.ZIPCODE == num){
         this.lat = zipcode.LAT
         this.long = zipcode.LONG
+        return false
       }
+      return true
     })
-
     // Check if input zip code found
     if(this.lat == null) {
       console.log("Invalid zip code")
-      this.errors = this.errors + "Zip code entered does not exist. Please enter a valid zip code."
+      this.errors = this.errors + "Zip code not found. Please try again."
       let context = this;
       setTimeout(function(){
         context.errors = ""
@@ -274,11 +334,10 @@ export class HomeComponent implements OnInit {
       }
       return true
     })
-
     //Check if input station ID found in stations list
     if (this.stationID == "") {
       console.log("Station not found")
-      this.errors = this.errors + "Station not found. Please enter a zip code or valid station ID."
+      this.errors = this.errors + "Station not found. Please try again."
       let context = this;
       setTimeout(function(){
         context.errors = ""
@@ -286,6 +345,50 @@ export class HomeComponent implements OnInit {
     }
     else {
       console.log("Station ID: " + this.stationID + " Lat: " + this.lat + " Lon: " + this.long)
+    }
+  }
+
+  getState(str:string) {
+    this.statesJSON.every((state: any) => {
+      if(state.CODE.toUpperCase() == str.toUpperCase() || state.STATE.toUpperCase() == str.toUpperCase()){
+        this.state = state.CODE;
+        return false
+      }
+      return true
+    })
+    if(this.state=="") {
+      console.log("State not found")
+      this.errors = this.errors + "Input not found. Please try again."
+      let context = this;
+      setTimeout(function(){
+        context.errors = ""
+      }, 3000)
+    }
+    else {
+      console.log("State: " + this.state)
+    }
+  }
+
+  getCity(str:string) {
+    this.citiesJSON.every((city: any) => {
+      let citystate:string = city.CITY.toUpperCase() + ", " + city.STATE.toUpperCase()
+      if(str.toUpperCase() == citystate){
+        this.lat = city.LAT
+        this.long = city.LONG
+        return false
+      }
+      return true
+    })
+    if(this.lat==null) {
+      console.log("City not found")
+      this.errors = this.errors + "City not found. Please try again or select one from the dropdown."
+      let context = this;
+      setTimeout(function(){
+        context.errors = ""
+      }, 3000)
+    }
+    else {
+      console.log(console.log("Lat: " + this.lat + " Lon: " + this.long))
     }
   }
 
@@ -324,31 +427,78 @@ export class HomeComponent implements OnInit {
   // Change input text box background color depending on validity of input
   checkInput() {
     let zipcode = document.getElementById("zipcode") as HTMLInputElement
-    let val = zipcode.value.toString()
+    let val = zipcode.value.toString().trim()
+    let dist = document.getElementById("distance") as HTMLInputElement
+    this.distDropdown = true;
+
+    if(val.length >= 4) {
+      this.matchList = []
+      this.listCities(val)
+    }
+
     if(val.length == 0) {
       zipcode.style.backgroundColor="white"
+      dist.style.backgroundColor="#A9A9A9"
+      dist.disabled = true;
     }
-    else if(isNaN(+val) || (val.length != 5 && val.length != 11)) {
-      zipcode.style.backgroundColor="#ff9191"
+    else if(this.isState(val)) {  // City or State
+      zipcode.style.backgroundColor="#82ed80" // Green
+      dist.style.backgroundColor="#A9A9A9"
+      dist.disabled = true;
     }
-    else if(val.length == 5 || val.length == 11){
-      zipcode.style.backgroundColor="#82ed80"
+    else if(this.isCity(val)) {  // City or State
+      zipcode.style.backgroundColor="#82ed80" // Green
+      dist.style.backgroundColor="white"
+      dist.disabled = false;
+    }
+    else if(!isNaN(+val) && (val.length == 5)){ // Zip Code
+      zipcode.style.backgroundColor="#82ed80" // Green
+      dist.style.backgroundColor="white"
+      dist.disabled = false;
+    }
+    else if(val.length == 11 && !isNaN(+(val.substring(1))) && (val[0] == 'A' || val[0] == 'a')) {  // Station ID
+      zipcode.style.backgroundColor="#82ed80" // Green
+      dist.style.backgroundColor="#A9A9A9"
+      dist.disabled = true;
     }
     else {
-      zipcode.style.backgroundColor="white"
+      zipcode.style.backgroundColor="#ff9191" // Red
+      dist.style.backgroundColor="#A9A9A9"
+      dist.disabled = true;
     }
+  }
+
+  listCities(val:string) {
+    this.citiesJSON.every((city: any) => {
+      let citystate:string = city.CITY + ", " + city.STATE
+      if(citystate.toUpperCase().includes(val.toUpperCase())) {
+        this.matchList.push(citystate)
+      }
+      return true
+    })
+  }
+
+  setCity(val:string) {
+    let zipcode = document.getElementById("zipcode") as HTMLInputElement
+    zipcode.value = val;
+    this.checkInput();
+  }
+
+  isCity(str:string){
+    return /^[A-Z\s,]+$/i.test(str);
+  }
+  isState(str:string){
+    return /^[A-Z]+$/i.test(str);
   }
 
   getYears(){
     if(this.startDate[0].year != this.endDate[0].year){
       this.numYears = this.endDate[0].year - this.startDate[0].year + 1;
-      console.log(this.numYears)
     }
     else{
       this.numYears = 1;
-      console.log(this.numYears)
-
     }
+    console.log("Number of Years: " + this.numYears)
   }
 
   //error checks for empty field for zip, distance, and dates
