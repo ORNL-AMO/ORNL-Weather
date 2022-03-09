@@ -1,22 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 
-
-
-
-
 <body>
   <div class="center" style="margin-top:10px;">
       <label for="ZipCode"><b>Zip Code/Station ID</b></label>
   </div>
 
+  
   <div class="zipParent">
 
       <div class="center">
           <input class="zip" name="zipcode" #zipcode id="zipcode" type="text"
           maxlength="23" size=18 (click)="distDropdown=true" (keyup)="checkInput()" (keyup.enter)="acceptVariables()" autocomplete="none">
       </div>
-
+      
       <div class="center">
         <div id="scrollable-area" *ngIf="matchList.length>0 && zipcode.value.toString().length>=4 && !matchList.includes(zipcode.value.toString()) && distDropdown">
             <table fixed-table-headers="scrollable-area">
@@ -26,14 +23,12 @@
             </table>
         </div>
       </div>
-
-      <!-- Display potential errors regarding input data to user -->
-      <div *ngIf="errors" class="alertcenter">
-        {{ errors }}
-      </div>
-      <div *ngIf="isError" class="alertcenter">
+      <div *ngIf="isError" class="alertcenter" style="margin-top:45px;">
         {{ zError }}
-      </div>
+      </div>  
+     
+      <!-- Display potential errors regarding input data to user -->
+      
 
       <div class="center" style="margin-top:80px;">
         <label class="distance"><b>Distance (miles)</b></label>
@@ -59,9 +54,9 @@
           </select>
         </label>
       </div>
-
+      
   </div>
-
+  
   <div *ngIf="isError" class="alertcenter">
     {{ dError }}
   </div>
@@ -103,23 +98,22 @@
     </mat-form-field> -->
 
   <div class="center">
-  <div *ngIf="isError" class="alertcenterleft">
-    {{ sError }}
+    <div *ngIf="isError" class="alertcenterleft">
+      {{ sError }}
+    </div>
+    <div *ngIf="isError" class="alertcenterright">
+      {{ eError }}
+    </div>
+    <div *ngIf="stationsError" class="alert center">
+      {{ stationsError }}
+    </div>
   </div>
-  <div *ngIf="isError" class="alertcenterright">
-    {{ eError }}
-  </div>
-  <div class="center" style="margin-top: 100px;">
-        <button class="button button1" (click)="acceptVariables()" ><b>Station Select</b></button>
-  </div>
-  <div *ngIf="errors" class="alert center">
+  <div *ngIf="errors" class="alertcenter">
     {{ errors }}
   </div>
-  <div *ngIf="stationsError" class="alert center">
-    {{ stationsError }}
+  <div class="center" style="margin-top: 100px;">
+    <button class="button button1" (click)="acceptVariables()" ><b>Station Select</b></button>
   </div>
-</div>
-
 </body>
 
 

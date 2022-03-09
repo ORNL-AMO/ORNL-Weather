@@ -189,27 +189,27 @@ export class HomeComponent implements OnInit {
     else{
 
       //splitting start and end date values into separate elements
-    let tempStart = SD.split("-");
-    let tempEnd = ED.split("-")
+      let tempStart = SD.split("-");
+      let tempEnd = ED.split("-")
 
-    //creating temp objs
-    let tempHead: any[] = ['year', 'month', 'day']
-    let sObj: any[] = []
-    let eObj: any[] = []
+      //creating temp objs
+      let tempHead: any[] = ['year', 'month', 'day']
+      let sObj: any[] = []
+      let eObj: any[] = []
 
-    //assigning month, day, year into to objects with respective value meanings
-    for(let i = 0; i < 3; i++){
-      sObj[tempHead[i]] = tempStart[i];
-      eObj[tempHead[i]] = tempEnd[i];
-    }
+      //assigning month, day, year into to objects with respective value meanings
+      for(let i = 0; i < 3; i++){
+        sObj[tempHead[i]] = tempStart[i];
+        eObj[tempHead[i]] = tempEnd[i];
+      }
 
-    //pushing into start and end date objects
-    this.startDate.push(sObj);
-    this.endDate.push(eObj);
+      //pushing into start and end date objects
+      this.startDate.push(sObj);
+      this.endDate.push(eObj);
 
-    this.getYears();
-    //passing station ID or zip code
-    this.getCoords(val);
+      this.getYears();
+      //passing station ID or zip code
+      this.getCoords(val);
     }
 
   }

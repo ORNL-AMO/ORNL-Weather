@@ -1,14 +1,14 @@
 <!-- Displaying Data from NCEI Data Pull -->
-<body>
-    <div class="right">
-        <button class="button button1" (click)="downloadCSV()">Download as CSV</button>
-        <button class="button button1" (click)="exportTojson()">Download as JSON</button>
-    </div>
 
-<div class="center" style="margin-top:0px;">
-    <header><b>Preview Data</b></header>
+<div class="right">
+    <button class="button button1" (click)="downloadCSV()">Download as CSV</button>
+    <button class="button button1" value="Download JSON" (click)="exportTojson()">Download as JSON</button>
 </div>
-
+<div class="center" style="margin-top:0px;">
+    <header>
+        <b>Preview Data</b>
+    </header>
+</div>
 
 
 <div class="tableParent">
@@ -41,8 +41,7 @@
             </tr>
         </table>
     </div>
-    </div>
-
+  </div>
   <div class="center">
     <select name="pagingValue" #pagingValue id="pagingValue" (change)="onChange($event)">
           <option value="10">10 per page</option>
@@ -62,18 +61,8 @@
       [screenReaderCurrentLabel]="labels.screenReaderCurrentLabel"
       (pageChange)="pageChanged($event)">
     </pagination-controls>
-    </div>
-
-
-
-<div class="left">
-    
 </div>
-
-
 <div class="center">
     <img src= "/assets/industrial-skyline-2.png" class="footer"/>
 </div>
-
-</body>
 
