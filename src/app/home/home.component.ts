@@ -512,6 +512,7 @@ export class HomeComponent implements OnInit {
       context.isError = false;
       context.zError = ""
     }, 3000)
+    
   }
   checkSErrors(){
     this.isError = true;
