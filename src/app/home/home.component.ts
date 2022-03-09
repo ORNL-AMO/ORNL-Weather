@@ -278,7 +278,7 @@ export class HomeComponent implements OnInit {
         let context = this;
         setTimeout(function(){
           context.errors = ""
-        }, 3000)
+        }, 8000)
       }
       // Pass data to stations page if no errors
       if(this.errors == "") {
@@ -306,7 +306,7 @@ export class HomeComponent implements OnInit {
       let context = this;
       setTimeout(function(){
         context.errors = ""
-      }, 3000)
+      }, 8000)
     }
     else {
       console.log("Lat: " + this.lat + " Lon: " + this.long)
@@ -341,7 +341,7 @@ export class HomeComponent implements OnInit {
       let context = this;
       setTimeout(function(){
         context.errors = ""
-      }, 3000)
+      }, 8000)
     }
     else {
       console.log("Station ID: " + this.stationID + " Lat: " + this.lat + " Lon: " + this.long)
@@ -426,6 +426,9 @@ export class HomeComponent implements OnInit {
 
   // Change input text box background color depending on validity of input
   checkInput() {
+    this.zError = "*Invalid Input"
+
+    let context = this;
     let zipcode = document.getElementById("zipcode") as HTMLInputElement
     let val = zipcode.value.toString().trim()
     let dist = document.getElementById("distance") as HTMLInputElement
@@ -504,48 +507,48 @@ export class HomeComponent implements OnInit {
   //error checks for empty field for zip, distance, and dates
   checkZErrors(){
     this.isError = true;
-    this.zError = "This is a required input"
+    this.zError = "*This is a required input"
 
     let context = this;
     context.isError = true;
     setTimeout(function(){
       context.isError = false;
       context.zError = ""
-    }, 3000)
+    }, 8000)
     
   }
   checkSErrors(){
     this.isError = true;
-    this.sError = "This is a required input"
+    this.sError = "*This is a required input"
 
     let context = this;
     context.isError = true;
     setTimeout(function(){
       context.isError = false;
       context.sError = ""
-    }, 3000)
+    }, 8000)
   }
   checkEErrors(){
     this.isError = true;
-    this.eError = "This is a required input"
+    this.eError = "*This is a required input"
 
     let context = this;
     context.isError = true;
     setTimeout(function(){
       context.isError = false;
       context.eError = ""
-    }, 3000)
+    }, 8000)
   }
   checkDErrors(){
     this.isError = true;
-    this.dError = "This is a required input"
+    this.dError = "*This is a required input"
 
     let context = this;
     context.isError = true;
     setTimeout(function(){
       context.isError = false;
       context.dError = ""
-    }, 3000)
+    }, 8000)
   }
 
   getFormData(str:any) {

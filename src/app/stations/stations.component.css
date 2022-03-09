@@ -1,5 +1,22 @@
+div{
+  z-index: 1;
+}
 table {
   width: 80%;
+}
+
+.right { /* right side align */
+  display: flex;
+  justify-content: right;
+  float: right;
+  margin-right: 12%;
+}
+
+.left { /* right side align */
+  display: flex;
+  justify-content: left;
+  float: left;
+  margin-left: 12%;
 }
 
 h1{
@@ -7,18 +24,25 @@ h1{
   color: #2b376b;
   font-size: 30px;
   font-family: 'Lato', sans-serif;
-
+  z-index: 1;
+        
 }
 
 table{
   font-family: 'Lato', sans-serif;
   border-collapse: collapse;
-   width: 100%;
+  width: 100%;   
+  background: white; 
+  z-index: 1;
   }
 
-tr {
-    height: 1px;
-}
+  
+td{
+  padding: 8px;
+  align-content: center;
+  text-align: left;
+  z-index: 1;
+} 
 th{
   padding: 8px;
   text-align: left;
@@ -27,33 +51,38 @@ th{
   color: white;
   position: -webkit-sticky;
   position: sticky;
-  top: 0;
-}
-td {
-    align-content: center;
-    text-align: left;
-}
-label {
-    display: block;
-    min-height: 100%;
-    padding: 8px;
+  top: 0;  
+  font-size: 17;
+  z-index: 1;
 }
 
 tr:nth-child(even){
   background-color: #f2f2f2;
+  z-index: 1;
+}
+
+tr:nth-child(odd){
+  background-color: #dbdada;
+  z-index: 1;
 }
 
 tr:hover{
-  background-color: #ddd;
+  background-color: #839c7c;
 }
 #scrollable-area {
   margin: auto;
+  min-height: 100px;
+  max-height: 400px;
   width: 80%;
-  height: 450px;
+  height: auto;
   border: 2px solid #2b376b;
   overflow-y: scroll;
   border-radius: 8px;
+  background: white;
+  z-index: 1;
 }
+
+
 
 .center {
   display: flex;
@@ -63,7 +92,8 @@ tr:hover{
 .button1 {
   border-radius: 60px;
   background-color: #587656;
-}
+  z-index: 1;
+} 
 
 .button {
   border: none;
@@ -80,16 +110,27 @@ tr:hover{
   margin-left: 23%;
   margin-right: 23%;
   min-width: 100px;
-
+  z-index: 1;
+  
 }
+
 
 .button:hover {
   background-color: #839c7c;
 }
 
+
 .footer {
   height: auto;
   width:100%;
-  margin-bottom:0;
-  position:absolute;
+  bottom:0;
+  position:fixed;
+  z-index: 0;
+  justify-content: center;
+}
+
+@media screen and (max-height: 650px) {
+
+  .footer {display:none;}
+
 }

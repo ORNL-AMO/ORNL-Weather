@@ -1,10 +1,15 @@
 <!-- Displaying Data from NCEI Data Pull -->
+<body>
+    <div class="right">
+        <button class="button button1" (click)="downloadCSV()">Download as CSV</button>
+        <button class="button button1" (click)="exportTojson()">Download as JSON</button>
+    </div>
 
-<div class="right">
-    <button class="button button1" (click)="downloadCSV()">Download as CSV</button>
-    <button class="button button1" value="Download JSON" (click)="exportTojson()">Download as JSON</button>
+<div class="center" style="margin-top:0px;">
+    <header><b>Preview Data</b></header>
 </div>
-<h1>Preview Data</h1>
+
+
 
 <div class="tableParent">
     <!-- TODO: Figure out something for potential tab overflow here -->
@@ -36,7 +41,8 @@
             </tr>
         </table>
     </div>
-  </div>
+    </div>
+
   <div class="center">
     <select name="pagingValue" #pagingValue id="pagingValue" (change)="onChange($event)">
           <option value="10">10 per page</option>
@@ -56,6 +62,18 @@
       [screenReaderCurrentLabel]="labels.screenReaderCurrentLabel"
       (pageChange)="pageChanged($event)">
     </pagination-controls>
+    </div>
+
+
+
+<div class="left">
+    
 </div>
-<img src= "/assets/industrial-skyline.png" class="footer"/>
+
+
+<div class="center">
+    <img src= "/assets/industrial-skyline-2.png" class="footer"/>
+</div>
+
+</body>
 
