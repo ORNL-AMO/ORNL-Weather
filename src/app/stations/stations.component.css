@@ -55,6 +55,11 @@ th{
   font-size: 17;
   z-index: 1;
 }
+label {
+  display: block;
+  min-height: 100%;
+  padding: 8px;
+}
 
 tr:nth-child(even){
   background-color: #f2f2f2;

@@ -31,12 +31,12 @@
         <table class="table" *ngIf="!isLoading">
   
          <!-- Display Headers -->
-            <th *ngFor = "let row of headers">
+            <th *ngFor = "let row of filteredHeaders">
                 {{row}}
             </th>
   
             <!-- Display Data -->
-            <tr *ngFor = "let row of displayObj[displayIndex] | paginate: config">
+            <tr *ngFor = "let row of filteredDisplay[displayIndex] | paginate: config">
                 <td *ngFor = "let column of row" class="rows">{{ column }}</td>
             </tr>
         </table>

@@ -15,6 +15,8 @@ export class DisplayComponent implements OnInit {
   stationID: any;
   startDate: any[] = [];
   endDate: any[] = [];
+  heightIndex = 0
+  dataTypeObj: any[] = ['HourlyAltimeterSetting', 'HourlyDewPointTemperature', 'HourlyDryBulbTemperature', 'HourlyPrecipitation', 'HourlyPresentWeatherType'];
   displayIndex: number = 0;
   startStr:string = "";
   endStr:string = "";
@@ -31,10 +33,15 @@ export class DisplayComponent implements OnInit {
       screenReaderCurrentLabel: `You're on page`
   };
 
-  //declaring headers for data table display
+  //declaring objects for data table display
   displayObj: any[] = [];
   dataObj: any[] = [];
   headers: any[] = [];
+
+  //filtered object. Final object for display and download
+  filteredDisplay: any[] = [];
+  filteredObj: any[] = [];
+  filteredHeaders: any[] =[];
   
   //making boolean for loading spinner
   isLoading: boolean = true;
@@ -68,6 +75,7 @@ export class DisplayComponent implements OnInit {
 
   //checking the number of year
   async checkYears(){
+    
     for(let k = 0; k < this.years; k++){
       this.yearsObj[k] = Number(this.startDate[0].year) + k;
     }
@@ -77,8 +85,9 @@ export class DisplayComponent implements OnInit {
         await this.fetchCSV(this.yearsObj[i].toString(), Number(this.stationID[j]), j);
       }
     }
+    
+
     //sets loading spinner to false when the data is ready to be displayed
-    // this.displayObj = this.displayObj.slice(0, 100);  //TEST: Fake paging
     this.isLoading = false;
   }
 
@@ -153,7 +162,9 @@ export class DisplayComponent implements OnInit {
         }
       }
       this.displayObj.push(stationObj);
-      console.log(this.dataObj)
+
+      //call filterCSV to filter the data for display and download.
+      this.filterCSV();
     })
   }
 
@@ -235,5 +246,53 @@ export class DisplayComponent implements OnInit {
       allTabs[i].style.backgroundColor=null;
     }
     tab.style.backgroundColor="#839c7c";
+  }
+
+  filterCSV(){
+    let headers = this.headers;
+    let dt = this.dataTypeObj;
+    let display = this.displayObj;
+    let data = this.dataObj;
+    
+    
+    for(let k = 0; k < 7; k++){
+      
+      this.filteredHeaders.push(headers[k]);
+    }
+    
+    for(let h = 0; h < headers.length; h++){
+      let idx = headers.indexOf(dt[h]);
+
+      if(idx > -1){
+        this.filteredHeaders.push(headers[idx])
+      }
+    }
+    console.log(this.displayObj[0][0][0])
+    for(let i = 0; i < this.displayObj.length; i++){
+      let ftobD: any[]= [];
+      let ftob: any[]= [];
+      for(let f = 0; f < this.displayObj[i].length; f++){
+        let temp: any = []
+
+        for(let p = 0; p < this.filteredHeaders.length; p++){
+          
+          let idx = headers.indexOf(this.filteredHeaders[p])
+          if(idx != -1){
+            console.log(display[i][f][idx])
+            temp[p] = display[i][f][idx];
+            ftob[this.filteredHeaders[p]] = display[i][f][idx];
+          }
+          
+        }
+        this.filteredObj.push(ftob)
+        ftobD.push(temp)
+      }
+      this.filteredDisplay.push(ftobD);
+    }
+    
+    // 
+    
+    console.log(this.filteredObj)
+
   }
 }
