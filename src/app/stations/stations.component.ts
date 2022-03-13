@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 export interface stationsElements {
   Station_ID: string;
@@ -176,7 +176,7 @@ export class StationsComponent implements OnInit {
         this.sendingArray.push(this.selectedArray[index].ID)
       }
       console.log(this.sendingArray);
-      this.router.navigate(["/display"], {state: { stationID: this.sendingArray, startDate: this.startDate, endDate: this.endDate, years: this.numYears, startStr: this.startStr, endStr: this.endStr}})
+      this.router.navigate(["/data"], {state: { stationID: this.sendingArray, startDate: this.startDate, endDate: this.endDate, years: this.numYears, startStr: this.startStr, endStr: this.endStr}})
     }
 
     goBack(){

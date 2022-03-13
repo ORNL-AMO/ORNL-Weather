@@ -16,7 +16,7 @@ export class DisplayComponent implements OnInit {
   startDate: any[] = [];
   endDate: any[] = [];
   heightIndex = 0
-  dataTypeObj: any[] = ['HourlyAltimeterSetting', 'HourlyDewPointTemperature', 'HourlyDryBulbTemperature', 'HourlyPrecipitation', 'HourlyPresentWeatherType'];
+  dataTypeObj: any[] = [];
   displayIndex: number = 0;
   startStr:string = "";
   endStr:string = "";
@@ -55,6 +55,7 @@ export class DisplayComponent implements OnInit {
         this.years = state.years;
         this.startStr = state.startStr;
         this.endStr = state.endStr;
+        this.dataTypeObj = state.dataTypes;
       }
       else {
         this.startDate = [];
@@ -175,11 +176,11 @@ export class DisplayComponent implements OnInit {
     var options = {
       fieldSeparator: ',',
       showLabels: true,
-      headers: this.headers
+      headers: this.filteredHeaders
     };
 
 
-    new ngxCsv(this.dataObj, filename, options);
+    new ngxCsv(this.filteredObj, filename, options);
   }
 
   emptyValues(obj: any){
@@ -200,10 +201,10 @@ export class DisplayComponent implements OnInit {
     const converter = require('convert-array-to-csv');
       
     let filename = "NCEI_Weather_Data";
-    let header = this.headers;
+    let header = this.filteredHeaders;
     var temp: string = "";
     for(let i = 0; i < this.displayObj.length; i++){
-      var csvFromArrayOfArrays: string = convertArrayToCSV(this.displayObj[i], {
+      var csvFromArrayOfArrays: string = convertArrayToCSV(this.filteredDisplay[i], {
         header,
         separator: ','
       });
@@ -251,9 +252,7 @@ export class DisplayComponent implements OnInit {
   filterCSV(){
     let headers = this.headers;
     let dt = this.dataTypeObj;
-    let display = this.displayObj;
-    let data = this.dataObj;
-    
+    let display = this.displayObj;    
     
     for(let k = 0; k < 7; k++){
       
@@ -262,12 +261,10 @@ export class DisplayComponent implements OnInit {
     
     for(let h = 0; h < headers.length; h++){
       let idx = headers.indexOf(dt[h]);
-
       if(idx > -1){
         this.filteredHeaders.push(headers[idx])
       }
     }
-    console.log(this.displayObj[0][0][0])
     for(let i = 0; i < this.displayObj.length; i++){
       let ftobD: any[]= [];
       let ftob: any[]= [];
@@ -278,7 +275,6 @@ export class DisplayComponent implements OnInit {
           
           let idx = headers.indexOf(this.filteredHeaders[p])
           if(idx != -1){
-            console.log(display[i][f][idx])
             temp[p] = display[i][f][idx];
             ftob[this.filteredHeaders[p]] = display[i][f][idx];
           }
@@ -289,10 +285,5 @@ export class DisplayComponent implements OnInit {
       }
       this.filteredDisplay.push(ftobD);
     }
-    
-    // 
-    
-    console.log(this.filteredObj)
-
   }
 }

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -12,22 +11,36 @@ import { CommonModule } from '@angular/common';
 export class DataComponent implements OnInit {
   stationIdArray: any[] = [];
   dataTypesArray: any[] = [];
+  years: number = 0;
+  stationID: any;
+  startDate: any[] = [];
+  endDate: any[] = [];
+  startStr:string = "";
+  endStr:string = "";
   headers = ['Data Types']
   masterSelected:boolean;
   checklist:any;
   checkedList:any;
 
-  constructor(
-    private routeSelect: ActivatedRoute
-    
-    ) 
-    {}
+  constructor(private router: Router) 
+    {
+      let state:any = this.router.getCurrentNavigation()!.extras.state;
+      if(state) {
+        this.startDate = state.startDate;
+        this.endDate = state.endDate;
+        this.stationID = state.stationID;
+        this.years = state.years;
+        this.startStr = state.startStr;
+        this.endStr = state.endStr;
+      }
+      else {
+        this.startDate = [];
+        this.endDate = [];
+        this.stationID = null;
+      }
+    }
 
   ngOnInit(): void {
-      this.routeSelect.queryParams.subscribe(params => {
-          this.stationIdArray.push(params['data']);
-          console.log(params);
-      });
       this.masterSelected = false;
       this.checklist = [
         {id:1,value:'HourlyAltimeterSetting',isSelected:false},
@@ -172,10 +185,13 @@ export class DataComponent implements OnInit {
     this.checkedList = [];
     for (var i = 0; i < this.checklist.length; i++) {
       if(this.checklist[i].isSelected)
-        this.checkedList.push(this.checklist[i]);
+        this.checkedList.push(this.checklist[i].value);
     }
-    this.checkedList = JSON.stringify(this.checkedList);
-    console.log(this.checkedList)
+  }
+
+  sendToDisplay(){
+    this.router.navigate(["/display"], {state: { stationID: this.stationID, startDate: this.startDate, endDate: this.endDate, years: this.years, startStr: this.startStr, endStr: this.endStr, dataTypes: this.checkedList}})
+
   }
 
 }
