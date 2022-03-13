@@ -6,14 +6,14 @@
       <label for="ZipCode"><b>Zip Code/Station ID</b></label>
   </div>
 
-  
+
   <div class="zipParent">
 
       <div class="center">
           <input class="zip" name="zipcode" #zipcode id="zipcode" type="text"
           maxlength="23" size=18 (click)="distDropdown=true" (keyup)="checkInput()" (keyup.enter)="acceptVariables()" autocomplete="none">
       </div>
-      
+
       <div class="center">
         <div id="scrollable-area" *ngIf="matchList.length>0 && zipcode.value.toString().length>=4 && !matchList.includes(zipcode.value.toString()) && distDropdown">
             <table fixed-table-headers="scrollable-area">
@@ -25,15 +25,15 @@
       </div>
       <div *ngIf="isError" class="alertcenter" style="margin-top:45px;">
         {{ zError }}
-      </div>  
-     
+      </div>
+
       <!-- Display potential errors regarding input data to user -->
-      
+
 
       <div class="center" style="margin-top:80px;">
         <label class="distance"><b>Distance (miles)</b></label>
       </div>
-    
+
       <div class="center">
         <!-- <mat-form-field appearance="legacy" floatLabel="never" style="width:220px"  style="text-align:center">
           <mat-label>Select Distance</mat-label>
@@ -42,7 +42,7 @@
             <mat-option value="25">25 miles</mat-option>
             <mat-option value="50">50 miles</mat-option>
             <mat-option value="100">100 miles</mat-option>
-          </mat-select> 
+          </mat-select>
         </mat-form-field>-->
         <label class = select>
           <select name="distance" #distance id="distance">
@@ -54,9 +54,9 @@
           </select>
         </label>
       </div>
-      
+
   </div>
-  
+
   <div *ngIf="isError" class="alertcenter">
     {{ dError }}
   </div>
@@ -75,11 +75,11 @@
   <div class="center">
     <div class="center">
       <input class='startDate' #startdate type="date" id="start-date" name="start-date" style="width: 200px;">
-      
+
       </div>
-  
+
       <input class='endDate' #enddate type="date" id="end-date" name="end-date" style="width: 200px;">
-      
+
       </div>
 
     <!--<div class="startDate">
@@ -89,7 +89,7 @@
       <mat-datepicker #picker1 #datepickercolor color="accent"></mat-datepicker>
     </mat-form-field>
     </div>
-    
+
     <div class="endDate">
     <mat-form-field appearance="legacy" floatLabel="never">
       <input placeholder="mm/dd/yyyy" #enddate type="date" id="end-date" name="end-date"matInput [matDatepicker]="picker2" placeholder="mm/dd/yyyy">

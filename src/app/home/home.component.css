@@ -2,7 +2,7 @@
 body{ /* overall default styling for this page */
     color: #2c386b;
     font-size: 24px;
-    
+
 }
 
 
@@ -34,7 +34,8 @@ td:hover{
 }
 #scrollable-area {
   position: absolute;
-  margin-top: 36px;
+  z-index: 2;
+  margin-top: 38px;
   width: 200px;
   height: 180px;
   border: 1.5px solid #587656;
@@ -105,13 +106,13 @@ td:hover{
 
 
 
-/*.startDate1{ 
+/*.startDate1{
     margin-right: 60px;
 }
 
-.endDate1{ 
+.endDate1{
     margin-left: 60px;
-    
+
 } */
 
 .distance{
@@ -160,16 +161,16 @@ td:hover{
     margin: 4px 2px;
     cursor: pointer;
     z-index: 1;
-    
-    
-    
+
+
+
 }
 
 .center { /* centering */
     display: flex;
     justify-content: center;
     float: center;
-    
+
 }
 
 
@@ -202,7 +203,7 @@ input:focus {
         text-align: left;
         font-family: 'Lato', sans-serif;
     }
-    
+
     ::-webkit-calendar-picker-indicator{
         color: #2c386b;
         cursor: pointer;
@@ -211,7 +212,7 @@ input:focus {
 
 
 select {
-    
+
     width: 240px;
     padding:10px;
     border-radius:9px;
@@ -230,7 +231,7 @@ select {
     appearance: none;
     cursor: pointer;
     background: url("/assets/arrow.png")96% / 6% no-repeat white;
-    
+
 }
 
 label
@@ -245,11 +246,11 @@ select:focus {
 
 .alertcenter {
     color: #cc0033;
-    
+
     font-size: 13.5px;
     line-height: 15px;
     margin: 5px 0 0;
-    
+
     display: flex;
     justify-content: center;
     float: center;
@@ -257,11 +258,11 @@ select:focus {
 
   .alertcenterleft {
     color: #cc0033;
-    
+
     font-size: 13.5px;
     line-height: 15px;
     margin: 5px 0 0;
-    
+
     margin-right: 106px;
     margin-left: 6%;
     z-index: 1;
@@ -269,19 +270,19 @@ select:focus {
 
   .alertcenterright {
     color: #cc0033;
-    
+
     font-size: 13.5px;
     line-height: 15px;
     margin: 5px 0 0;
-    
+
     margin-left: 106px;
     margin-right: 6%;
     z-index: 1;
   }
-  
 
-  
-  
+
+
+
 
 
 .footer {
@@ -291,13 +292,13 @@ select:focus {
     position:fixed;
     z-index: 0;
     justify-content: center;
-    
+
  }
 
  @media screen and (max-height: 625px) {
 
     .footer {display:none;}
-  
+
   }
 
 /*  .mat-form-field {
@@ -324,16 +325,16 @@ select:focus {
 
   ::ng-deep .mat-form-field-wrapper{
     margin-bottom: -1.50em;
-    margin-top: -1.1em; 
+    margin-top: -1.1em;
  }
 
 
 
   ::ng-deep.mat-datepicker-content .mat-calendar{
     width: 220px !important;
-    
-    
-    
+
+
+
 }
 
 
@@ -354,27 +355,27 @@ select:focus {
 }
 
 
-  
+
 
   ::ng-deep .mat-focused .mat-form-field-label {
-    
-    color: #2c386b !important;
-   }
-   
-   ::ng-deep.mat-form-field-underline {
-    
-    display: none;
-   } 
-   
- 
-   
-   ::ng-deep .mat-form-field-label {
-    
-    color: #2c386b !important;
-   }
-   
 
-   
+    color: #2c386b !important;
+   }
+
+   ::ng-deep.mat-form-field-underline {
+
+    display: none;
+   }
+
+
+
+   ::ng-deep .mat-form-field-label {
+
+    color: #2c386b !important;
+   }
+
+
+
    mat-datepicker-toggle {
     color: #2c386b !important;
    }
@@ -389,12 +390,12 @@ select:focus {
 }
 
    mat-option {
-    
+
     color:white!important;
     text-align: center;
     width: auto;
   }
-  
+
   mat-option.mat-selected {
     color:#2c386b;
   }
@@ -402,7 +403,7 @@ select:focus {
   .not-empty-select.mat-selected {
     color: #2c386b !important;
   }
-  
+
   :host /deep/ .mat-select-value-text {
     color: #2c386b !important;
   }
@@ -418,7 +419,3 @@ select:focus {
     color: #EEE;
  }
 */
-
-
- 
-  
