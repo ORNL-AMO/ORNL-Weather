@@ -16,7 +16,7 @@ export class DisplayComponent implements OnInit {
   startDate: any[] = [];
   endDate: any[] = [];
   heightIndex = 0
-  dataTypeObj: any[] = ['HourlyAltimeterSetting', 'HourlyDewPointTemperature', 'HourlyDryBulbTemperature', 'HourlyPrecipitation', 'HourlyPresentWeatherType'];
+  dataTypeObj: any[] = ['HourlyAltimeterSetting', 'HourlyDewPointTemperature', 'HourlyDryBulbTemperature', 'HourlyPrecipitation', 'HourlyRelativeHumidity'];
   displayIndex: number = 0;
   startStr:string = "";
   endStr:string = "";
@@ -38,11 +38,6 @@ export class DisplayComponent implements OnInit {
   dataObj: any[] = [];
   headers: any[] = [];
 
-  //filtered object. Final object for display and download
-  filteredDisplay: any[] = [];
-  filteredObj: any[] = [];
-  filteredHeaders: any[] =[];
-  
   //making boolean for loading spinner
   isLoading: boolean = true;
 
@@ -75,7 +70,7 @@ export class DisplayComponent implements OnInit {
 
   //checking the number of year
   async checkYears(){
-    
+
     for(let k = 0; k < this.years; k++){
       this.yearsObj[k] = Number(this.startDate[0].year) + k;
     }
@@ -85,7 +80,7 @@ export class DisplayComponent implements OnInit {
         await this.fetchCSV(this.yearsObj[i].toString(), Number(this.stationID[j]), j);
       }
     }
-    
+
 
     //sets loading spinner to false when the data is ready to be displayed
     this.isLoading = false;
@@ -100,7 +95,13 @@ export class DisplayComponent implements OnInit {
     .then((data) =>{
 
       let csv = data
-      let headers = csv.substring(0, csv.search("\n")).replace(/['"]+/g, '').split(/,/); // Why use many line, when one line do trick
+      let csvheaders = csv.substring(0, csv.search("\n")).replace(/['"]+/g, '').split(/,/); // Why use many line, when one line do trick
+
+      // Get complete list of headers to include
+      this.headers = ["STATION", "DATE", "TIME", "LATITUDE", "LONGITUDE", "ELEVATION", "NAME"]
+      for(let i=0; i<this.dataTypeObj.length; i++) {
+        this.headers.push(this.dataTypeObj[i])
+      }
 
       //Remove "" that are automatically added
       csv = csv.replace(/['"]+/g, '')
@@ -118,14 +119,21 @@ export class DisplayComponent implements OnInit {
 
       //splitting csv into lines and splitting the headers element
       let lines = csv.split("\n")
-      //adding "TIME" header
-      headers.splice(2,0,"TIME")
 
-      //making headers global
-      this.headers = headers;
+      //adding "TIME" header
+      csvheaders.splice(2,0,"TIME")
+
+      // Get indices of data types to filter
+      let desiredTypes: number[] = []
+      for(let i=0; i<csvheaders.length; i++) {
+        if(this.dataTypeObj.includes(csvheaders[i])) {
+          desiredTypes.push(i)
+        }
+      }
 
       let stationObj:any[] = [];
       //loop for pushing csv data into array for processing
+
       for(let i = 1; i < lines.length-1; i++) {
         let obj: any = [];
         let dObj: any = [];
@@ -145,27 +153,28 @@ export class DisplayComponent implements OnInit {
           //station id through elevation.
           for(let j = 0; j < 6; j++) {
             obj[j] = currLine[j];
-            dObj[headers[j]] = currLine[j];
+            dObj[this.headers[j]] = currLine[j];
           }
 
           //for some reason the names gets split twice for had to add to parts of the line to one element of the array
           obj[6] = currLine[6] + currLine[7];
-          dObj[headers[6]] = currLine[6] + currLine[7];
+          dObj[this.headers[6]] = currLine[6] + currLine[7];
 
+          let ind = 7;
           //pushing the rest.
-          for(let j = 7; j < headers.length; j++) {
-            obj[j] = currLine[j+1];
-            dObj[headers[j]] = currLine[j+1];
+          for(let j = 7; j < csvheaders.length; j++) {
+            if(desiredTypes.includes(j)) {
+              obj[ind++] = currLine[j+1];
+              dObj[csvheaders[j]] = currLine[j+1];
+            }
           }
           stationObj.push(obj);
           this.dataObj.push(dObj);
         }
       }
       this.displayObj.push(stationObj);
-
-      //call filterCSV to filter the data for display and download.
-      this.filterCSV();
     })
+    console.log(this.dataObj)
   }
 
   //triggers download of array data into a csv to users computer.
@@ -198,7 +207,7 @@ export class DisplayComponent implements OnInit {
   async exportTojson() {
     const { convertArrayToCSV } = require('convert-array-to-csv');
     const converter = require('convert-array-to-csv');
-      
+
     let filename = "NCEI_Weather_Data";
     let header = this.headers;
     var temp: string = "";
@@ -210,7 +219,7 @@ export class DisplayComponent implements OnInit {
       temp += csvFromArrayOfArrays
     }
     temp = temp.substring(0, temp.length-2)
-    
+
     let exportData = JSON.parse(await this.CSVtoJSON(temp))
     return saveAs(
       new Blob([JSON.stringify(exportData, null, 2)], { type: 'JSON' }), `${filename}.json`
@@ -220,7 +229,7 @@ export class DisplayComponent implements OnInit {
   async CSVtoJSON(val: string):Promise<string> {
     let path: string = val
     let jsonFile: any = []
-    
+
     let csv = val
     //Remove "" that are automatically added
     csv = csv.replace(/['"]+/g, '')
@@ -246,53 +255,5 @@ export class DisplayComponent implements OnInit {
       allTabs[i].style.backgroundColor=null;
     }
     tab.style.backgroundColor="#839c7c";
-  }
-
-  filterCSV(){
-    let headers = this.headers;
-    let dt = this.dataTypeObj;
-    let display = this.displayObj;
-    let data = this.dataObj;
-    
-    
-    for(let k = 0; k < 7; k++){
-      
-      this.filteredHeaders.push(headers[k]);
-    }
-    
-    for(let h = 0; h < headers.length; h++){
-      let idx = headers.indexOf(dt[h]);
-
-      if(idx > -1){
-        this.filteredHeaders.push(headers[idx])
-      }
-    }
-    console.log(this.displayObj[0][0][0])
-    for(let i = 0; i < this.displayObj.length; i++){
-      let ftobD: any[]= [];
-      let ftob: any[]= [];
-      for(let f = 0; f < this.displayObj[i].length; f++){
-        let temp: any = []
-
-        for(let p = 0; p < this.filteredHeaders.length; p++){
-          
-          let idx = headers.indexOf(this.filteredHeaders[p])
-          if(idx != -1){
-            console.log(display[i][f][idx])
-            temp[p] = display[i][f][idx];
-            ftob[this.filteredHeaders[p]] = display[i][f][idx];
-          }
-          
-        }
-        this.filteredObj.push(ftob)
-        ftobD.push(temp)
-      }
-      this.filteredDisplay.push(ftobD);
-    }
-    
-    // 
-    
-    console.log(this.filteredObj)
-
   }
 }

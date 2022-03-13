@@ -16,9 +16,9 @@
     <div class="tabs" *ngFor="let id of stationID">
       <div class="tab" (click)=changeStation(id) id={{id}}><label for={{id}}>{{id}}</label></div>
     </div>
-  
+
     <div id="scrollable-area">
-  
+
         <!-- Display Loading Circle -->
         <div class="loading" *ngIf="isLoading" >
             <!-- Hourglass Loading Spinner -->
@@ -27,16 +27,16 @@
                 <div class="pl-name">Compiling your Data...This May Take Several Minutes</div>
             </div>
         </div>
-  
+
         <table class="table" *ngIf="!isLoading">
-  
+
          <!-- Display Headers -->
-            <th *ngFor = "let row of filteredHeaders">
+            <th *ngFor = "let row of headers">
                 {{row}}
             </th>
-  
+
             <!-- Display Data -->
-            <tr *ngFor = "let row of filteredDisplay[displayIndex] | paginate: config">
+            <tr *ngFor = "let row of displayObj[displayIndex] | paginate: config">
                 <td *ngFor = "let column of row" class="rows">{{ column }}</td>
             </tr>
         </table>
@@ -49,7 +49,7 @@
           <option value="50">50 per page</option>
           <option value="100">100 per page</option>
     </select>
-    <pagination-controls 
+    <pagination-controls
       [maxSize]="maxSize"
       [directionLinks]="directionLinks"
       [autoHide]="autoHide"
@@ -65,4 +65,3 @@
 <div class="center">
     <img src= "/assets/industrial-skyline-2.png" class="footer"/>
 </div>
-

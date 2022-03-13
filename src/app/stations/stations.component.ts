@@ -147,7 +147,6 @@ export class StationsComponent implements OnInit {
 
       if(ev.target.checked){
         this.selectedArray.push(obj);
-        console.log(this.selectedArray);
       }
       else{
         let el = this.selectedArray.find((itm) => itm.ID === val);
