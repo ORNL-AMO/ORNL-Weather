@@ -16,7 +16,7 @@ export class DisplayComponent implements OnInit {
   startDate: any[] = [];
   endDate: any[] = [];
   heightIndex = 0
-  dataTypeObj: any[] = ['HourlyAltimeterSetting', 'HourlyDewPointTemperature', 'HourlyDryBulbTemperature', 'HourlyPrecipitation', 'HourlyRelativeHumidity'];
+  dataTypeObj: any[] = [];
   displayIndex: number = 0;
   startStr:string = "";
   endStr:string = "";
@@ -50,6 +50,7 @@ export class DisplayComponent implements OnInit {
         this.years = state.years;
         this.startStr = state.startStr;
         this.endStr = state.endStr;
+        this.dataTypeObj = state.dataTypes;
       }
       else {
         this.startDate = [];
