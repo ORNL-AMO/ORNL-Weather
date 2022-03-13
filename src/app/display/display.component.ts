@@ -108,15 +108,16 @@ export class DisplayComponent implements OnInit {
       csv = csv.replace(/['"]+/g, '')
 
       // Trim csv to only relevant dates
-      if(year == this.startDate[0].year) {
-        let startStr = this.startDate[0].year + '-' + this.startDate[0].month + '-' + this.startDate[0].day
-        let startRegex = new RegExp(`[\n][0-9]*[,]*${startStr}`)
-        csv = csv.slice(csv.search(startRegex));
-      }
-      if(year == this.endDate[0].year) {
-        let endStr = this.endDate[0].year + '-' + this.endDate[0].month + '-' + this.endDate[0].day
-        csv = csv.slice(0, csv.indexOf("\n", csv.lastIndexOf(endStr))+1);
-      }
+      // BUG: Broken for some stations, ex. 72326499999
+      // if(year == this.startDate[0].year) {
+      //   let startStr = this.startDate[0].year + '-' + this.startDate[0].month + '-' + this.startDate[0].day
+      //   let startRegex = new RegExp(`[\n][0-9]*[,]*${startStr}`)
+      //   csv = csv.slice(csv.search(startRegex));
+      // }
+      // if(year == this.endDate[0].year) {
+      //   let endStr = this.endDate[0].year + '-' + this.endDate[0].month + '-' + this.endDate[0].day
+      //   csv = csv.slice(0, csv.indexOf("\n", csv.lastIndexOf(endStr))+1);
+      // }
 
       //splitting csv into lines and splitting the headers element
       let lines = csv.split("\n")
