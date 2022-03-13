@@ -21,21 +21,21 @@ h1{
     text-decoration: none;
     display: inline-block;
     font-size: 120%;
-    
+
     cursor: pointer;
     margin-top: 10px;
     width: 10%;
     min-width: 100px;
     z-index: 1;
-    
+
   }
 
   .button1 {
-    border-radius: 60px; 
+    border-radius: 60px;
     background-color: #587656;
     z-index: 1;
     margin-right: 20px;
-  } 
+  }
 
 
 .button:hover {
@@ -62,7 +62,7 @@ th{
     color: white;
     position: -webkit-sticky;
     position: sticky;
-    top: 0;  
+    top: 0;
     font-size: 17;
     z-index: 1;
 }
@@ -79,6 +79,12 @@ tr:nth-child(odd){
 
 tr:hover{
     background-color: #839c7c;
+}
+
+label {
+  display: block;
+  min-height: 100%;
+  padding: 8px;
 }
 
 #scrollable-area {
@@ -101,7 +107,7 @@ tr:hover{
 @media screen and (max-height: 650px) {
 
     .footer {display:none;}
-}  
+}
 
 .right { /* right side align */
     display: flex;

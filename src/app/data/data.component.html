@@ -7,24 +7,20 @@
     </div>
     <div id="scrollable-area">
         <table fixed-table-headers="scrollable-area">
-        
-                <th class="center">
-                    <input type="checkbox" [(ngModel)]="masterSelected" name="list_name" value="m1"
-                    (change)="checkUncheckAll()" /> 
 
-                   
+                <th>
+                    <label class="center"><input type="checkbox" [(ngModel)]="masterSelected" name="list_name" value="m1"
+                    (change)="checkUncheckAll()"></label>
                 </th>
 
-                <th *ngFor = "let column of headers">
-                    
-                </th>
+                <th> </th>
 
-            
+
 
             <tr *ngFor="let item of checklist">
-                <td class="center"><input type="checkbox" [(ngModel)]="item.isSelected" name="list_name" value="{{item.id}}" 
-                    (change)="isAllSelected()" /></td>
-                    <td class="rows">{{item.value}}</td>
+                <label><td class="center"><input type="checkbox" id="{{item.id}}" [(ngModel)]="item.isSelected" name="list_name" value="{{item.id}}"
+                    (change)="isAllSelected()"></td></label>
+                    <td class="rows"><label for="{{item.id}}">{{item.value}}</label></td>
             </tr>
         </table>
     </div>
@@ -33,7 +29,7 @@
         <button class="button button1" (click)="sendToDisplay()"><b>Display Data</b></button>
     </div>
 
-    
+
     <img src= "/assets/industrial-skyline-2.png" class="footer"/>
 
 
