@@ -12,6 +12,8 @@
                     <label class="center"><input type="checkbox" [(ngModel)]="masterSelected" name="list_name" value="m1"
                     (change)="checkUncheckAll()"></label>
                 </th>
+                <th>Type</th>
+                <th>Description</th>
 
                 <th> </th>
 
@@ -21,6 +23,7 @@
                 <label><td class="center"><input type="checkbox" id="{{item.id}}" [(ngModel)]="item.isSelected" name="list_name" value="{{item.id}}"
                     (change)="isAllSelected()"></td></label>
                     <td class="rows"><label for="{{item.id}}">{{item.value}}</label></td>
+                    <td class="rows"><label for="{{item.id}}">{{item.title}}</label></td>
             </tr>
         </table>
     </div>
