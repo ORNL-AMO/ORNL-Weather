@@ -8,7 +8,7 @@ header{
   font-family: 'Lato', sans-serif;
   z-index: 1;
   margin-bottom: 15px;
-        
+
 }
 
 table{
@@ -22,7 +22,7 @@ table{
 .right { /* right side align */
   display: flex;
   justify-content: right;
-  
+
   margin-right: 10%;
   margin-left: 10%
 }
@@ -91,7 +91,7 @@ label {
     display: flex;
     justify-content: center;
     float: center;
-    
+
 }
 
 .tableParent{
@@ -135,13 +135,13 @@ label {
   text-decoration: none;
   display: inline-block;
   font-size: 120%;
-  
+
   cursor: pointer;
   margin-top: 10px;
   width: 10%;
   min-width: 100px;
   z-index: 1;
-  
+
 }
 
 .button:hover {
@@ -149,14 +149,14 @@ label {
 }
 
 .button1 {
-  border-radius: 60px; 
+  border-radius: 60px;
   background-color: #587656;
   z-index: 1;
   margin-right: 20px;
-} 
+}
 
 /*#scrollable-area::-webkit-scrollbar {
-  width: 9px;   
+  width: 9px;
   height: 9px;
 }
 #scrollable-area::-webkit-scrollbar-corner{
@@ -168,11 +168,11 @@ label {
   border-radius: 50px;
   border: double #2b376b 1px;
   background-color: #f2f2f2;
-  
+
 }
 
 #scrollable-area::-webkit-scrollbar-thumb {
-  
+
   border-radius: 20px;
   border: solid #8d8d8d 10px;
 
@@ -283,5 +283,5 @@ select {
   -moz-appearance: none;
   appearance: none;
   cursor: pointer;
-  background: url("/assets/arrow.png")96% / 6% no-repeat white;
+  background: url("../../assets/arrow.png")96% / 6% no-repeat white;
 }
