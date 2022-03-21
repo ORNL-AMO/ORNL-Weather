@@ -258,4 +258,8 @@ export class DisplayComponent implements OnInit {
     }
     tab.style.backgroundColor="#839c7c";
   }
+  
+  goBack(){
+    this.router.navigate(["/data"])
+  }
 }
