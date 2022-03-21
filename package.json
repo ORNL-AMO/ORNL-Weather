@@ -1,12 +1,17 @@
 {
   "name": "ornl-weather",
   "version": "1.0.0",
+  "description": "ORNL-Weather",
+  "author": "Students of TnTech",
+  "main": "main.js",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng build --base-href ./ && electron .",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "pack": "ng build --base-href ./ && electron-builder --dir",
+    "dist": "ng build --base-href ./ && electron-builder"
   },
   "private": true,
   "dependencies": {
@@ -41,9 +46,52 @@
     "@types/jasmine": "~3.10.0",
     "@types/jquery": "^3.5.13",
     "@types/node": "^12.20.47",
+    "app-builder-bin": "^4.1.2",
+    "electron": "^17.1.2",
+    "electron-builder": "^22.14.13",
     "file-saver": "^2.0.5",
     "jasmine-core": "^4.0.0",
     "karma": "^6.3.16",
     "typescript": "^4.5.5"
+  },
+  "build": {
+    "appId": "com.electron.ornl-amo-weather",
+    "productName": "ORNL-Weather",
+    "directories": {
+      "output": "../output/"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "src/assets/doe_image256.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "src/assets/doe_image.ico",
+      "installerHeaderIcon": "src/assets/doe_image.ico",
+      "artifactName": "${productName}-Setup-${version}.${ext}"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "tar.gz"
+      ],
+      "icon": "src/assets/doe_image256.png",
+      "executableName": "ORNL-Weather",
+      "artifactName": "${productName}-${version}.${ext}",
+      "category": "Science"
+    },
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "icon": "src/assets/doe_image256.png",
+      "hardenedRuntime": true,
+      "entitlements": "entitlements.mac.inherit.plist",
+      "entitlementsInherit": "entitlements.mac.inherit.plist",
+      "gatekeeperAssess": false
+    }
   }
 }
