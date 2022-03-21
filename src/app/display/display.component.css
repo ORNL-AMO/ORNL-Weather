@@ -35,7 +35,7 @@ table{
   display: flex;
   justify-content: left;
   float: left;
-  margin-left: 12%;
+  margin-left: 20%;
 }
 
 td{
@@ -154,6 +154,13 @@ label {
   z-index: 1;
   margin-right: 20px;
 }
+
+.button2 {
+  border-radius: 60px; 
+  background-color: #587656;
+  z-index: 1;
+  margin-right: 20%;
+} 
 
 /*#scrollable-area::-webkit-scrollbar {
   width: 9px;
