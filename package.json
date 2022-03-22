@@ -54,6 +54,7 @@
     "karma": "^6.3.16",
     "typescript": "^4.5.5"
   },
+  "overrides": { "minimist": "ramonsnir/minimist" },
   "build": {
     "appId": "com.electron.ornl-amo-weather",
     "productName": "ORNL-Weather",
