@@ -87,8 +87,6 @@ export class DisplayComponent implements OnInit {
     this.isLoading = false;
   }
 
-
-
   //takes in station id and attaches it to the end of the http links to pull the required csv. then the csv data is received as text and is converted into json for and placed in an array for display/printing/download purposes.
   async fetchCSV(year:any, stationID:any, ind:any){
     await fetch(`https://www.ncei.noaa.gov/data/local-climatological-data/access/${year}/${stationID}.csv`)
@@ -258,7 +256,7 @@ export class DisplayComponent implements OnInit {
     }
     tab.style.backgroundColor="#839c7c";
   }
-  
+
   goBack(){
     this.router.navigate(["/data"])
   }

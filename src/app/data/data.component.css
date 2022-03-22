@@ -17,7 +17,7 @@ h1{
   border-radius: 60px;
   background-color: #587656;
   z-index: 1;
-} 
+}
 
 .button {
   border: none;
@@ -35,7 +35,7 @@ h1{
   margin-right: 23%;
   min-width: 145px;
   z-index: 1;
-  
+
 }
 
 
@@ -113,3 +113,66 @@ label {
     .footer {display:none;}
 }
 
+/* Hourglass Loader */
+.cell {
+	flex-basis: 50%;
+	padding: 1.5em;
+}
+.pl, .pl:before, .pl:after {
+	animation-duration: 3s;
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+}
+.pl {
+	margin: 0 auto 1.5em auto;
+	position: relative;
+	width: 3em;
+	height: 3em;
+}
+.pl:before, .pl:after {
+	background: currentColor;
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 50%;
+	transform-origin: 50% 100%;
+	clip-path: polygon(0 0,100% 0,50% 100%);
+	-webkit-clip-path: polygon(0 0,100% 0,50% 100%);
+}
+.pl-name {
+	text-align: center;
+  text-shadow:0 0 10px rgb(151, 73, 73);
+  font-size: medium;
+}
+.pl-hourglass {
+	animation-name: hourglassA;
+	background: rgb(88, 118, 86);
+	clip-path: polygon(0 0,100% 0,50% 50%,100% 100%,0 100%,50% 50%);
+	-webkit-clip-path: polygon(0 0,100% 0,50% 50%,100% 100%,0 100%,50% 50%);
+}
+.pl-hourglass:before, .pl-hourglass:after {
+	position: static;
+	clip-path: none;
+	-webkit-clip-path: none;
+}
+.pl-hourglass:before {
+	animation-name: hourglassB;
+}
+.pl-hourglass:after {
+	animation-name: hourglassC;
+}
+@keyframes hourglassA {
+	from, 75% { transform: rotate(0) }
+	to { transform: rotate(180deg) }
+}
+@keyframes hourglassB {
+	from { transform: scaleY(1) }
+	50%, to { transform: scaleY(0) }
+}
+@keyframes hourglassC {
+	from { transform: scaleY(0) }
+	50%, to { transform: scaleY(1) }
+}

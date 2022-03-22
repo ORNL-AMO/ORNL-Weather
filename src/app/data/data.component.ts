@@ -11,7 +11,6 @@ import { CommonModule } from '@angular/common';
 })
 
 export class DataComponent implements OnInit {
-  stationIdArray: any[] = [];
   dataTypesArray: any[] = [];
   years: number = 0;
   stationID: any;
@@ -23,10 +22,11 @@ export class DataComponent implements OnInit {
   masterSelected:boolean;
   checklist:any;
   checkedList:any;
+  displayList:any[] = [];
+  stationDataTypes:string[] = []
+  isLoading: boolean = false;
 
   //page variables
-  yearsObj: any[] = [];
-  stationId: any;
   sendingArray: any[] = [];
 
   constructor(private router: Router)
@@ -47,7 +47,7 @@ export class DataComponent implements OnInit {
       }
     }
 
-  ngOnInit(): void {
+  async ngOnInit() {
       this.masterSelected = false;
       // https://docs.opendata.aws/noaa-ghcn-pds/readme.html
       // Helpful for finding descriptions and units of Data Types
@@ -169,7 +169,18 @@ export class DataComponent implements OnInit {
         {id:116,value:'WindEquipmentChangeDate',isSelected:false,title:'Wind Equipment Change Date'}
 
       ];
-      this.getCheckedItemList();
+      if(this.stationID) {
+        this.isLoading = true;
+        await this.getStationDataTypes();
+        this.isLoading = false;
+        await this.getCheckedItemList();
+        for(let i=0; i<this.checklist.length; i++) {
+          if(this.stationDataTypes.includes(this.checklist[i]["value"])) {
+            this.displayList.push(this.checklist[i])
+          }
+        }
+        console.log(this.displayList);
+      }
   }
 
 
@@ -195,6 +206,68 @@ export class DataComponent implements OnInit {
     for (var i = 0; i < this.checklist.length; i++) {
       if(this.checklist[i].isSelected)
         this.checkedList.push(this.checklist[i].value);
+    }
+  }
+
+  async getStationDataTypes(){
+    for(let i=0; i<this.stationID.length; i++) {
+      await fetch(`https://www.ncei.noaa.gov/data/local-climatological-data/access/${this.startDate[0].year}/${this.stationID[i]}.csv`)
+      .then((res) => res.text())
+      .then((data) =>{
+        let csv = data;
+        let csvheaders = csv.substring(0, csv.search("\n")).replace(/['"]+/g, '').split(/,/);
+        csv = csv.replace(/['"]+/g, '')
+
+        // Hourly
+        let oneDayData = csv.substring(0, csv.indexOf('-01-02T')-15)
+        let dayLines = oneDayData.split("\n")
+        // Hourly
+        for(let j = 1; j < dayLines.length-1; j++) {
+          let currLine = dayLines[j].split(",")
+          for(let k = 9; k < csvheaders.length; k++) {
+            if(currLine[k] && !this.stationDataTypes.includes(csvheaders[k-1])) {
+              this.stationDataTypes.push(csvheaders[k-1]);
+            }
+          }
+        }
+
+        // Daily
+        let counter = 0;
+        let sodInd = csv.indexOf(',SOD');
+        while(counter<10 && sodInd != -1) {
+          let firstInd = csv.lastIndexOf('\n', sodInd)
+          let dailyLine = csv.substring(firstInd, csv.indexOf('\n', firstInd+1)).split(",")
+          if(dailyLine.length>0) {
+            for(let k = 9; k < csvheaders.length; k++) {
+              if(dailyLine[k] && !this.stationDataTypes.includes(csvheaders[k-1])) {
+                this.stationDataTypes.push(csvheaders[k-1]);
+              }
+            }
+          }
+          sodInd = csv.indexOf(',SOD', sodInd);
+          counter++;
+        }
+
+        // Monthly
+        counter = 0;
+        let somInd = csv.indexOf(',SOM');
+        while(counter<10 && somInd != -1) {
+          let firstInd = csv.lastIndexOf('\n', somInd)
+          let dailyLine = csv.substring(firstInd, csv.indexOf('\n', firstInd+1)).split(",")
+          if(dailyLine.length>0) {
+            for(let k = 9; k < csvheaders.length; k++) {
+              if(dailyLine[k] && !this.stationDataTypes.includes(csvheaders[k-1])) {
+                this.stationDataTypes.push(csvheaders[k-1]);
+              }
+            }
+          }
+          somInd = csv.indexOf(',SOM', sodInd);
+          counter++;
+        }
+
+        console.log("Station Data Types");
+        console.log(this.stationDataTypes);
+      })
     }
   }
 
