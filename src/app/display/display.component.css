@@ -116,7 +116,7 @@ label {
   background-color: #f2f2f2;
 }
 .tabs:nth-child(odd){
-  background-color: rgb(180, 162, 162);
+  background-color: #dbdada;
 }
 .tabs:hover {
   background-color: #839c7c;
@@ -216,7 +216,6 @@ label {
 }
 .pl-name {
 	text-align: center;
-  text-shadow:0 0 10px rgb(151, 73, 73);
   font-size: medium;
 }
 .pl-hourglass {
@@ -254,7 +253,7 @@ label {
   width:100%;
   bottom:0;
   position:fixed;
-  z-index: 0;
+  z-index: -1;
   justify-content: center;
 }
 
@@ -268,7 +267,7 @@ select {
   height: 30px;
   padding:10px;
   border-radius:9px;
-  padding-top: 4px;
+  padding-top: 2px;
   padding-bottom: 4px;
   border: 1.5px solid #587656;
   color: #2c386b;
@@ -284,4 +283,81 @@ select {
   appearance: none;
   cursor: pointer;
   background: url("/assets/arrow.png")96% / 6% no-repeat white;
+  z-index: 1;
+}
+
+.custom-pagination{
+  z-index: 1;
+}
+
+.custom-pagination .page-number{
+  display: inline-block;
+  padding-top: 8px;
+  padding-right: 6px;
+  padding-left: 6px;
+  background: white;
+  margin: 0px 0px;
+  border-radius: 8%;
+  border: 1px solid #587656;
+  color: #2c386b;
+  z-index: 1;
+}
+
+.page-number.current{
+  background: #dbdada!important;
+  border: 1px solid #587656;
+}
+
+.page-number:hover{
+  background-color: #839c7c;
+}
+
+
+
+.page-number span{
+  display: block;
+  width: 28px;
+  height: 28px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.pagination-previous,.pagination-next{
+  display: inline-block;
+  font-weight: bold;
+}
+
+.centerPagi{
+  text-align: center;
+  margin-bottom: 5px;
+  z-index: 1;
+}
+
+.arrow{
+  margin-right: 5px;
+  margin-left: 5px;
+  margin-top: 8px;
+  height: 14px;
+  cursor: pointer;
+}
+
+#scrollable-area::-webkit-scrollbar {
+  width: 9px;   /* width of the entire scrollbar */
+  height: 9px;
+}
+#scrollable-area::-webkit-scrollbar-corner{
+  background: none;
+  border-bottom-right-radius: 20px;
+}
+#scrollable-area::-webkit-scrollbar-track {
+
+  border-radius: 50px;
+  border: double black 1px;
+}
+
+#scrollable-area::-webkit-scrollbar-thumb {
+  background-color: rgb(179, 179, 179); 
+  border-radius: 20px;
+  border: 1px solid black;
+
 }

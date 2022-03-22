@@ -119,3 +119,24 @@ label {
     margin-right: 12.5%;
     margin-top: 25px;
   }
+
+  #scrollable-area::-webkit-scrollbar {
+    width: 9px;   /* width of the entire scrollbar */
+    height: 9px;
+  }
+  #scrollable-area::-webkit-scrollbar-corner{
+    background: none;
+    border-bottom-right-radius: 20px;
+  }
+  #scrollable-area::-webkit-scrollbar-track {
+  
+    border-radius: 50px;
+    border: double black 1px;
+  }
+  
+  #scrollable-area::-webkit-scrollbar-thumb {
+    background-color: rgb(179, 179, 179); 
+    border-radius: 20px;
+    border: 1px solid black;
+  
+  }
