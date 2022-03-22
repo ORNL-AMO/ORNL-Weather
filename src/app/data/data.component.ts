@@ -186,15 +186,15 @@ export class DataComponent implements OnInit {
 
   // The master checkbox will check/ uncheck all items
   checkUncheckAll() {
-    for (var i = 0; i < this.checklist.length; i++) {
-      this.checklist[i].isSelected = this.masterSelected;
+    for (var i = 0; i < this.displayList.length; i++) {
+      this.displayList[i].isSelected = this.masterSelected;
     }
     this.getCheckedItemList();
   }
 
   // Check All Checkbox Checked
   isAllSelected() {
-    this.masterSelected = this.checklist.every(function(item:any) {
+    this.masterSelected = this.displayList.every(function(item:any) {
         return item.isSelected == true;
       })
     this.getCheckedItemList();
@@ -203,9 +203,9 @@ export class DataComponent implements OnInit {
   // Get List of Checked Items
   getCheckedItemList(){
     this.checkedList = [];
-    for (var i = 0; i < this.checklist.length; i++) {
-      if(this.checklist[i].isSelected)
-        this.checkedList.push(this.checklist[i].value);
+    for (var i = 0; i < this.displayList.length; i++) {
+      if(this.displayList[i].isSelected)
+        this.checkedList.push(this.displayList[i].value);
     }
   }
 
