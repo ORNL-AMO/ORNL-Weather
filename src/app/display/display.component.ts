@@ -21,6 +21,7 @@ export class DisplayComponent implements OnInit {
   startStr:string = "";
   endStr:string = "";
   config: any;
+  headersStats: any[] = []
   public maxSize: number = 7;
   public directionLinks: boolean = true;
   public autoHide: boolean = false;
@@ -72,6 +73,21 @@ export class DisplayComponent implements OnInit {
   //checking the number of year
   async checkYears(){
 
+    // Initialize Empty Stats Object
+    if(this.years>0) {
+      for(let i=0; i<this.stationID.length; i++) {
+        let tmp = []
+        for(let i=0; i<this.dataTypeObj.length; i++) {
+          tmp.push({'TOTAL':0,'EMPTY':0,'RATE':-1})
+        }
+        this.headersStats.push(tmp)
+        console.log("TEST");
+        console.log(this.headersStats[0]);
+      }
+    }
+
+
+
     for(let k = 0; k < this.years; k++){
       this.yearsObj[k] = Number(this.startDate[0].year) + k;
     }
@@ -81,6 +97,11 @@ export class DisplayComponent implements OnInit {
         await this.fetchCSV(this.yearsObj[i].toString(), Number(this.stationID[j]), j);
       }
     }
+    for(let i of this.headersStats) {
+      for(let j of i) {
+        j['RATE'] = (j['EMPTY']/j['TOTAL']*100).toFixed(2)
+      }
+    }
 
 
     //sets loading spinner to false when the data is ready to be displayed
@@ -88,7 +109,7 @@ export class DisplayComponent implements OnInit {
   }
 
   //takes in station id and attaches it to the end of the http links to pull the required csv. then the csv data is received as text and is converted into json for and placed in an array for display/printing/download purposes.
-  async fetchCSV(year:any, stationID:any, ind:any){
+  async fetchCSV(year:any, stationID:any, stationsInd:any){
     await fetch(`https://www.ncei.noaa.gov/data/local-climatological-data/access/${year}/${stationID}.csv`)
     .then((res) => res.text())
     .then((data) =>{
@@ -96,11 +117,15 @@ export class DisplayComponent implements OnInit {
       let csv = data
       let csvheaders = csv.substring(0, csv.search("\n")).replace(/['"]+/g, '').split(/,/); // Why use many line, when one line do trick
 
-      // Get complete list of headers to include
-      this.headers = ["STATION", "DATE", "TIME", "LATITUDE", "LONGITUDE", "ELEVATION", "NAME"]
-      for(let i=0; i<this.dataTypeObj.length; i++) {
-        this.headers.push(this.dataTypeObj[i])
+      // Only do this once
+      if(this.headers.length<1) {
+        // Get complete list of headers to include
+        this.headers = ["STATION", "DATE", "TIME", "LATITUDE", "LONGITUDE", "ELEVATION", "NAME"]
+        for(let i=0; i<this.dataTypeObj.length; i++) {
+          this.headers.push(this.dataTypeObj[i])
+        }
       }
+
 
       //Remove "" that are automatically added
       csv = csv.replace(/['"]+/g, '')
@@ -130,6 +155,7 @@ export class DisplayComponent implements OnInit {
           desiredTypes.push(i)
         }
       }
+
 
       let stationObj:any[] = [];
       //loop for pushing csv data into array for processing
@@ -166,6 +192,10 @@ export class DisplayComponent implements OnInit {
             if(desiredTypes.includes(j)) {
               obj[ind++] = currLine[j+1];
               dObj[csvheaders[j]] = currLine[j+1];
+              this.headersStats[stationsInd][ind-8]['TOTAL'] += 1;
+              if(!currLine[j+1]) {
+                this.headersStats[stationsInd][ind-8]['EMPTY'] += 1;
+              }
             }
           }
           stationObj.push(obj);

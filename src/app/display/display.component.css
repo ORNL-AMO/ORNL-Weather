@@ -16,6 +16,7 @@ table{
   width: 100%;
   border-radius:6px;
   background: white;
+  /* border-collapse: collapse; */
 }
 
 
@@ -55,6 +56,16 @@ th{
   position: sticky;
   top: 0;
   border-collapse: separate;
+}
+
+.empty_rate {
+  border-bottom: 1pt solid black;
+
+  /* background-color: #5a7255 !important; */
+}
+#empty_rate_text {
+  text-align: center;
+  align-content: center;
 }
 
 tr:nth-child(even){
@@ -156,11 +167,11 @@ label {
 }
 
 .button2 {
-  border-radius: 60px; 
+  border-radius: 60px;
   background-color: #587656;
   z-index: 1;
   margin-right: 20%;
-} 
+}
 
 /*#scrollable-area::-webkit-scrollbar {
   width: 9px;

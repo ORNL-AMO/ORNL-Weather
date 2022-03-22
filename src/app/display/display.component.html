@@ -34,6 +34,10 @@
             <th *ngFor = "let row of headers">
                 {{row}}
             </th>
+            <tr class="empty_rate">
+              <td colspan="7" *ngIf="years>0" id="empty_rate_text">Empty Data Rate</td>
+              <td *ngFor = "let row of headersStats[displayIndex]">{{row['EMPTY']}} of {{row['TOTAL']}}: {{row['RATE']}}%</td>
+            </tr>
 
             <!-- Display Data -->
             <tr *ngFor = "let row of displayObj[displayIndex] | paginate: config">
