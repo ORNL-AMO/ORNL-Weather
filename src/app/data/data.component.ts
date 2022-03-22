@@ -173,12 +173,12 @@ export class DataComponent implements OnInit {
         this.isLoading = true;
         await this.getStationDataTypes();
         this.isLoading = false;
-        await this.getCheckedItemList();
         for(let i=0; i<this.checklist.length; i++) {
           if(this.stationDataTypes.includes(this.checklist[i]["value"])) {
             this.displayList.push(this.checklist[i])
           }
         }
+        this.getCheckedItemList();
         console.log(this.displayList);
       }
   }
