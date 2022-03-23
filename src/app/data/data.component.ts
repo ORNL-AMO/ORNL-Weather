@@ -221,7 +221,8 @@ export class DataComponent implements OnInit {
         csv = csv.replace(/['"]+/g, '')
 
         // Hourly
-        let oneDayData = csv.substring(0, csv.indexOf('-01-02T')-15)
+        let startDateObj = new Date(+this.startDate[0].year, +this.startDate[0].month-1, this.startDate[0].day)
+        let oneDayData = this.trimToDates(csv, startDateObj)
         let dayLines = oneDayData.split("\n")
         for(let j = 1; j < dayLines.length-1; j++) {
           let currLine = dayLines[j].split(",")
@@ -269,6 +270,38 @@ export class DataComponent implements OnInit {
         console.log("Got Data Types for " + this.stationID[i]);
       })
     }
+  }
+
+  trimToDates(csv:string, startDate:Date) {
+    let ind = -1
+    // Cannot be last day of year
+    let maxDate = new Date(+this.startDate[0].year, 11, 31)
+    while(ind==-1 && startDate<maxDate) {
+      let start = startDate.getFullYear() + '-' + ("0"+(startDate.getMonth()+1)).slice(-2) + '-' + ("0" + startDate.getDate()).slice(-2)
+      let startRegex = new RegExp(`[\n][0-9]*[,]*${start}`)
+      ind = csv.search(startRegex)
+      if(ind!=-1) {
+        csv = csv.slice(ind);
+      }
+      startDate.setDate(startDate.getDate()+1);
+    }
+
+    // If start date is Dec 31, only one day will be in csv at this point
+    if(!(startDate>maxDate)) {
+      ind = -1
+      while(ind==-1 && startDate<maxDate) {
+        let end = startDate.getFullYear() + '-' + ("0"+(startDate.getMonth())+1).slice(-2) + '-' + ("0" + startDate.getDate()).slice(-2)
+        ind = csv.search(end)
+        if(ind!=-1) {
+          csv = csv.slice(0, csv.indexOf("\n", csv.lastIndexOf(end))+1)
+        }
+        else{
+          startDate.setDate(startDate.getDate()+1);
+        }
+      }
+    }
+
+    return csv
   }
 
   sendToDisplay(){

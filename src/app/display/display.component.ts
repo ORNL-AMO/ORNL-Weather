@@ -279,10 +279,13 @@ export class DisplayComponent implements OnInit {
   }
 
   trimToDates(csv:string, year:string) {
-    let tempStartDateObj = new Date(this.startDate[0].year, this.startDate[0].month, this.startDate[0].day)
+    let tempStartDateObj = new Date(+this.startDate[0].year, +this.startDate[0].month-1, this.startDate[0].day)
     let ind = -1
-    while(year == this.startDate[0].year && ind==-1) {
-      let start = tempStartDateObj.getFullYear() + '-' + ("0"+(tempStartDateObj.getMonth())).slice(-2) + '-' + ("0" + tempStartDateObj.getDate()).slice(-2)
+    let minDate = new Date(+this.startDate[0].year, 0, 1)
+    let maxDate = new Date(+this.endDate[0].year, 11, 31)
+
+    while(year == this.startDate[0].year && ind==-1 && tempStartDateObj>=minDate) {
+      let start = tempStartDateObj.getFullYear() + '-' + ("0"+(tempStartDateObj.getMonth()+1)).slice(-2) + '-' + ("0" + tempStartDateObj.getDate()).slice(-2)
       let startRegex = new RegExp(`[\n][0-9]*[,]*${start}`)
       ind = csv.search(startRegex)
       if(ind!=-1) {
@@ -293,10 +296,10 @@ export class DisplayComponent implements OnInit {
       }
     }
 
-    let tempEndDateObj = new Date(this.endDate[0].year, this.endDate[0].month, this.endDate[0].day)
+    let tempEndDateObj = new Date(+this.endDate[0].year, +this.endDate[0].month-1, this.endDate[0].day)
     ind = -1
-    while(year == this.endDate[0].year && ind==-1) {
-      let end = tempEndDateObj.getFullYear() + '-' + ("0"+(tempEndDateObj.getMonth())).slice(-2) + '-' + ("0" + tempEndDateObj.getDate()).slice(-2)
+    while(year == this.endDate[0].year && ind==-1 && tempEndDateObj<=maxDate) {
+      let end = tempEndDateObj.getFullYear() + '-' + ("0"+(tempEndDateObj.getMonth()+1)).slice(-2) + '-' + ("0" + tempEndDateObj.getDate()).slice(-2)
       ind = csv.search(end)
       if(ind!=-1) {
         csv = csv.slice(0, csv.indexOf("\n", csv.lastIndexOf(end))+1)
