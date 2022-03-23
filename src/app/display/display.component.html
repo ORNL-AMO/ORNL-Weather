@@ -49,7 +49,7 @@
   <div class ="left">
     <button class="button button1" (click)="goBack()" ><b>Back</b></button>
   </div>
-  <div class="center">
+  <div class="center" *ngIf="!isLoading">
     <select name="pagingValue" #pagingValue id="pagingValue" (change)="onChange($event)">
           <option value="10">10 per page</option>
           <option value="25">25 per page</option>

@@ -71,7 +71,7 @@ export class StationsComponent implements OnInit {
       this.sendingArray.push(this.stationID)
       console.log("Station:");
       console.log(this.sendingArray);
-      this.router.navigate(["/display"], {state: { stationID: this.sendingArray, startDate: this.startDate, endDate: this.endDate, years: this.numYears, startStr: this.startStr, endStr: this.endStr}})
+      this.router.navigate(["/data"], {state: { stationID: this.sendingArray, startDate: this.startDate, endDate: this.endDate, years: this.numYears, startStr: this.startStr, endStr: this.endStr}})
     }
     else if(this.lat != null && this.long != null) {
       this.getStationsZip();  // Get local stations list

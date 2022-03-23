@@ -66,7 +66,9 @@ export class DisplayComponent implements OnInit {
 
   async ngOnInit() {
 
-    await this.checkYears();
+    if(this.stationID) {
+      await this.checkYears();
+    }
 
   }
 
@@ -93,12 +95,15 @@ export class DisplayComponent implements OnInit {
 
     for(let i=0; i<this.stationID.length; i++) {
       console.log("Fetching Station Data for " + this.stationID[i]);
+      let stationObj:any[] = [];
       for(let j=0; j<this.years; j++) {
-        await this.fetchCSV(this.yearsObj[j].toString(), Number(this.stationID[i]), i);
+        await this.fetchCSV(this.yearsObj[j].toString(), Number(this.stationID[i]), i, stationObj);
         console.log(this.dataObj)
       }
+      this.displayObj.push(stationObj)
     }
     console.log("Requested Data Retrieved Successfully");
+    console.log(this.displayObj[this.displayIndex]);
     for(let i of this.headersStats) {
       for(let j of i) {
         j['RATE'] = (j['EMPTY']/j['TOTAL']*100).toFixed(2)
@@ -111,7 +116,7 @@ export class DisplayComponent implements OnInit {
   }
 
   //takes in station id and attaches it to the end of the http links to pull the required csv. then the csv data is received as text and is converted into json for and placed in an array for display/printing/download purposes.
-  async fetchCSV(year:any, stationID:any, stationsInd:any){
+  async fetchCSV(year:any, stationID:any, stationsInd:any, stationObj:any){
     await fetch(`https://www.ncei.noaa.gov/data/local-climatological-data/access/${year}/${stationID}.csv`)
     .then((res) => res.text())
     .then((data) =>{
@@ -133,12 +138,8 @@ export class DisplayComponent implements OnInit {
       csv = csv.replace(/['"]+/g, '')
 
       // Trim csv to only relevant dates
-      // BUG: Broken for some stations, ex. 72326499999
-      // if(year == this.startDate[0].year) {
-      //   let startStr = this.startDate[0].year + '-' + this.startDate[0].month + '-' + this.startDate[0].day
-      //   let startRegex = new RegExp(`[\n][0-9]*[,]*${startStr}`)
-      //   csv = csv.slice(csv.search(startRegex));
-      // }
+      csv = this.trimToDates(csv, year)
+
       // if(year == this.endDate[0].year) {
       //   let endStr = this.endDate[0].year + '-' + this.endDate[0].month + '-' + this.endDate[0].day
       //   csv = csv.slice(0, csv.indexOf("\n", csv.lastIndexOf(endStr))+1);
@@ -159,7 +160,6 @@ export class DisplayComponent implements OnInit {
       }
 
 
-      let stationObj:any[] = [];
       //loop for pushing csv data into array for processing
 
       for(let i = 1; i < lines.length-1; i++) {
@@ -204,7 +204,7 @@ export class DisplayComponent implements OnInit {
           this.dataObj.push(dObj);
         }
       }
-      this.displayObj.push(stationObj);
+      // this.displayObj.push(stationObj);
     })
   }
 
@@ -276,6 +276,36 @@ export class DisplayComponent implements OnInit {
       jsonFile.push(obj)
     };
     return JSON.stringify(jsonFile)
+  }
+
+  trimToDates(csv:string, year:string) {
+    let tempStartDateObj = new Date(this.startDate[0].year, this.startDate[0].month, this.startDate[0].day)
+    let ind = -1
+    while(year == this.startDate[0].year && ind==-1) {
+      let start = tempStartDateObj.getFullYear() + '-' + ("0"+(tempStartDateObj.getMonth())).slice(-2) + '-' + ("0" + tempStartDateObj.getDate()).slice(-2)
+      let startRegex = new RegExp(`[\n][0-9]*[,]*${start}`)
+      ind = csv.search(startRegex)
+      if(ind!=-1) {
+        csv = csv.slice(ind);
+      }
+      else{
+        tempStartDateObj.setDate(tempStartDateObj.getDate()-1);
+      }
+    }
+
+    let tempEndDateObj = new Date(this.endDate[0].year, this.endDate[0].month, this.endDate[0].day)
+    ind = -1
+    while(year == this.endDate[0].year && ind==-1) {
+      let end = tempEndDateObj.getFullYear() + '-' + ("0"+(tempEndDateObj.getMonth())).slice(-2) + '-' + ("0" + tempEndDateObj.getDate()).slice(-2)
+      ind = csv.search(end)
+      if(ind!=-1) {
+        csv = csv.slice(0, csv.indexOf("\n", csv.lastIndexOf(end))+1)
+      }
+      else{
+        tempEndDateObj.setDate(tempEndDateObj.getDate()+1);
+      }
+    }
+    return csv
   }
 
   changeStation(id:any) {
