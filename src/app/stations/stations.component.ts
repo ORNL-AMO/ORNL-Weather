@@ -69,6 +69,7 @@ export class StationsComponent implements OnInit {
   getStations() {
     if(this.stationID != ""){   // Go directly to data if provided station id
       this.sendingArray.push(this.stationID)
+      console.log("Station:");
       console.log(this.sendingArray);
       this.router.navigate(["/display"], {state: { stationID: this.sendingArray, startDate: this.startDate, endDate: this.endDate, years: this.numYears, startStr: this.startStr, endStr: this.endStr}})
     }
@@ -105,6 +106,7 @@ export class StationsComponent implements OnInit {
     this.stationsArray.sort(function(a,b) {
       return a.OTHER - b.OTHER
     });
+    console.log("Matching Stations:");
     console.log(this.stationsArray)
     if(this.stationsArray.length == 0) {
       let error:string = "No matching stations found. Try increasing distance."
@@ -132,6 +134,7 @@ export class StationsComponent implements OnInit {
     this.stationsArray.sort(function(a, b) {
       return compareStrings(a.NAME, b.NAME);
     })
+    console.log("Matching Stations:");
     console.log(this.stationsArray)
     if(this.stationsArray.length == 0) {
       let error:string = "No matching stations found. Try another search method"
@@ -151,7 +154,6 @@ export class StationsComponent implements OnInit {
       else{
         let el = this.selectedArray.find((itm) => itm.ID === val);
         if (el) this.selectedArray.splice(this.selectedArray.indexOf(el), 1);
-        console.log(this.selectedArray);
       }
 
     }
@@ -170,10 +172,10 @@ export class StationsComponent implements OnInit {
     }
 
     sendToData(){
-      console.log(this.selectedArray);
       for(let index in this.selectedArray){
         this.sendingArray.push(this.selectedArray[index].ID)
       }
+      console.log("Selected Stations:");
       console.log(this.sendingArray);
       this.router.navigate(["/data"], {state: { stationID: this.sendingArray, startDate: this.startDate, endDate: this.endDate, years: this.numYears, startStr: this.startStr, endStr: this.endStr}})
     }

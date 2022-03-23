@@ -99,8 +99,8 @@ export class HomeComponent implements OnInit {
         this.zipJSON = data
     })
     if(this.zipJSON.length > 0) {
-      console.log("Zip code data loaded")
       console.log(this.zipJSON)
+      console.log("Zip code data loaded")
     }
 
     // Load States JSON
@@ -110,8 +110,8 @@ export class HomeComponent implements OnInit {
         this.statesJSON = data
     })
     if(this.statesJSON.length > 0) {
-      console.log("States data loaded")
       console.log(this.statesJSON)
+      console.log("States data loaded")
     }
 
     // Load Cities JSON
@@ -121,8 +121,8 @@ export class HomeComponent implements OnInit {
         this.citiesJSON = data
     })
     if(this.citiesJSON.length > 0) {
-      console.log("Cities data loaded")
       console.log(this.citiesJSON)
+      console.log("Cities data loaded")
     }
 
     // Fetch newest station list data from NOAA
@@ -137,11 +137,14 @@ export class HomeComponent implements OnInit {
       .then((data) =>{
           this.stationsJSON = data
       })
+      console.log(this.stationsJSON)
+      console.log("Cached stations list loaded")
     }
     else if(this.stationsJSON.length > 0) {
-      console.log("Up-to-date station list fetched successfully")
+      console.log(this.stationsJSON)
+      console.log("Current stations data loaded")
     }
-    console.log(this.stationsJSON)
+
   }
 
   //accepts the variables being entered. converts date into a usable array for month, day and year. Also passes zip code or station id on to next function for processing. Also checks for input errors
@@ -171,7 +174,7 @@ export class HomeComponent implements OnInit {
 
     console.log("Input: " + val);
     console.log("Distance: " + dist);
-    console.log("State Date: " + SD);
+    console.log("Start Date: " + SD);
     console.log("End Date: " + ED);
 
     if(val == ""){
@@ -515,7 +518,7 @@ export class HomeComponent implements OnInit {
       context.isError = false;
       context.zError = ""
     }, 8000)
-    
+
   }
   checkSErrors(){
     this.isError = true;

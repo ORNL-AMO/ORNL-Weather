@@ -90,11 +90,15 @@ export class DisplayComponent implements OnInit {
       this.yearsObj[k] = Number(this.startDate[0].year) + k;
     }
     //for multiple csv pulls of same station
-    for(let i=0; i<this.years; i++) {
-      for(let j=0; j<this.stationID.length; j++) {
-        await this.fetchCSV(this.yearsObj[i].toString(), Number(this.stationID[j]), j);
+
+    for(let i=0; i<this.stationID.length; i++) {
+      console.log("Fetching Station Data for " + this.stationID[i]);
+      for(let j=0; j<this.years; j++) {
+        await this.fetchCSV(this.yearsObj[j].toString(), Number(this.stationID[i]), i);
+        console.log(this.dataObj)
       }
     }
+    console.log("Requested Data Retrieved Successfully");
     for(let i of this.headersStats) {
       for(let j of i) {
         j['RATE'] = (j['EMPTY']/j['TOTAL']*100).toFixed(2)
@@ -202,7 +206,6 @@ export class DisplayComponent implements OnInit {
       }
       this.displayObj.push(stationObj);
     })
-    console.log(this.dataObj)
   }
 
   //triggers download of array data into a csv to users computer.

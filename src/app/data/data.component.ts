@@ -179,6 +179,7 @@ export class DataComponent implements OnInit {
           }
         }
         this.getCheckedItemList();
+        console.log("Available Data Types:");
         console.log(this.displayList);
       }
   }
@@ -214,6 +215,7 @@ export class DataComponent implements OnInit {
       await fetch(`https://www.ncei.noaa.gov/data/local-climatological-data/access/${this.startDate[0].year}/${this.stationID[i]}.csv`)
       .then((res) => res.text())
       .then((data) =>{
+        console.log("Got Test CSV File for " + this.stationID[i]);
         let csv = data;
         let csvheaders = csv.substring(0, csv.search("\n")).replace(/['"]+/g, '').split(/,/);
         csv = csv.replace(/['"]+/g, '')
@@ -221,7 +223,6 @@ export class DataComponent implements OnInit {
         // Hourly
         let oneDayData = csv.substring(0, csv.indexOf('-01-02T')-15)
         let dayLines = oneDayData.split("\n")
-        // Hourly
         for(let j = 1; j < dayLines.length-1; j++) {
           let currLine = dayLines[j].split(",")
           for(let k = 9; k < csvheaders.length; k++) {
@@ -265,8 +266,7 @@ export class DataComponent implements OnInit {
           counter++;
         }
 
-        console.log("Station Data Types");
-        console.log(this.stationDataTypes);
+        console.log("Got Data Types for " + this.stationID[i]);
       })
     }
   }
