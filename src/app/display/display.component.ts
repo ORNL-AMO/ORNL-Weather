@@ -81,8 +81,6 @@ export class DisplayComponent implements OnInit {
           tmp.push({'TOTAL':0,'EMPTY':0,'RATE':-1})
         }
         this.headersStats.push(tmp)
-        console.log("TEST");
-        console.log(this.headersStats[0]);
       }
     }
 
