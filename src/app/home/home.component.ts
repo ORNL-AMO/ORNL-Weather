@@ -462,7 +462,7 @@ export class HomeComponent implements OnInit {
       dist.style.backgroundColor="white"
       dist.disabled = false;
     }
-    else if(val.length == 11 && !isNaN(+(val.substring(1))) && (val[0] == 'A' || val[0] == 'a')) {  // Station ID
+    else if(val.length == 11 && !isNaN(+(val.substring(1))) && (val[0] == 'A' || val[0] == 'a' || !isNaN(+val[0]))) {  // Station ID
       zipcode.style.backgroundColor="#82ed80" // Green
       dist.style.backgroundColor="#A9A9A9"
       dist.disabled = true;
