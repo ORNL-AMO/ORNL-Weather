@@ -13,11 +13,20 @@ h1{
     justify-content: center;
 }
 
+.tableParent{
+  position:relative;
+  display: block;
+  justify-content: center;
+  margin: auto;
+  width: 80%;
+  height: 490px;
+}
+
 .button1 {
   border-radius: 60px;
   background-color: #587656;
   z-index: 1;
-} 
+}
 
 .button {
   border: none;
@@ -35,7 +44,7 @@ h1{
   margin-right: 23%;
   min-width: 145px;
   z-index: 1;
-  
+
 }
 
 
@@ -52,13 +61,11 @@ table{
   }
 
 td{
-    padding: 8px;
     align-content: center;
     text-align: left;
 }
 
 th{
-    padding:8px;
     text-align: left;
     align-content: center;
     background-color: #5a7255;
@@ -85,15 +92,16 @@ tr:hover{
 label {
   display: block;
   min-height: 100%;
-  padding: 8px;
+  padding: 12px;
+}
+.rows {
+  display: table-cell;
 }
 
 #scrollable-area {
-  margin: auto;
-  min-height: 100px;
-  max-height: 400px;
-  width: 80%;
-  height: auto;
+  position: absolute;
+  width: 100%;
+  height: 425px;
   border: 2px solid #2b376b;
   overflow-y: scroll;
   border-radius: 8px;
@@ -113,3 +121,74 @@ label {
     .footer {display:none;}
 }
 
+.loading{
+  /* padding: 8px; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+/* Hourglass Loader */
+.cell {
+	flex-basis: 50%;
+	padding: 1.5em;
+}
+.pl, .pl:before, .pl:after {
+	animation-duration: 3s;
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+}
+.pl {
+	margin: 0 auto 1.5em auto;
+	position: relative;
+	width: 3em;
+	height: 3em;
+}
+.pl:before, .pl:after {
+	background: currentColor;
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 50%;
+	transform-origin: 50% 100%;
+	clip-path: polygon(0 0,100% 0,50% 100%);
+	-webkit-clip-path: polygon(0 0,100% 0,50% 100%);
+}
+.pl-name {
+	text-align: center;
+  text-shadow:0 0 10px rgb(151, 73, 73);
+  font-size: medium;
+}
+.pl-hourglass {
+	animation-name: hourglassA;
+	background: rgb(88, 118, 86);
+	clip-path: polygon(0 0,100% 0,50% 50%,100% 100%,0 100%,50% 50%);
+	-webkit-clip-path: polygon(0 0,100% 0,50% 50%,100% 100%,0 100%,50% 50%);
+}
+.pl-hourglass:before, .pl-hourglass:after {
+	position: static;
+	clip-path: none;
+	-webkit-clip-path: none;
+}
+.pl-hourglass:before {
+	animation-name: hourglassB;
+}
+.pl-hourglass:after {
+	animation-name: hourglassC;
+}
+@keyframes hourglassA {
+	from, 75% { transform: rotate(0) }
+	to { transform: rotate(180deg) }
+}
+@keyframes hourglassB {
+	from { transform: scaleY(1) }
+	50%, to { transform: scaleY(0) }
+}
+@keyframes hourglassC {
+	from { transform: scaleY(0) }
+	50%, to { transform: scaleY(1) }
+}

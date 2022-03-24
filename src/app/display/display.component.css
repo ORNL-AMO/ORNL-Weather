@@ -57,6 +57,14 @@ th{
   border-collapse: separate;
 }
 
+.empty_rate {
+  background-color: #839c7c !important;
+}
+#empty_rate_text {
+  text-align: center;
+  align-content: center;
+}
+
 tr:nth-child(even){
   background-color: #f2f2f2;
 }
@@ -67,7 +75,7 @@ tr:hover{
   background-color: #839c7c;
 }
 
-label {
+#tabsLabel {
   display: block;
   padding: 8px;
   min-height: 100%;
@@ -156,11 +164,11 @@ label {
 }
 
 .button2 {
-  border-radius: 60px; 
+  border-radius: 60px;
   background-color: #587656;
   z-index: 1;
   margin-right: 20%;
-} 
+}
 
 /*#scrollable-area::-webkit-scrollbar {
   width: 9px;
@@ -260,6 +268,7 @@ label {
   height: auto;
   width:100%;
   bottom:0;
+  left:0;
   position:fixed;
   z-index: 0;
   justify-content: center;

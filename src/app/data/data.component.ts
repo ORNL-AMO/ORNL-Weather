@@ -11,7 +11,6 @@ import { CommonModule } from '@angular/common';
 })
 
 export class DataComponent implements OnInit {
-  stationIdArray: any[] = [];
   dataTypesArray: any[] = [];
   years: number = 0;
   stationID: any;
@@ -23,10 +22,12 @@ export class DataComponent implements OnInit {
   masterSelected:boolean;
   checklist:any;
   checkedList:any;
+  displayList:any[] = [];
+  stationDataTypes:string[] = []
+  isLoading: boolean = true;
+  dispHeaders: boolean = false;
 
   //page variables
-  yearsObj: any[] = [];
-  stationId: any;
   sendingArray: any[] = [];
 
   constructor(private router: Router)
@@ -47,7 +48,7 @@ export class DataComponent implements OnInit {
       }
     }
 
-  ngOnInit(): void {
+  async ngOnInit() {
       this.masterSelected = false;
       // https://docs.opendata.aws/noaa-ghcn-pds/readme.html
       // Helpful for finding descriptions and units of Data Types
@@ -169,21 +170,36 @@ export class DataComponent implements OnInit {
         {id:116,value:'WindEquipmentChangeDate',isSelected:false,title:'Wind Equipment Change Date'}
 
       ];
-      this.getCheckedItemList();
+      if(this.stationID) {
+        this.isLoading = true;
+        await this.getStationDataTypes();
+        if(this.stationDataTypes.length>0) {
+          this.dispHeaders = true;
+        }
+        this.isLoading = false;
+        for(let i=0; i<this.checklist.length; i++) {
+          if(this.stationDataTypes.includes(this.checklist[i]["value"])) {
+            this.displayList.push(this.checklist[i])
+          }
+        }
+        this.getCheckedItemList();
+        console.log("Available Data Types:");
+        console.log(this.displayList);
+      }
   }
 
 
   // The master checkbox will check/ uncheck all items
   checkUncheckAll() {
-    for (var i = 0; i < this.checklist.length; i++) {
-      this.checklist[i].isSelected = this.masterSelected;
+    for (var i = 0; i < this.displayList.length; i++) {
+      this.displayList[i].isSelected = this.masterSelected;
     }
     this.getCheckedItemList();
   }
 
   // Check All Checkbox Checked
   isAllSelected() {
-    this.masterSelected = this.checklist.every(function(item:any) {
+    this.masterSelected = this.displayList.every(function(item:any) {
         return item.isSelected == true;
       })
     this.getCheckedItemList();
@@ -192,10 +208,104 @@ export class DataComponent implements OnInit {
   // Get List of Checked Items
   getCheckedItemList(){
     this.checkedList = [];
-    for (var i = 0; i < this.checklist.length; i++) {
-      if(this.checklist[i].isSelected)
-        this.checkedList.push(this.checklist[i].value);
+    for (var i = 0; i < this.displayList.length; i++) {
+      if(this.displayList[i].isSelected)
+        this.checkedList.push(this.displayList[i].value);
     }
+  }
+
+  async getStationDataTypes(){
+    for(let i=0; i<this.stationID.length; i++) {
+      await fetch(`https://www.ncei.noaa.gov/data/local-climatological-data/access/${this.startDate[0].year}/${this.stationID[i]}.csv`)
+      .then((res) => res.text())
+      .then((data) =>{
+        console.log("Got Test CSV File for " + this.stationID[i]);
+        let csv = data;
+        let csvheaders = csv.substring(0, csv.search("\n")).replace(/['"]+/g, '').split(/,/);
+        csv = csv.replace(/['"]+/g, '')
+
+        // Hourly
+        let startDateObj = new Date(+this.startDate[0].year, +this.startDate[0].month-1, this.startDate[0].day)
+        let oneDayData = this.trimToDates(csv, startDateObj)
+        let dayLines = oneDayData.split("\n")
+        for(let j = 1; j < dayLines.length-1; j++) {
+          let currLine = dayLines[j].split(",")
+          for(let k = 9; k < csvheaders.length; k++) {
+            if(currLine[k] && !this.stationDataTypes.includes(csvheaders[k-1])) {
+              this.stationDataTypes.push(csvheaders[k-1]);
+            }
+          }
+        }
+
+        // Daily
+        let counter = 0;
+        let sodInd = csv.indexOf(',SOD');
+        while(counter<10 && sodInd != -1) {
+          let firstInd = csv.lastIndexOf('\n', sodInd)
+          let dailyLine = csv.substring(firstInd, csv.indexOf('\n', firstInd+1)).split(",")
+          if(dailyLine.length>0) {
+            for(let k = 9; k < csvheaders.length; k++) {
+              if(dailyLine[k] && !this.stationDataTypes.includes(csvheaders[k-1])) {
+                this.stationDataTypes.push(csvheaders[k-1]);
+              }
+            }
+          }
+          sodInd = csv.indexOf(',SOD', sodInd);
+          counter++;
+        }
+
+        // Monthly
+        counter = 0;
+        let somInd = csv.indexOf(',SOM');
+        while(counter<10 && somInd != -1) {
+          let firstInd = csv.lastIndexOf('\n', somInd)
+          let dailyLine = csv.substring(firstInd, csv.indexOf('\n', firstInd+1)).split(",")
+          if(dailyLine.length>0) {
+            for(let k = 9; k < csvheaders.length; k++) {
+              if(dailyLine[k] && !this.stationDataTypes.includes(csvheaders[k-1])) {
+                this.stationDataTypes.push(csvheaders[k-1]);
+              }
+            }
+          }
+          somInd = csv.indexOf(',SOM', sodInd);
+          counter++;
+        }
+
+        console.log("Got Data Types for " + this.stationID[i]);
+      })
+    }
+  }
+
+  trimToDates(csv:string, startDate:Date) {
+    let ind = -1
+    // Cannot be last day of year
+    let maxDate = new Date(+this.startDate[0].year, 11, 31)
+    while(ind==-1 && startDate<maxDate) {
+      let start = startDate.getFullYear() + '-' + ("0"+(startDate.getMonth()+1)).slice(-2) + '-' + ("0" + startDate.getDate()).slice(-2)
+      let startRegex = new RegExp(`[\n][0-9]*[,]*${start}`)
+      ind = csv.search(startRegex)
+      if(ind!=-1) {
+        csv = csv.slice(ind);
+      }
+      startDate.setDate(startDate.getDate()+1);
+    }
+
+    // If start date is Dec 31, only one day will be in csv at this point
+    if(!(startDate>maxDate)) {
+      ind = -1
+      while(ind==-1 && startDate<maxDate) {
+        let end = startDate.getFullYear() + '-' + ("0"+(startDate.getMonth())+1).slice(-2) + '-' + ("0" + startDate.getDate()).slice(-2)
+        ind = csv.search(end)
+        if(ind!=-1) {
+          csv = csv.slice(0, csv.indexOf("\n", csv.lastIndexOf(end))+1)
+        }
+        else{
+          startDate.setDate(startDate.getDate()+1);
+        }
+      }
+    }
+
+    return csv
   }
 
   sendToDisplay(){
