@@ -92,10 +92,11 @@
   </div>
 
   <select name="typeValue" #typeValue id="typeValue" (change)="onChangeType($event)">
+      <option value="All">All Data</option>  
       <option value="Hourly">Hourly Data</option>
       <option value="Daily">Daily Data</option>
       <option value="Monthly">Monthly Data</option>
-      <option value="All">All Data</option>
+      
   </select>
 
   <select name="pagingValue" #pagingValue id="pagingValue" (change)="onChange($event)">

@@ -160,8 +160,8 @@ export class DisplayComponent implements OnInit {
       this.dailyObj.push(stationDObj);
       this.monthlyObj.push(stationMObj)
       this.allObj.push(stationObj);
-      this.displayObj = this.hourlyObj;
-      this.dataObj = this.hourlyDataObj;
+      this.displayObj = this.allObj;
+      this.dataObj = this.allDataObj;
     }
     console.log("Requested Data Retrieved Successfully");
     console.log(this.displayObj[this.displayIndex]);
@@ -399,7 +399,7 @@ export class DisplayComponent implements OnInit {
             }
             if((hObj[7] == "FM-15" && desiredHTypes.includes(j)) || (hObj[7] == "FM-12" && desiredHTypes.includes(j)) || (hObj[7] == "FM-16" && desiredHTypes.includes(j))){
               hObj[indH] = currLine[j+1];
-              dHObj[this.hourlyHeads[j]] = currLine[j+1];
+              dHObj[csvheaders[j]] = currLine[j+1];
 
               indH++
               this.hourlyHeadersStats[stationsInd][statsIndH]['TOTAL'] += 1;
@@ -414,7 +414,7 @@ export class DisplayComponent implements OnInit {
             }
             else if(dayObj[7] == "SOD  " && desiredDTypes.includes(j)){
               dayObj[indD] = currLine[j+1];
-              dDObj[this.dailyHeads[j]] = currLine[j+1];
+              dDObj[csvheaders[j]] = currLine[j+1];
 
               indD++
               this.dailyHeadersStats[stationsInd][statsIndD]['TOTAL'] += 1;
@@ -429,7 +429,7 @@ export class DisplayComponent implements OnInit {
             }
             else if(mObj[7] == "SOM  " && desiredMTypes.includes(j)){
               mObj[indM] = currLine[j+1];
-              dMObj[this.monthlyHeads[j]] = currLine[j+1];
+              dMObj[csvheaders[j]] = currLine[j+1];
 
               indM++
               this.monthlyHeadersStats[stationsInd][statsIndM]['TOTAL'] += 1;
@@ -452,26 +452,48 @@ export class DisplayComponent implements OnInit {
 
           }
           if(hObj.slice(9).length > 0){
-            stationHObj.push(hObj)
-            this.hourlyDataObj.push(dHObj);
+            let tmp: string = "";
+            for (let i of hObj.slice(9)) {
+              tmp += i.toString().trim();
+            } if(tmp) {
+              stationHObj.push(hObj)
+              this.hourlyDataObj.push(dHObj);
+            }
           }
           if(dayObj.slice(9).length > 0){
-            stationDObj.push(dayObj)
-            this.dailyDataObj.push(dDObj);
+            let tmp: string = "";
+            for (let i of dayObj.slice(9)) {
+              tmp += i.toString().trim();
+            } if(tmp) {
+              stationDObj.push(dayObj)
+              this.dailyDataObj.push(dDObj);
+            }
           }
           if(mObj.slice(9).length > 0){
-            stationMObj.push(mObj)
-            this.monthlyDataObj.push(dMObj);
+            let tmp: string = "";
+            for (let i of mObj.slice(9)) {
+              tmp += i.toString().trim();
+            } if(tmp) {
+              stationMObj.push(mObj)
+              this.monthlyDataObj.push(dMObj);
+            }
           }
-
-          stationObj.push(obj);
-          this.allDataObj.push(dObj);
+          if(obj.slice(9).length > 0){
+            let tmp: string = "";
+            for (let i of obj.slice(9)) {
+              tmp += i.toString().trim();
+            } if(tmp) {
+              stationObj.push(obj);
+              this.allDataObj.push(dObj);
+            }
+          }
+          
 
         }
       }
     })
-    this.headers = this.hourlyHeads;
-    this.headersStats = this.hourlyHeadersStats;
+    this.headers = this.allHeaders;
+    this.headersStats = this.allHeadersStats;
   }
 
   //triggers download of array data into a csv to users computer.
@@ -506,6 +528,7 @@ export class DisplayComponent implements OnInit {
       this.headers = this.hourlyHeads;
       this.headersStats = this.hourlyHeadersStats;
       this.config.currentPage = 1;
+      console.log(this.dataObj)
     }
     if(e.target.value == "Daily"){
       this.displayObj = this.dailyObj;
@@ -513,6 +536,7 @@ export class DisplayComponent implements OnInit {
       this.headers = this.dailyHeads;
       this.headersStats = this.dailyHeadersStats;
       this.config.currentPage = 1;
+      console.log(this.dataObj)
     }
     if(e.target.value == "Monthly"){
       this.displayObj = this.monthlyObj;
@@ -520,6 +544,7 @@ export class DisplayComponent implements OnInit {
       this.headers = this.monthlyHeads;
       this.headersStats = this.monthlyHeadersStats;
       this.config.currentPage = 1;
+      console.log(this.dataObj)
     }
     if(e.target.value == "All"){
       this.displayObj = this.allObj;
