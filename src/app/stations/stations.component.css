@@ -25,24 +25,23 @@ h1{
   font-size: 30px;
   font-family: 'Lato', sans-serif;
   z-index: 1;
-        
+
 }
 
 table{
   font-family: 'Lato', sans-serif;
   border-collapse: collapse;
-  width: 100%;   
-  background: white; 
+  width: 100%;
+  background: white;
   z-index: 1;
   }
 
-  
+
 td{
-  padding: 8px;
   align-content: center;
   text-align: left;
   z-index: 1;
-} 
+}
 th{
   padding: 8px;
   text-align: left;
@@ -51,14 +50,14 @@ th{
   color: white;
   position: -webkit-sticky;
   position: sticky;
-  top: 0;  
+  top: 0;
   font-size: 17;
   z-index: 1;
 }
 label {
   display: block;
   min-height: 100%;
-  padding: 8px;
+  padding: 16px;
 }
 
 tr:nth-child(even){
@@ -93,12 +92,15 @@ tr:hover{
   display: flex;
   justify-content: center;
 }
+.rows {
+  display: table-cell;
+}
 
 .button1 {
   border-radius: 60px;
   background-color: #587656;
   z-index: 1;
-} 
+}
 
 .button {
   border: none;
@@ -116,7 +118,7 @@ tr:hover{
   margin-right: 23%;
   min-width: 147px;
   z-index: 1;
-  
+
 }
 
 

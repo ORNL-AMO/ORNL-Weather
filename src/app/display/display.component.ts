@@ -9,6 +9,49 @@ declare var require: any
   styleUrls: ['./display.component.css']
 })
 export class DisplayComponent implements OnInit {
+  //headers
+  hourlyHeaders = ['HourlyAltimeterSetting',
+    'HourlyDewPointTemperature',
+    'HourlyDryBulbTemperature',
+    'HourlyPrecipitation',
+    'HourlyPresentWeatherType',
+    'HourlyPressureChange',
+    'HourlyPressureTendency',
+    'HourlyRelativeHumidity',
+    'HourlySkyConditions',
+    'HourlySeaLevelPressure',
+    'HourlyStationPressure',
+    'HourlyVisibility',
+    'HourlyWetBulbTemperature',
+    'HourlyWindDirection',
+    'HourlyWindGustSpeed',
+    'HourlyWindSpeed'
+    ]
+  dailyHeaders = ['Sunrise',
+    'Sunset',
+    'DailyAverageDewPointTemperature',
+    'DailyAverageDryBulbTemperature',
+    'DailyAverageRelativeHumidity',
+    'DailyAverageSeaLevelPressure',
+    'DailyAverageStationPressure',
+    'DailyAverageWetBulbTemperature',
+    'DailyAverageWindSpeed',
+    'DailyCoolingDegreeDays',
+    'DailyDepartureFromNormalAverageTemperature',
+    'DailyHeatingDegreeDays',
+    'DailyMaximumDryBulbTemperature',
+    'DailyMinimumDryBulbTemperature',
+    'DailyPeakWindDirection',
+    'DailyPeakWindSpeed',
+    'DailyPrecipitation',
+    'DailySnowDepth',
+    'DailySnowfall',
+    'DailySustainedWindDirection',
+    'DailySustainedWindSpeed',
+    'DailyWeather'
+    ]
+    monthlyHeaders = ['MonthlyAverageRH', 'MonthlyDaysWithGT001Precip', 'MonthlyDaysWithGT010Precip', 'MonthlyDaysWithGT32Temp', 'MonthlyDaysWithGT90Temp', 'MonthlyDaysWithLT0Temp', 'MonthlyDaysWithLT32Temp', 'MonthlyDepartureFromNormalAverageTemperature', 'MonthlyDepartureFromNormalCoolingDegreeDays', 'MonthlyDepartureFromNormalHeatingDegreeDays', 'MonthlyDepartureFromNormalMaximumTemperature', 'MonthlyDepartureFromNormalMinimumTemperature', 'MonthlyDepartureFromNormalPrecipitation', 'MonthlyDewpointTemperature', 'MonthlyGreatestPrecip', 'MonthlyGreatestPrecipDate', 'MonthlyGreatestSnowDepth', 'MonthlyGreatestSnowDepthDate', 'MonthlyGreatestSnowfall', 'MonthlyGreatestSnowfallDate', 'MonthlyMaxSeaLevelPressureValue', 'MonthlyMaxSeaLevelPressureValueDate', 'MonthlyMaxSeaLevelPressureValueTime', 'MonthlyMaximumTemperature', 'MonthlyMeanTemperature', 'MonthlyMinSeaLevelPressureValue', 'MonthlyMinSeaLevelPressureValueDate', 'MonthlyMinSeaLevelPressureValueTime', 'MonthlyMinimumTemperature', 'MonthlySeaLevelPressure', 'MonthlyStationPressure', 'MonthlyTotalLiquidPrecipitation', 'MonthlyTotalSnowfall', 'MonthlyWetBulb', 'AWND', 'CDSD', 'CLDD', 'DSNW', 'HDSD', 'HTDD', 'NormalsCoolingDegreeDay', 'NormalsHeatingDegreeDay']
+
   //page variables
   yearsObj: any[] = [];
   years: number = 0;
@@ -21,6 +64,7 @@ export class DisplayComponent implements OnInit {
   startStr:string = "";
   endStr:string = "";
   config: any;
+  emptyAvail: boolean = true;
   public maxSize: number = 7;
   public directionLinks: boolean = true;
   public autoHide: boolean = false;
@@ -35,8 +79,30 @@ export class DisplayComponent implements OnInit {
 
   //declaring objects for data table display
   displayObj: any[] = [];
-  dataObj: any[] = [];
   headers: any[] = [];
+  headersStats: any = [];
+
+  hourlyObj: any[] = [];
+  dailyObj: any[] = [];
+  monthlyObj: any[] = [];
+  allObj: any[] = [];
+
+  hourlyDataObj: any[] = [];
+  dailyDataObj: any[] = [];
+  monthlyDataObj: any[] = [];
+  allDataObj: any[] = [];
+
+  hourlyHeads: any[] = [];
+  dailyHeads: any[] = [];
+  monthlyHeads: any[] = [];
+  allHeaders: any[] = [];
+
+  hourlyHeadersStats: any[] = []
+  dailyHeadersStats: any[] = []
+  monthlyHeadersStats: any[] = []
+  allHeadersStats: any[] = []
+
+
 
   //making boolean for loading spinner
   isLoading: boolean = true;
@@ -65,7 +131,9 @@ export class DisplayComponent implements OnInit {
 
   async ngOnInit() {
 
-    await this.checkYears();
+    if(this.stationID) {
+      await this.checkYears();
+    }
 
   }
 
@@ -76,9 +144,43 @@ export class DisplayComponent implements OnInit {
       this.yearsObj[k] = Number(this.startDate[0].year) + k;
     }
     //for multiple csv pulls of same station
-    for(let i=0; i<this.years; i++) {
-      for(let j=0; j<this.stationID.length; j++) {
-        await this.fetchCSV(this.yearsObj[i].toString(), Number(this.stationID[j]), j);
+
+    for(let i=0; i<this.stationID.length; i++) {
+      console.log("Fetching Station Data for " + this.stationID[i]);
+      let stationObj:any[] = [];
+      let stationHObj:any[] = [];
+      let stationDObj:any[] = [];
+      let stationMObj:any[] = [];
+      for(let j=0; j<this.years; j++) {
+        await this.fetchCSV(this.yearsObj[j].toString(), Number(this.stationID[i]), i, stationObj, stationHObj, stationDObj, stationMObj);
+        console.log(this.allDataObj)
+      }
+      this.hourlyObj.push(stationHObj);
+      this.dailyObj.push(stationDObj);
+      this.monthlyObj.push(stationMObj)
+      this.allObj.push(stationObj);
+      this.displayObj = this.hourlyObj;
+    }
+    console.log("Requested Data Retrieved Successfully");
+    console.log(this.displayObj[this.displayIndex]);
+    for(let i of this.allHeadersStats) {
+      for(let j of i) {
+        j['RATE'] = (j['EMPTY']/j['TOTAL']*100).toFixed(2)
+      }
+    }
+    for(let i of this.hourlyHeadersStats) {
+      for(let j of i) {
+        j['RATE'] = (j['EMPTY']/j['TOTAL']*100).toFixed(2)
+      }
+    }
+    for(let i of this.dailyHeadersStats) {
+      for(let j of i) {
+        j['RATE'] = (j['EMPTY']/j['TOTAL']*100).toFixed(2)
+      }
+    }
+    for(let i of this.monthlyHeadersStats) {
+      for(let j of i) {
+        j['RATE'] = (j['EMPTY']/j['TOTAL']*100).toFixed(2)
       }
     }
 
@@ -87,10 +189,8 @@ export class DisplayComponent implements OnInit {
     this.isLoading = false;
   }
 
-
-
   //takes in station id and attaches it to the end of the http links to pull the required csv. then the csv data is received as text and is converted into json for and placed in an array for display/printing/download purposes.
-  async fetchCSV(year:any, stationID:any, ind:any){
+  async fetchCSV(year:any, stationID:any, stationsInd:any, stationObj:any, stationHObj:any, stationDObj:any, stationMObj:any){
     await fetch(`https://www.ncei.noaa.gov/data/local-climatological-data/access/${year}/${stationID}.csv`)
     .then((res) => res.text())
     .then((data) =>{
@@ -98,26 +198,57 @@ export class DisplayComponent implements OnInit {
       let csv = data
       let csvheaders = csv.substring(0, csv.search("\n")).replace(/['"]+/g, '').split(/,/); // Why use many line, when one line do trick
 
-      // Get complete list of headers to include
-      this.headers = ["STATION", "DATE", "TIME", "LATITUDE", "LONGITUDE", "ELEVATION", "NAME"]
-      for(let i=0; i<this.dataTypeObj.length; i++) {
-        this.headers.push(this.dataTypeObj[i])
+      // Only do this once
+      if(this.allHeaders.length<1) {
+        this.allHeaders = ["STATION", "DATE", "TIME", "LATITUDE", "LONGITUDE", "ELEVATION", "NAME", "REPORT_TYPE", "SOURCE"]
+        // Copy initial headers into each array
+        this.hourlyHeads = this.allHeaders.slice();
+        this.dailyHeads = this.allHeaders.slice();
+        this.monthlyHeads = this.allHeaders.slice();
+
+        for(let i=0; i<this.dataTypeObj.length; i++) {
+          this.allHeaders.push(this.dataTypeObj[i])
+          if(this.hourlyHeaders.includes(this.dataTypeObj[i])){
+            this.hourlyHeads.push(this.dataTypeObj[i])
+          }
+          if(this.dailyHeaders.includes(this.dataTypeObj[i])){
+            this.dailyHeads.push(this.dataTypeObj[i])
+          }
+          if(this.monthlyHeaders.includes(this.dataTypeObj[i])){
+            this.monthlyHeads.push(this.dataTypeObj[i])
+          }
+        }
+
+        // Initialize Empty Stats Object
+        for(let i=0; i<this.stationID.length; i++) {
+          let tmpA = []
+          let tmpH = []
+          let tmpD = []
+          let tmpM = []
+          for(let j=0; j<this.dataTypeObj.length; j++) {
+            tmpA.push({'TOTAL':0,'EMPTY':0,'RATE':-1})
+            if(this.hourlyHeaders.includes(this.dataTypeObj[j])){
+              tmpH.push({'TOTAL':0,'EMPTY':0,'RATE':-1})
+            }
+            if(this.dailyHeaders.includes(this.dataTypeObj[j])){
+              tmpD.push({'TOTAL':0,'EMPTY':0,'RATE':-1})
+            }
+            if(this.monthlyHeaders.includes(this.dataTypeObj[j])){
+              tmpM.push({'TOTAL':0,'EMPTY':0,'RATE':-1})
+            }
+          }
+          this.allHeadersStats.push(tmpA)
+          this.hourlyHeadersStats.push(tmpH)
+          this.dailyHeadersStats.push(tmpD)
+          this.monthlyHeadersStats.push(tmpM)
+        }
       }
 
       //Remove "" that are automatically added
       csv = csv.replace(/['"]+/g, '')
 
       // Trim csv to only relevant dates
-      // BUG: Broken for some stations, ex. 72326499999
-      // if(year == this.startDate[0].year) {
-      //   let startStr = this.startDate[0].year + '-' + this.startDate[0].month + '-' + this.startDate[0].day
-      //   let startRegex = new RegExp(`[\n][0-9]*[,]*${startStr}`)
-      //   csv = csv.slice(csv.search(startRegex));
-      // }
-      // if(year == this.endDate[0].year) {
-      //   let endStr = this.endDate[0].year + '-' + this.endDate[0].month + '-' + this.endDate[0].day
-      //   csv = csv.slice(0, csv.indexOf("\n", csv.lastIndexOf(endStr))+1);
-      // }
+      csv = this.trimToDates(csv, year)
 
       //splitting csv into lines and splitting the headers element
       let lines = csv.split("\n")
@@ -127,18 +258,69 @@ export class DisplayComponent implements OnInit {
 
       // Get indices of data types to filter
       let desiredTypes: number[] = []
+      let desiredHTypes: number[] = []
+      let desiredDTypes: number[] = []
+      let desiredMTypes: number[] = []
+
+
+      let hourly: any[] = [];
+      let daily: any[] = [];
+      let monthly: any[] = [];
+
+      //all types
       for(let i=0; i<csvheaders.length; i++) {
         if(this.dataTypeObj.includes(csvheaders[i])) {
           desiredTypes.push(i)
         }
       }
 
-      let stationObj:any[] = [];
+      //hourly types
+      for(let i=0; i<this.hourlyHeaders.length; i++) {
+        if(this.dataTypeObj.includes(this.hourlyHeaders[i])){
+          hourly.push(this.hourlyHeaders[i])
+        }
+      }
+      for(let i=0; i<csvheaders.length; i++) {
+        if(hourly.includes(csvheaders[i])) {
+          desiredHTypes.push(i)
+        }
+      }
+
+      //daily types
+      for(let i=0; i<this.dailyHeaders.length; i++) {
+        if(this.dataTypeObj.includes(this.dailyHeaders[i])){
+          daily.push(this.dailyHeaders[i])
+        }
+      }
+      for(let i=0; i<csvheaders.length; i++) {
+        if(daily.includes(csvheaders[i])) {
+          desiredDTypes.push(i)
+        }
+      }
+
+      //monthly types
+      for(let i=0; i<this.monthlyHeaders.length; i++) {
+        if(this.dataTypeObj.includes(this.monthlyHeaders[i])){
+          monthly.push(this.monthlyHeaders[i])
+        }
+      }
+      for(let i=0; i<csvheaders.length; i++) {
+        if(monthly.includes(csvheaders[i])) {
+          desiredMTypes.push(i)
+        }
+      }
+
+
       //loop for pushing csv data into array for processing
 
       for(let i = 1; i < lines.length-1; i++) {
+        let dObj: any = []; // Data accumulator
+
+        // Display accumulators
         let obj: any = [];
-        let dObj: any = [];
+        let hObj: any = [];
+        let dayObj: any = [];
+        let mObj: any = [];
         let currLine = lines[i].split(",")
 
         //seperating the date element into date and time elements
@@ -155,28 +337,112 @@ export class DisplayComponent implements OnInit {
           //station id through elevation.
           for(let j = 0; j < 6; j++) {
             obj[j] = currLine[j];
-            dObj[this.headers[j]] = currLine[j];
+            hObj[j] = currLine[j];
+            dayObj[j] = currLine[j];
+            mObj[j] = currLine[j];
+
+            dObj[this.allHeaders[j]] = currLine[j];
           }
 
           //for some reason the names gets split twice for had to add to parts of the line to one element of the array
           obj[6] = currLine[6] + currLine[7];
+          hObj[6] = currLine[6] + currLine[7];
+          dayObj[6] = currLine[6] + currLine[7];
+          mObj[6] = currLine[6] + currLine[7];
+
           dObj[this.headers[6]] = currLine[6] + currLine[7];
 
-          let ind = 7;
+          //pushing Report Type and Source.
+          for(let j = 7; j < 9; j++) {
+            obj[j] = currLine[j+1];
+            if(currLine[8] == "FM-15" || "FM-12" || "FM-16"){
+              hObj[j] = currLine[j+1];
+            }
+            if(currLine[8] == "SOD  "){
+              dayObj[j] = currLine[j+1];
+            }
+            if(currLine[8] == "SOM  "){
+              mObj[j] = currLine[j+1];
+            }
+          }
+
+          let ind = 9, indH = 9, indD = 9, indM = 9;
+          let statsInd = -1, statsIndH = 0, statsIndD = 0, statsIndM = 0;
+
           //pushing the rest.
-          for(let j = 7; j < csvheaders.length; j++) {
+          for(let j = 9; j < csvheaders.length; j++) {
             if(desiredTypes.includes(j)) {
               obj[ind++] = currLine[j+1];
               dObj[csvheaders[j]] = currLine[j+1];
+
+              statsInd++;
             }
+            if((hObj[7] == "FM-15" && desiredHTypes.includes(j)) || (hObj[7] == "FM-12" && desiredHTypes.includes(j)) || (hObj[7] == "FM-16" && desiredHTypes.includes(j))){
+              hObj[indH] = currLine[j+1];
+              indH++
+              this.hourlyHeadersStats[stationsInd][statsIndH]['TOTAL'] += 1;
+              if(!currLine[j+1]) {
+                this.hourlyHeadersStats[stationsInd][statsIndH]['EMPTY'] += 1;
+              }
+              statsIndH++;
+              this.allHeadersStats[stationsInd][statsInd]['TOTAL'] += 1;
+              if(!currLine[j+1]) {
+                this.allHeadersStats[stationsInd][statsInd]['EMPTY'] += 1;
+              }
+            }
+            else if(dayObj[7] == "SOD  " && desiredDTypes.includes(j)){
+              dayObj[indD] = currLine[j+1];
+              indD++
+              this.dailyHeadersStats[stationsInd][statsIndD]['TOTAL'] += 1;
+              if(!currLine[j+1]) {
+                this.dailyHeadersStats[stationsInd][statsIndD]['EMPTY'] += 1;
+              }
+              statsIndD++;
+              this.allHeadersStats[stationsInd][statsInd]['TOTAL'] += 1;
+              if(!currLine[j+1]) {
+                this.allHeadersStats[stationsInd][statsInd]['EMPTY'] += 1;
+              }
+            }
+            else if(mObj[7] == "SOM  " && desiredMTypes.includes(j)){
+              mObj[indM] = currLine[j+1];
+              indM++
+              this.monthlyHeadersStats[stationsInd][statsIndM]['TOTAL'] += 1;
+              if(!currLine[j+1]) {
+                this.monthlyHeadersStats[stationsInd][statsIndM]['EMPTY'] += 1;
+              }
+              statsIndM++;
+              this.allHeadersStats[stationsInd][statsInd]['TOTAL'] += 1;
+              if(!currLine[j+1]) {
+                this.allHeadersStats[stationsInd][statsInd]['EMPTY'] += 1;
+              }
+            }
+            // Data types without an Hourly/Daily/Monthly designation are calculated as if from any report type
+            else if(desiredTypes.includes(j) && !desiredHTypes.includes(j) && !desiredDTypes.includes(j) && !desiredMTypes.includes(j)) {
+              this.allHeadersStats[stationsInd][statsInd]['TOTAL'] += 1;
+              if(!currLine[j+1]) {
+                this.allHeadersStats[stationsInd][statsInd]['EMPTY'] += 1;
+              }
+            }
+
           }
+          if(hObj[9]){
+            stationHObj.push(hObj)
+          }
+          if(dayObj[9]){
+            stationDObj.push(dayObj)
+          }
+          if(mObj[9]){
+            stationMObj.push(mObj)
+          }
+
           stationObj.push(obj);
-          this.dataObj.push(dObj);
+          this.allDataObj.push(dObj);
         }
       }
-      this.displayObj.push(stationObj);
     })
-    console.log(this.dataObj)
+    this.headers = this.hourlyHeads;
+    this.headersStats = this.hourlyHeadersStats;
+    console.log(this.allDataObj)
   }
 
   //triggers download of array data into a csv to users computer.
@@ -188,9 +454,22 @@ export class DisplayComponent implements OnInit {
       showLabels: true,
       headers: this.headers
     };
+    let val = (document.getElementById("typeValue") as HTMLInputElement).value.toString().trim()
+    let downloadVal;
+    if(val == "Hourly"){
+      downloadVal = this.hourlyDataObj;
+    }
+    if(val == "Daily"){
+      downloadVal = this.dailyDataObj;
+    }
+    if(val == "Monthly"){
+      downloadVal = this.monthlyDataObj;
+    }
+    if(val == "All"){
+      downloadVal = this.allDataObj;
+    }
 
-
-    new ngxCsv(this.dataObj, filename, options);
+    new ngxCsv(downloadVal, filename, options);
   }
 
   emptyValues(obj: any){
@@ -205,6 +484,28 @@ export class DisplayComponent implements OnInit {
   onChange(e: any){
     this.config.itemsPerPage = e.target.value;
   }
+  onChangeType(e: any){
+    if(e.target.value == "Hourly"){
+      this.displayObj = this.hourlyObj;
+      this.headers = this.hourlyHeads;
+      this.headersStats = this.hourlyHeadersStats;
+    }
+    if(e.target.value == "Daily"){
+      this.displayObj = this.dailyObj;
+      this.headers = this.dailyHeads;
+      this.headersStats = this.dailyHeadersStats;
+    }
+    if(e.target.value == "Monthly"){
+      this.displayObj = this.monthlyObj;
+      this.headers = this.monthlyHeads;
+      this.headersStats = this.monthlyHeadersStats;
+    }
+    if(e.target.value == "All"){
+      this.displayObj = this.allObj;
+      this.headers = this.allHeaders;
+      this.headersStats = this.allHeadersStats;
+    }
+  }
 
   async exportTojson() {
     const { convertArrayToCSV } = require('convert-array-to-csv');
@@ -213,8 +514,8 @@ export class DisplayComponent implements OnInit {
     let filename = "NCEI_Weather_Data";
     let header = this.headers;
     var temp: string = "";
-    for(let i = 0; i < this.displayObj.length; i++){
-      var csvFromArrayOfArrays: string = convertArrayToCSV(this.displayObj[i], {
+    for(let i = 0; i < this.allObj.length; i++){
+      var csvFromArrayOfArrays: string = convertArrayToCSV(this.allObj[i], {
         header,
         separator: ','
       });
@@ -249,6 +550,39 @@ export class DisplayComponent implements OnInit {
     return JSON.stringify(jsonFile)
   }
 
+  trimToDates(csv:string, year:string) {
+    let tempStartDateObj = new Date(+this.startDate[0].year, +this.startDate[0].month-1, this.startDate[0].day)
+    let ind = -1
+    let minDate = new Date(+this.startDate[0].year, 0, 1)
+    let maxDate = new Date(+this.endDate[0].year, 11, 31)
+
+    while(year == this.startDate[0].year && ind==-1 && tempStartDateObj>=minDate) {
+      let start = tempStartDateObj.getFullYear() + '-' + ("0"+(tempStartDateObj.getMonth()+1)).slice(-2) + '-' + ("0" + tempStartDateObj.getDate()).slice(-2)
+      let startRegex = new RegExp(`[\n][0-9]*[,]*${start}`)
+      ind = csv.search(startRegex)
+      if(ind!=-1) {
+        csv = csv.slice(ind);
+      }
+      else{
+        tempStartDateObj.setDate(tempStartDateObj.getDate()-1);
+      }
+    }
+
+    let tempEndDateObj = new Date(+this.endDate[0].year, +this.endDate[0].month-1, this.endDate[0].day)
+    ind = -1
+    while(year == this.endDate[0].year && ind==-1 && tempEndDateObj<=maxDate) {
+      let end = tempEndDateObj.getFullYear() + '-' + ("0"+(tempEndDateObj.getMonth()+1)).slice(-2) + '-' + ("0" + tempEndDateObj.getDate()).slice(-2)
+      ind = csv.search(end)
+      if(ind!=-1) {
+        csv = csv.slice(0, csv.indexOf("\n", csv.lastIndexOf(end))+1)
+      }
+      else{
+        tempEndDateObj.setDate(tempEndDateObj.getDate()+1);
+      }
+    }
+    return csv
+  }
+
   changeStation(id:any) {
     this.displayIndex = this.stationID.indexOf(id)
     let tab:any = document.getElementById(id)
@@ -258,7 +592,11 @@ export class DisplayComponent implements OnInit {
     }
     tab.style.backgroundColor="#839c7c";
   }
-  
+
+  toggleEmptyAvail() {
+    this.emptyAvail = !this.emptyAvail;
+  }
+
   goBack(){
     this.router.navigate(["/data"])
   }
