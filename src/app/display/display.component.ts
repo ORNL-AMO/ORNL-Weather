@@ -451,15 +451,15 @@ export class DisplayComponent implements OnInit {
             }
 
           }
-          if(hObj[9]){
+          if(hObj.slice(9).length > 0){
             stationHObj.push(hObj)
             this.hourlyDataObj.push(dHObj);
           }
-          if(dayObj[9]){
+          if(dayObj.slice(9).length > 0){
             stationDObj.push(dayObj)
             this.dailyDataObj.push(dDObj);
           }
-          if(mObj[9]){
+          if(mObj.slice(9).length > 0){
             stationMObj.push(mObj)
             this.monthlyDataObj.push(dMObj);
           }
