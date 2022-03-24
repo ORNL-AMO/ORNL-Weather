@@ -73,7 +73,7 @@
       <div class="custom-pagination">
         <div class="pagination-previous" [class.disabled]="p.isFirstPage()">
           <span *ngIf="!p.isFirstPage()" (click)="p.previous()">
-              <img src= "/assets/arrowLeft.png" class="arrow">
+              <img src= "assets/arrowLeft.png" class="arrow">
           </span>
         </div>
         <div *ngIf="p.isFirstPage()" style="display:inline-flex;width:17.5px;height:30"> </div>
@@ -84,7 +84,7 @@
             </div>
         </div>
         <div class="pagination-next" [class.disabled]="p.isLastPage()">
-          <span *ngIf="!p.isLastPage()" (click)="p.next()"> <img src= "/assets/arrowRight.png" class="arrow"> </span>
+          <span *ngIf="!p.isLastPage()" (click)="p.next()"> <img src= "assets/arrowRight.png" class="arrow"> </span>
         </div>
         <div *ngIf="p.isLastPage()" style="display:inline-flex;width:17.5px;height:30"> </div>
       </div>

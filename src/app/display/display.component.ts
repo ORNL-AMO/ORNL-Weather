@@ -321,7 +321,7 @@ export class DisplayComponent implements OnInit {
         let dHObj: any = [];
         let dDObj: any = [];
         let dMObj: any = [];
-        
+
 
         // Display accumulators
         let obj: any = [];
@@ -352,7 +352,7 @@ export class DisplayComponent implements OnInit {
             dHObj[csvheaders[j]] = currLine[j];
             dDObj[csvheaders[j]] = currLine[j];
             dMObj[csvheaders[j]] = currLine[j];
-            
+
           }
 
           //for some reason the names gets split twice for had to add to parts of the line to one element of the array
@@ -365,13 +365,13 @@ export class DisplayComponent implements OnInit {
           dHObj[csvheaders[6]] = currLine[6] + currLine[7];
           dDObj[csvheaders[6]] = currLine[6] + currLine[7];
           dMObj[csvheaders[6]] = currLine[6] + currLine[7];
-          
+
 
           //pushing Report Type and Source.
           for(let j = 7; j < 9; j++) {
             obj[j] = currLine[j+1];
             dObj[this.allHeaders[j]] = currLine[j+1];
-            
+
             if(currLine[8] == "FM-15" || "FM-12" || "FM-16"){
               hObj[j] = currLine[j+1];
               dHObj[this.hourlyHeads[j]] = currLine[j+1];
@@ -452,21 +452,42 @@ export class DisplayComponent implements OnInit {
 
           }
           if(hObj.slice(9).length > 0){
-            stationHObj.push(hObj)
-            this.hourlyDataObj.push(dHObj);
+            let tmp: string = "";
+            for (let i of hObj.slice(9)) {
+              tmp += i.toString().trim();
+            } if(tmp) {
+              stationHObj.push(hObj)
+              this.hourlyDataObj.push(dHObj);
+            }
           }
           if(dayObj.slice(9).length > 0){
-            stationDObj.push(dayObj)
-            this.dailyDataObj.push(dDObj);
+            let tmp: string = "";
+            for (let i of dayObj.slice(9)) {
+              tmp += i.toString().trim();
+            } if(tmp) {
+              stationDObj.push(dayObj)
+              this.dailyDataObj.push(dDObj);
+            }
           }
           if(mObj.slice(9).length > 0){
-            stationMObj.push(mObj)
-            this.monthlyDataObj.push(dMObj);
+            let tmp: string = "";
+            for (let i of mObj.slice(9)) {
+              tmp += i.toString().trim();
+            } if(tmp) {
+              stationMObj.push(mObj)
+              this.monthlyDataObj.push(dMObj);
+            }
           }
 
-          stationObj.push(obj);
-          this.allDataObj.push(dObj);
-
+          if(obj.slice(9).length > 0){
+            let tmp: string = "";
+            for (let i of obj.slice(9)) {
+              tmp += i.toString().trim();
+            } if(tmp) {
+              stationObj.push(obj);
+              this.allDataObj.push(dObj);
+            }
+          }
         }
       }
     })
