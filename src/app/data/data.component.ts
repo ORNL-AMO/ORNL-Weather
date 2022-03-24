@@ -24,7 +24,8 @@ export class DataComponent implements OnInit {
   checkedList:any;
   displayList:any[] = [];
   stationDataTypes:string[] = []
-  isLoading: boolean = false;
+  isLoading: boolean = true;
+  dispHeaders: boolean = false;
 
   //page variables
   sendingArray: any[] = [];
@@ -172,6 +173,9 @@ export class DataComponent implements OnInit {
       if(this.stationID) {
         this.isLoading = true;
         await this.getStationDataTypes();
+        if(this.displayList.length>0) {
+          this.dispHeaders = true;
+        }
         this.isLoading = false;
         for(let i=0; i<this.checklist.length; i++) {
           if(this.stationDataTypes.includes(this.checklist[i]["value"])) {

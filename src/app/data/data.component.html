@@ -5,37 +5,37 @@
     <div class="center" style="margin-top:0px;">
         <h1><b>Available Data Types for Selection</b></h1>
     </div>
-    <div id="scrollable-area">
 
-      <!-- Display Loading Circle -->
-      <div class="loading" *ngIf="isLoading" >
-          <!-- Hourglass Loading Spinner -->
-          <div class="cell">
-              <div class="pl pl-hourglass"></div>
-              <div class="pl-name">Checking for Available Data Types...</div>
-          </div>
+    <div class="tableParent">
+      <div id="scrollable-area">
+
+        <!-- Display Loading Circle -->
+        <div class="loading" *ngIf="isLoading" >
+            <!-- Hourglass Loading Spinner -->
+            <div class="cell">
+                <div class="pl pl-hourglass"></div>
+                <div class="pl-name">Checking for Available Data Types...</div>
+            </div>
+        </div>
+
+          <table *ngIf="!isLoading">
+
+                  <th *ngIf="dispHeaders">
+                      <label class="center"><input type="checkbox" [(ngModel)]="masterSelected" name="list_name" value="m1"
+                      (change)="checkUncheckAll()"></label>
+                  </th>
+                  <th *ngIf="dispHeaders">Type</th>
+                  <th *ngIf="dispHeaders">Description</th>
+
+
+              <tr *ngFor="let item of displayList">
+                  <label class="rows"><td class="center"><input type="checkbox" id="{{item.id}}" [(ngModel)]="item.isSelected" name="list_name" value="{{item.id}}"
+                      (change)="isAllSelected()"></td></label>
+                      <label class="rows" for="{{item.id}}"><td class="rows">{{item.value}}</td></label>
+                      <label class="rows" for="{{item.id}}"><td class="rows">{{item.title}}</td></label>
+              </tr>
+          </table>
       </div>
-
-        <table fixed-table-headers="scrollable-area" *ngIf="!isLoading">
-
-                <th>
-                    <label class="center"><input type="checkbox" [(ngModel)]="masterSelected" name="list_name" value="m1"
-                    (change)="checkUncheckAll()"></label>
-                </th>
-                <th>Type</th>
-                <th>Description</th>
-
-                <th> </th>
-
-
-
-            <tr *ngFor="let item of displayList">
-                <label><td class="center"><input type="checkbox" id="{{item.id}}" [(ngModel)]="item.isSelected" name="list_name" value="{{item.id}}"
-                    (change)="isAllSelected()"></td></label>
-                    <td class="rows"><label for="{{item.id}}">{{item.value}}</label></td>
-                    <td class="rows"><label for="{{item.id}}">{{item.title}}</label></td>
-            </tr>
-        </table>
     </div>
     <div class="center">
         <button class="button button1" (click)="goBack()" ><b>Back</b></button>

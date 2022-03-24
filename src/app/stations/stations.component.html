@@ -18,10 +18,10 @@
             </tr>
 
             <tr *ngFor = "let row of stationsArray">
-                <label><td class="center"><input type="checkbox" id="{{row.ID}}" (change)="getSelect($event, row.ID)"></td></label>
-                <td class="rows"><label for="{{row.ID}}">{{row.ID}}</label></td>
-                <td class="rows"><label for="{{row.ID}}">{{row.NAME}}</label></td>
-                <td class="rows"><label for="{{row.ID}}">{{row.OTHER}}</label></td>
+                <label class="rows"><td class="center"><input type="checkbox" id="{{row.ID}}" (change)="getSelect($event, row.ID)"></td></label>
+                <label class="rows" for="{{row.ID}}"><td class="rows">{{row.ID}}</td></label>
+                <label class="rows" for="{{row.ID}}"><td class="rows">{{row.NAME}}</td></label>
+                <label class="rows" for="{{row.ID}}"><td class="rows">{{row.OTHER}}</td></label>
             </tr>
 
         </table>
