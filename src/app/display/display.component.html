@@ -1,7 +1,7 @@
 <!-- Displaying Data from NCEI Data Pull -->
 
 <div class="right">
-    <button class="button button1" (click)="downloadCSV()">Download as CSV</button>
+    <button class="button button1" (click)="downloadCSV(typeValue.value)">Download as CSV</button>
     <button class="button button1" value="Download JSON" (click)="exportTojson()">Download as JSON</button>
 </div>
 <div class="center" style="margin-top:0px;">
@@ -46,6 +46,12 @@
     <button class="button button1" (click)="goBack()" ><b>Back</b></button>
   </div>
   <div class="center">
+    <select name="typeValue" #typeValue id="typeValue" (change)="onChangeType($event)">
+        <option value="Hourly">Hourly Data</option>
+        <option value="Daily">Daily Data</option>
+        <option value="Monthly">Monthly Data</option>
+        <option value="All">All Data</option>
+  </select>
     <select name="pagingValue" #pagingValue id="pagingValue" (change)="onChange($event)">
           <option value="10">10 per page</option>
           <option value="25">25 per page</option>
