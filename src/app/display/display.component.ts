@@ -64,7 +64,6 @@ export class DisplayComponent implements OnInit {
   startStr:string = "";
   endStr:string = "";
   config: any;
-  headersStats: any[] = []
   emptyAvail: boolean = true;
   public maxSize: number = 7;
   public directionLinks: boolean = true;
@@ -79,20 +78,31 @@ export class DisplayComponent implements OnInit {
   };
 
   //declaring objects for data table display
+  displayObj: any[] = [];
+  headers: any[] = [];
+  headersStats: any = [];
+
   hourlyObj: any[] = [];
   dailyObj: any[] = [];
   monthlyObj: any[] = [];
   allObj: any[] = [];
+
   hourlyDataObj: any[] = [];
   dailyDataObj: any[] = [];
   monthlyDataObj: any[] = [];
   allDataObj: any[] = [];
-  displayObj: any[] = [];
-  headers: any[] = [];
-  allHeaders: any[] = [];
+
   hourlyHeads: any[] = [];
   dailyHeads: any[] = [];
   monthlyHeads: any[] = [];
+  allHeaders: any[] = [];
+
+  hourlyHeadersStats: any[] = []
+  dailyHeadersStats: any[] = []
+  monthlyHeadersStats: any[] = []
+  allHeadersStats: any[] = []
+
+
 
   //making boolean for loading spinner
   isLoading: boolean = true;
@@ -130,19 +140,6 @@ export class DisplayComponent implements OnInit {
   //checking the number of year
   async checkYears(){
 
-    // Initialize Empty Stats Object
-    if(this.years>0) {
-      for(let i=0; i<this.stationID.length; i++) {
-        let tmp = []
-        for(let i=0; i<this.dataTypeObj.length; i++) {
-          tmp.push({'TOTAL':0,'EMPTY':0,'RATE':-1})
-        }
-        this.headersStats.push(tmp)
-      }
-    }
-
-
-
     for(let k = 0; k < this.years; k++){
       this.yearsObj[k] = Number(this.startDate[0].year) + k;
     }
@@ -166,7 +163,22 @@ export class DisplayComponent implements OnInit {
     }
     console.log("Requested Data Retrieved Successfully");
     console.log(this.displayObj[this.displayIndex]);
-    for(let i of this.headersStats) {
+    for(let i of this.allHeadersStats) {
+      for(let j of i) {
+        j['RATE'] = (j['EMPTY']/j['TOTAL']*100).toFixed(2)
+      }
+    }
+    for(let i of this.hourlyHeadersStats) {
+      for(let j of i) {
+        j['RATE'] = (j['EMPTY']/j['TOTAL']*100).toFixed(2)
+      }
+    }
+    for(let i of this.dailyHeadersStats) {
+      for(let j of i) {
+        j['RATE'] = (j['EMPTY']/j['TOTAL']*100).toFixed(2)
+      }
+    }
+    for(let i of this.monthlyHeadersStats) {
       for(let j of i) {
         j['RATE'] = (j['EMPTY']/j['TOTAL']*100).toFixed(2)
       }
@@ -189,29 +201,48 @@ export class DisplayComponent implements OnInit {
       // Only do this once
       if(this.allHeaders.length<1) {
         this.allHeaders = ["STATION", "DATE", "TIME", "LATITUDE", "LONGITUDE", "ELEVATION", "NAME", "REPORT_TYPE", "SOURCE"]
+        // Copy initial headers into each array
+        this.hourlyHeads = this.allHeaders.slice();
+        this.dailyHeads = this.allHeaders.slice();
+        this.monthlyHeads = this.allHeaders.slice();
+
         for(let i=0; i<this.dataTypeObj.length; i++) {
           this.allHeaders.push(this.dataTypeObj[i])
-        }
-        this.hourlyHeads = ["STATION", "DATE", "TIME", "LATITUDE", "LONGITUDE", "ELEVATION", "NAME", "REPORT_TYPE", "SOURCE"]
-        for(let i=0; i<this.dataTypeObj.length; i++) {
           if(this.hourlyHeaders.includes(this.dataTypeObj[i])){
             this.hourlyHeads.push(this.dataTypeObj[i])
           }
-        }
-        this.dailyHeads = ["STATION", "DATE", "TIME", "LATITUDE", "LONGITUDE", "ELEVATION", "NAME", "REPORT_TYPE", "SOURCE"]
-        for(let i=0; i<this.dataTypeObj.length; i++) {
           if(this.dailyHeaders.includes(this.dataTypeObj[i])){
             this.dailyHeads.push(this.dataTypeObj[i])
           }
-        }
-        this.monthlyHeads = ["STATION", "DATE", "TIME", "LATITUDE", "LONGITUDE", "ELEVATION", "NAME", "REPORT_TYPE", "SOURCE"]
-        for(let i=0; i<this.dataTypeObj.length; i++) {
           if(this.monthlyHeaders.includes(this.dataTypeObj[i])){
             this.monthlyHeads.push(this.dataTypeObj[i])
           }
         }
-      }
 
+        // Initialize Empty Stats Object
+        for(let i=0; i<this.stationID.length; i++) {
+          let tmpA = []
+          let tmpH = []
+          let tmpD = []
+          let tmpM = []
+          for(let j=0; j<this.dataTypeObj.length; j++) {
+            tmpA.push({'TOTAL':0,'EMPTY':0,'RATE':-1})
+            if(this.hourlyHeaders.includes(this.dataTypeObj[i])){
+              tmpH.push({'TOTAL':0,'EMPTY':0,'RATE':-1})
+            }
+            if(this.dailyHeaders.includes(this.dataTypeObj[i])){
+              tmpD.push({'TOTAL':0,'EMPTY':0,'RATE':-1})
+            }
+            if(this.monthlyHeaders.includes(this.dataTypeObj[i])){
+              tmpM.push({'TOTAL':0,'EMPTY':0,'RATE':-1})
+            }
+          }
+          this.allHeadersStats.push(tmpA)
+          this.hourlyHeadersStats.push(tmpH)
+          this.dailyHeadersStats.push(tmpD)
+          this.monthlyHeadersStats.push(tmpM)
+        }
+      }
 
       //Remove "" that are automatically added
       csv = csv.replace(/['"]+/g, '')
@@ -278,7 +309,6 @@ export class DisplayComponent implements OnInit {
           monthly.push(this.monthlyHeaders[i])
         }
       }
-      console.log(monthly)
       for(let i=0; i<csvheaders.length; i++) {
         if(monthly.includes(csvheaders[i])) {
           desiredMTypes.push(i)
@@ -289,8 +319,10 @@ export class DisplayComponent implements OnInit {
       //loop for pushing csv data into array for processing
 
       for(let i = 1; i < lines.length-1; i++) {
+        let dObj: any = []; // Data accumulator
+
+        // Display accumulators
         let obj: any = [];
-        let dObj: any = [];
         let hObj: any = [];
         let dayObj: any = [];
         let mObj: any = [];
@@ -344,6 +376,9 @@ export class DisplayComponent implements OnInit {
           let indD = 9;
           let indM = 9;
           let statsInd = 0;
+          let statsIndH = 0;
+          let statsIndD = 0;
+          let statsIndM = 0;
 
           //pushing the rest.
           for(let j = 9; j < csvheaders.length; j++) {
@@ -351,23 +386,38 @@ export class DisplayComponent implements OnInit {
               obj[ind++] = currLine[j+1];
               dObj[csvheaders[j]] = currLine[j+1];
 
-              this.headersStats[stationsInd][statsInd]['TOTAL'] += 1;
+              this.allHeadersStats[stationsInd][statsInd]['TOTAL'] += 1;
               if(!currLine[j+1]) {
-                this.headersStats[stationsInd][statsInd]['EMPTY'] += 1;
+                this.allHeadersStats[stationsInd][statsInd]['EMPTY'] += 1;
               }
               statsInd++;
             }
             if((hObj[7] == "FM-15" && desiredHTypes.includes(j)) || (hObj[7] == "FM-12" && desiredHTypes.includes(j)) || (hObj[7] == "FM-16" && desiredHTypes.includes(j))){
               hObj[indH] = currLine[j+1];
               indH++
+              this.hourlyHeadersStats[stationsInd][statsIndH]['TOTAL'] += 1;
+              if(!currLine[j+1]) {
+                this.hourlyHeadersStats[stationsInd][statsIndH]['EMPTY'] += 1;
+              }
+              statsIndH++;
             }
             if(dayObj[7] == "SOD  " && desiredDTypes.includes(j)){
               dayObj[indD] = currLine[j+1];
               indD++
+              // this.dailyHeadersStats[stationsInd][statsIndD]['TOTAL'] += 1;
+              // if(!currLine[j+1]) {
+              //   this.dailyHeadersStats[stationsInd][statsIndD]['EMPTY'] += 1;
+              // }
+              // statsIndD++;
             }
             if(mObj[7] == "SOM  " && desiredMTypes.includes(j)){
               mObj[indM] = currLine[j+1];
               indM++
+              // this.monthlyHeadersStats[stationsInd][statsIndM]['TOTAL'] += 1;
+              // if(!currLine[j+1]) {
+              //   this.monthlyHeadersStats[stationsInd][statsIndM]['EMPTY'] += 1;
+              // }
+              // statsIndM++;
             }
 
           }
@@ -387,6 +437,7 @@ export class DisplayComponent implements OnInit {
       }
     })
     this.headers = this.hourlyHeads;
+    this.headersStats = this.hourlyHeadersStats;
     console.log(this.allDataObj)
   }
 
@@ -434,18 +485,22 @@ export class DisplayComponent implements OnInit {
     if(e.target.value == "Hourly"){
       this.displayObj = this.hourlyObj;
       this.headers = this.hourlyHeads;
+      this.headersStats = this.hourlyHeadersStats;
     }
     if(e.target.value == "Daily"){
       this.displayObj = this.dailyObj;
       this.headers = this.dailyHeads;
+      this.headersStats = this.dailyHeadersStats;
     }
     if(e.target.value == "Monthly"){
       this.displayObj = this.monthlyObj;
       this.headers = this.monthlyHeads;
+      this.headersStats = this.monthlyHeadersStats;
     }
     if(e.target.value == "All"){
       this.displayObj = this.allObj;
       this.headers = this.allHeaders;
+      this.headersStats = this.allHeadersStats;
     }
   }
 
