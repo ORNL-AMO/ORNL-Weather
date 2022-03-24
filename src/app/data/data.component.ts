@@ -173,7 +173,7 @@ export class DataComponent implements OnInit {
       if(this.stationID) {
         this.isLoading = true;
         await this.getStationDataTypes();
-        if(this.displayList.length>0) {
+        if(this.stationDataTypes.length>0) {
           this.dispHeaders = true;
         }
         this.isLoading = false;

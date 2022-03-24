@@ -92,8 +92,7 @@ tr:hover{
 label {
   display: block;
   min-height: 100%;
-  padding: 16px;
-  border: 1px solid red;
+  padding: 12px;
 }
 .rows {
   display: table-cell;
