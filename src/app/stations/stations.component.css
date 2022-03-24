@@ -58,6 +58,7 @@ label {
   display: block;
   min-height: 100%;
   padding: 16px;
+  cursor: pointer;
 }
 
 tr:nth-child(even){
@@ -140,4 +141,29 @@ tr:hover{
 
   .footer {display:none;}
 
+}
+
+#scrollable-area::-webkit-scrollbar {
+  width: 9px;   /* width of the entire scrollbar */
+  height: 9px;
+}
+#scrollable-area::-webkit-scrollbar-corner{
+  background: none;
+  border-bottom-right-radius: 20px;
+}
+#scrollable-area::-webkit-scrollbar-track {
+
+  border-radius: 50px;
+  border: double black 1px;
+}
+
+#scrollable-area::-webkit-scrollbar-thumb {
+  background-color: rgb(179, 179, 179);
+    border-radius: 20px;
+    border: 1px solid black;
+
+}
+
+input[type="checkbox"]{
+  cursor: pointer;
 }
