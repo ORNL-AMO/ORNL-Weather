@@ -22,6 +22,7 @@ export class DisplayComponent implements OnInit {
   endStr:string = "";
   config: any;
   headersStats: any[] = []
+  emptyAvail: boolean = true;
   public maxSize: number = 7;
   public directionLinks: boolean = true;
   public autoHide: boolean = false;
@@ -319,6 +320,10 @@ export class DisplayComponent implements OnInit {
       allTabs[i].style.backgroundColor=null;
     }
     tab.style.backgroundColor="#839c7c";
+  }
+
+  toggleEmptyAvail() {
+    this.emptyAvail = !this.emptyAvail;
   }
 
   goBack(){

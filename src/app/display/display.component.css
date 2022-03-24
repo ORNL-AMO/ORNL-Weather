@@ -16,7 +16,6 @@ table{
   width: 100%;
   border-radius:6px;
   background: white;
-  /* border-collapse: collapse; */
 }
 
 
@@ -59,9 +58,7 @@ th{
 }
 
 .empty_rate {
-  border-bottom: 1pt solid black;
-
-  /* background-color: #5a7255 !important; */
+  background-color: #839c7c !important;
 }
 #empty_rate_text {
   text-align: center;
@@ -78,7 +75,7 @@ tr:hover{
   background-color: #839c7c;
 }
 
-label {
+#tabsLabel {
   display: block;
   padding: 8px;
   min-height: 100%;
