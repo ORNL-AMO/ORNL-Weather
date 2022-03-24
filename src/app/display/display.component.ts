@@ -227,13 +227,13 @@ export class DisplayComponent implements OnInit {
           let tmpM = []
           for(let j=0; j<this.dataTypeObj.length; j++) {
             tmpA.push({'TOTAL':0,'EMPTY':0,'RATE':-1})
-            if(this.hourlyHeaders.includes(this.dataTypeObj[i])){
+            if(this.hourlyHeaders.includes(this.dataTypeObj[j])){
               tmpH.push({'TOTAL':0,'EMPTY':0,'RATE':-1})
             }
-            if(this.dailyHeaders.includes(this.dataTypeObj[i])){
+            if(this.dailyHeaders.includes(this.dataTypeObj[j])){
               tmpD.push({'TOTAL':0,'EMPTY':0,'RATE':-1})
             }
-            if(this.monthlyHeaders.includes(this.dataTypeObj[i])){
+            if(this.monthlyHeaders.includes(this.dataTypeObj[j])){
               tmpM.push({'TOTAL':0,'EMPTY':0,'RATE':-1})
             }
           }
@@ -249,11 +249,6 @@ export class DisplayComponent implements OnInit {
 
       // Trim csv to only relevant dates
       csv = this.trimToDates(csv, year)
-
-      // if(year == this.endDate[0].year) {
-      //   let endStr = this.endDate[0].year + '-' + this.endDate[0].month + '-' + this.endDate[0].day
-      //   csv = csv.slice(0, csv.indexOf("\n", csv.lastIndexOf(endStr))+1);
-      // }
 
       //splitting csv into lines and splitting the headers element
       let lines = csv.split("\n")
@@ -371,14 +366,8 @@ export class DisplayComponent implements OnInit {
             }
           }
 
-          let ind = 9;
-          let indH = 9;
-          let indD = 9;
-          let indM = 9;
-          let statsInd = 0;
-          let statsIndH = 0;
-          let statsIndD = 0;
-          let statsIndM = 0;
+          let ind = 9, indH = 9, indD = 9, indM = 9;
+          let statsInd = -1, statsIndH = 0, statsIndD = 0, statsIndM = 0;
 
           //pushing the rest.
           for(let j = 9; j < csvheaders.length; j++) {
@@ -386,10 +375,6 @@ export class DisplayComponent implements OnInit {
               obj[ind++] = currLine[j+1];
               dObj[csvheaders[j]] = currLine[j+1];
 
-              this.allHeadersStats[stationsInd][statsInd]['TOTAL'] += 1;
-              if(!currLine[j+1]) {
-                this.allHeadersStats[stationsInd][statsInd]['EMPTY'] += 1;
-              }
               statsInd++;
             }
             if((hObj[7] == "FM-15" && desiredHTypes.includes(j)) || (hObj[7] == "FM-12" && desiredHTypes.includes(j)) || (hObj[7] == "FM-16" && desiredHTypes.includes(j))){
@@ -400,24 +385,43 @@ export class DisplayComponent implements OnInit {
                 this.hourlyHeadersStats[stationsInd][statsIndH]['EMPTY'] += 1;
               }
               statsIndH++;
+              this.allHeadersStats[stationsInd][statsInd]['TOTAL'] += 1;
+              if(!currLine[j+1]) {
+                this.allHeadersStats[stationsInd][statsInd]['EMPTY'] += 1;
+              }
             }
-            if(dayObj[7] == "SOD  " && desiredDTypes.includes(j)){
+            else if(dayObj[7] == "SOD  " && desiredDTypes.includes(j)){
               dayObj[indD] = currLine[j+1];
               indD++
-              // this.dailyHeadersStats[stationsInd][statsIndD]['TOTAL'] += 1;
-              // if(!currLine[j+1]) {
-              //   this.dailyHeadersStats[stationsInd][statsIndD]['EMPTY'] += 1;
-              // }
-              // statsIndD++;
+              this.dailyHeadersStats[stationsInd][statsIndD]['TOTAL'] += 1;
+              if(!currLine[j+1]) {
+                this.dailyHeadersStats[stationsInd][statsIndD]['EMPTY'] += 1;
+              }
+              statsIndD++;
+              this.allHeadersStats[stationsInd][statsInd]['TOTAL'] += 1;
+              if(!currLine[j+1]) {
+                this.allHeadersStats[stationsInd][statsInd]['EMPTY'] += 1;
+              }
             }
-            if(mObj[7] == "SOM  " && desiredMTypes.includes(j)){
+            else if(mObj[7] == "SOM  " && desiredMTypes.includes(j)){
               mObj[indM] = currLine[j+1];
               indM++
-              // this.monthlyHeadersStats[stationsInd][statsIndM]['TOTAL'] += 1;
-              // if(!currLine[j+1]) {
-              //   this.monthlyHeadersStats[stationsInd][statsIndM]['EMPTY'] += 1;
-              // }
-              // statsIndM++;
+              this.monthlyHeadersStats[stationsInd][statsIndM]['TOTAL'] += 1;
+              if(!currLine[j+1]) {
+                this.monthlyHeadersStats[stationsInd][statsIndM]['EMPTY'] += 1;
+              }
+              statsIndM++;
+              this.allHeadersStats[stationsInd][statsInd]['TOTAL'] += 1;
+              if(!currLine[j+1]) {
+                this.allHeadersStats[stationsInd][statsInd]['EMPTY'] += 1;
+              }
+            }
+            // Data types without an Hourly/Daily/Monthly designation are calculated as if from any report type
+            else if(desiredTypes.includes(j) && !desiredHTypes.includes(j) && !desiredDTypes.includes(j) && !desiredMTypes.includes(j)) {
+              this.allHeadersStats[stationsInd][statsInd]['TOTAL'] += 1;
+              if(!currLine[j+1]) {
+                this.allHeadersStats[stationsInd][statsInd]['EMPTY'] += 1;
+              }
             }
 
           }
@@ -481,7 +485,6 @@ export class DisplayComponent implements OnInit {
     this.config.itemsPerPage = e.target.value;
   }
   onChangeType(e: any){
-    console.log(e.target.value)
     if(e.target.value == "Hourly"){
       this.displayObj = this.hourlyObj;
       this.headers = this.hourlyHeads;
