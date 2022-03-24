@@ -43,6 +43,8 @@
               <td id="empty_rate_text">--</td>
               <td id="empty_rate_text">--</td>
               <td id="empty_rate_text">--</td>
+              <td id="empty_rate_text">--</td>
+              <td id="empty_rate_text">--</td>
               <ng-container *ngIf="emptyAvail"><td *ngFor="let row of headersStats[displayIndex]">{{row['EMPTY']}} of {{row['TOTAL']}}: {{row['RATE']}}%</td></ng-container>
               <ng-container *ngIf="!emptyAvail"><td *ngFor="let row of headersStats[displayIndex]">{{row['TOTAL']-row['EMPTY']}} of {{row['TOTAL']}}: {{100-row['RATE']}}%</td></ng-container>
             </tr>
@@ -58,6 +60,12 @@
     <button class="button button1" (click)="goBack()" ><b>Back</b></button>
   </div>
   <div class="center" *ngIf="!isLoading">
+    <select name="typeValue" #typeValue id="typeValue" (change)="onChangeType($event)">
+        <option value="Hourly">Hourly Data</option>
+        <option value="Daily">Daily Data</option>
+        <option value="Monthly">Monthly Data</option>
+        <option value="All">All Data</option>
+  </select>
     <select name="pagingValue" #pagingValue id="pagingValue" (change)="onChange($event)">
           <option value="10">10 per page</option>
           <option value="25">25 per page</option>
