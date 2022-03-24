@@ -79,6 +79,7 @@ export class DisplayComponent implements OnInit {
 
   //declaring objects for data table display
   displayObj: any[] = [];
+  dataObj: any[] = [];
   headers: any[] = [];
   headersStats: any = [];
 
@@ -160,6 +161,7 @@ export class DisplayComponent implements OnInit {
       this.monthlyObj.push(stationMObj)
       this.allObj.push(stationObj);
       this.displayObj = this.hourlyObj;
+      this.dataObj = this.hourlyDataObj;
     }
     console.log("Requested Data Retrieved Successfully");
     console.log(this.displayObj[this.displayIndex]);
@@ -314,7 +316,12 @@ export class DisplayComponent implements OnInit {
       //loop for pushing csv data into array for processing
 
       for(let i = 1; i < lines.length-1; i++) {
-        let dObj: any = []; // Data accumulator
+        // Data accumulators
+        let dObj: any = [];
+        let dHObj: any = [];
+        let dDObj: any = [];
+        let dMObj: any = [];
+        
 
         // Display accumulators
         let obj: any = [];
@@ -341,7 +348,11 @@ export class DisplayComponent implements OnInit {
             dayObj[j] = currLine[j];
             mObj[j] = currLine[j];
 
-            dObj[this.allHeaders[j]] = currLine[j];
+            dObj[csvheaders[j]] = currLine[j];
+            dHObj[csvheaders[j]] = currLine[j];
+            dDObj[csvheaders[j]] = currLine[j];
+            dMObj[csvheaders[j]] = currLine[j];
+            
           }
 
           //for some reason the names gets split twice for had to add to parts of the line to one element of the array
@@ -350,19 +361,28 @@ export class DisplayComponent implements OnInit {
           dayObj[6] = currLine[6] + currLine[7];
           mObj[6] = currLine[6] + currLine[7];
 
-          dObj[this.headers[6]] = currLine[6] + currLine[7];
+          dObj[csvheaders[6]] = currLine[6] + currLine[7];
+          dHObj[csvheaders[6]] = currLine[6] + currLine[7];
+          dDObj[csvheaders[6]] = currLine[6] + currLine[7];
+          dMObj[csvheaders[6]] = currLine[6] + currLine[7];
+          
 
           //pushing Report Type and Source.
           for(let j = 7; j < 9; j++) {
             obj[j] = currLine[j+1];
+            dObj[this.allHeaders[j]] = currLine[j+1];
+            
             if(currLine[8] == "FM-15" || "FM-12" || "FM-16"){
               hObj[j] = currLine[j+1];
+              dHObj[this.hourlyHeads[j]] = currLine[j+1];
             }
             if(currLine[8] == "SOD  "){
               dayObj[j] = currLine[j+1];
+              dDObj[this.dailyHeads[j]] = currLine[j+1];
             }
             if(currLine[8] == "SOM  "){
               mObj[j] = currLine[j+1];
+              dMObj[this.monthlyHeads[j]] = currLine[j+1];
             }
           }
 
@@ -379,6 +399,8 @@ export class DisplayComponent implements OnInit {
             }
             if((hObj[7] == "FM-15" && desiredHTypes.includes(j)) || (hObj[7] == "FM-12" && desiredHTypes.includes(j)) || (hObj[7] == "FM-16" && desiredHTypes.includes(j))){
               hObj[indH] = currLine[j+1];
+              dHObj[this.hourlyHeads[j]] = currLine[j+1];
+
               indH++
               this.hourlyHeadersStats[stationsInd][statsIndH]['TOTAL'] += 1;
               if(!currLine[j+1]) {
@@ -392,6 +414,8 @@ export class DisplayComponent implements OnInit {
             }
             else if(dayObj[7] == "SOD  " && desiredDTypes.includes(j)){
               dayObj[indD] = currLine[j+1];
+              dDObj[this.dailyHeads[j]] = currLine[j+1];
+
               indD++
               this.dailyHeadersStats[stationsInd][statsIndD]['TOTAL'] += 1;
               if(!currLine[j+1]) {
@@ -405,6 +429,8 @@ export class DisplayComponent implements OnInit {
             }
             else if(mObj[7] == "SOM  " && desiredMTypes.includes(j)){
               mObj[indM] = currLine[j+1];
+              dMObj[this.monthlyHeads[j]] = currLine[j+1];
+
               indM++
               this.monthlyHeadersStats[stationsInd][statsIndM]['TOTAL'] += 1;
               if(!currLine[j+1]) {
@@ -427,22 +453,25 @@ export class DisplayComponent implements OnInit {
           }
           if(hObj[9]){
             stationHObj.push(hObj)
+            this.hourlyDataObj.push(dHObj);
           }
           if(dayObj[9]){
             stationDObj.push(dayObj)
+            this.dailyDataObj.push(dDObj);
           }
           if(mObj[9]){
             stationMObj.push(mObj)
+            this.monthlyDataObj.push(dMObj);
           }
 
           stationObj.push(obj);
           this.allDataObj.push(dObj);
+
         }
       }
     })
     this.headers = this.hourlyHeads;
     this.headersStats = this.hourlyHeadersStats;
-    console.log(this.allDataObj)
   }
 
   //triggers download of array data into a csv to users computer.
@@ -454,22 +483,8 @@ export class DisplayComponent implements OnInit {
       showLabels: true,
       headers: this.headers
     };
-    let val = (document.getElementById("typeValue") as HTMLInputElement).value.toString().trim()
-    let downloadVal;
-    if(val == "Hourly"){
-      downloadVal = this.hourlyDataObj;
-    }
-    if(val == "Daily"){
-      downloadVal = this.dailyDataObj;
-    }
-    if(val == "Monthly"){
-      downloadVal = this.monthlyDataObj;
-    }
-    if(val == "All"){
-      downloadVal = this.allDataObj;
-    }
 
-    new ngxCsv(downloadVal, filename, options);
+    new ngxCsv(this.dataObj, filename, options);
   }
 
   emptyValues(obj: any){
@@ -487,23 +502,31 @@ export class DisplayComponent implements OnInit {
   onChangeType(e: any){
     if(e.target.value == "Hourly"){
       this.displayObj = this.hourlyObj;
+      this.dataObj = this.hourlyDataObj;
       this.headers = this.hourlyHeads;
       this.headersStats = this.hourlyHeadersStats;
+      this.config.currentPage = 1;
     }
     if(e.target.value == "Daily"){
       this.displayObj = this.dailyObj;
+      this.dataObj = this.dailyDataObj;
       this.headers = this.dailyHeads;
       this.headersStats = this.dailyHeadersStats;
+      this.config.currentPage = 1;
     }
     if(e.target.value == "Monthly"){
       this.displayObj = this.monthlyObj;
+      this.dataObj = this.monthlyDataObj;
       this.headers = this.monthlyHeads;
       this.headersStats = this.monthlyHeadersStats;
+      this.config.currentPage = 1;
     }
     if(e.target.value == "All"){
       this.displayObj = this.allObj;
+      this.dataObj = this.allDataObj;
       this.headers = this.allHeaders;
       this.headersStats = this.allHeadersStats;
+      this.config.currentPage = 1;
     }
   }
 
@@ -587,6 +610,7 @@ export class DisplayComponent implements OnInit {
     this.displayIndex = this.stationID.indexOf(id)
     let tab:any = document.getElementById(id)
     let allTabs:any = document.getElementsByClassName("tab")
+    this.config.currentPage = 1;
     for(let i=0; i<allTabs.length; i++) {
       allTabs[i].style.backgroundColor=null;
     }
