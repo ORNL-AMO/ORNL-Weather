@@ -23,6 +23,7 @@ export class HomeComponent implements OnInit {
   numYears: number = 0;
   matchList: string[] = [];
   distDropdown: boolean = false;
+  multiInputs: any[] = [];
 
   //other variables
   errors: string = ""
@@ -234,8 +235,8 @@ export class HomeComponent implements OnInit {
 
     //// Input Validation
 
-    // Zip/S-ID should be a number
-    if(isNaN(+val) && !this.isCity(val) && val[0]!='A') {
+    // Input should follow format for zip, station ID, city, state, or contain semicolons for multiple inputs
+    if(isNaN(+val) && !this.isCity(val) && val[0]!='A' && !val.includes(';')) {
       console.log("Input format unknown")
       this.errors = this.errors + "Please enter a valid State, Zip Code, or 11-digit Station ID."
     }
@@ -261,31 +262,46 @@ export class HomeComponent implements OnInit {
     }
 
     // Valid Inputs
-    else {
-      // Evaluate input as zip code
-      if(val.length == 5 && !isNaN(+val)) {
-        this.getCoordsZip(val)
+    else {  // Multiple Inputs
+      if(val.includes(';')) {
+        let inputArr = val.split(';')
+        for(let value of inputArr) {
+          if(value) {
+            this.multiInputs.push(this.multiInputSearch(value))
+          }
+        }
+        console.log(this.multiInputs);
       }
-      // Evaluate input as station id
-      else if(val.length == 11 && !isNaN(+val)) {
-        this.getStationID(val)
+      else {  // Single Input
+        // Evaluate input as zip code
+        if(val.length == 5 && !isNaN(+val)) {
+          let out: string[] = []
+          out = this.getCoordsZip(val)
+          this.lat = out[0]
+          this.long = out[1]
+        }
+        // Evaluate input as station id
+        else if(val.length == 11 && !isNaN(+val)) {
+          this.stationID = this.getStationID(val)
+        }
+        // Parse as City or State
+        else if(this.isState(val)){
+          this.getState(val)
+        }
+        else if(this.isCity(val)) {
+          this.getCity(val)
+        }
+        // Incorrect input length
+        else {
+          console.log("Invalid format for input")
+          this.errors = this.errors + "Invalid format for input. Please enter a 5-digit zipcode, an 11-digit station ID, a state, or a city."
+          let context = this;
+          setTimeout(function(){
+            context.errors = ""
+          }, 8000)
+        }
       }
-      // Parse as City or State
-      else if(this.isState(val)){
-        this.getState(val)
-      }
-      else if(this.isCity(val)) {
-        this.getCity(val)
-      }
-      // Incorrect input length
-      else {
-        console.log("Invalid format for zip code or station ID")
-        this.errors = this.errors + "Invalid format for a zip code or station ID. Please enter a 5 or 11 digit number."
-        let context = this;
-        setTimeout(function(){
-          context.errors = ""
-        }, 8000)
-      }
+
 
       if(!this.dataLoaded) {
         this.errors = "Data has not finished loading. Please try again momentarily."
@@ -296,7 +312,7 @@ export class HomeComponent implements OnInit {
       }
       // Pass data to stations page if no errors
       if(this.errors == "") {
-        this.router.navigate(["/stations"], {state: { dataLat: this.lat, dataLong: this.long, dataDist: this.dist, dataStationID: this.stationID, dataState: this.state, dataStartDate: this.startDate, dataEndDate: this.endDate, dataStationsJSON: this.stationsJSON, years: this.numYears, dataStartStr: this.startStr, dataEndStr: this.endStr}})
+        this.router.navigate(["/stations"], {state: { dataLat: this.lat, dataLong: this.long, dataDist: this.dist, dataStationID: this.stationID, dataState: this.state, dataStartDate: this.startDate, dataEndDate: this.endDate, dataStationsJSON: this.stationsJSON, years: this.numYears, dataStartStr: this.startStr, dataEndStr: this.endStr, multiInputs: this.multiInputs}})
       }
     }
 
@@ -305,16 +321,19 @@ export class HomeComponent implements OnInit {
   // Get coordinates for center of input zip code
   getCoordsZip(zip: any){
     var num: string = zip
+    let outArr: string[] = [];
     this.zipJSON.every((zipcode: any) => {
       if(zipcode.ZIPCODE == num){
-        this.lat = zipcode.LAT
-        this.long = zipcode.LONG
+        // this.lat = zipcode.LAT
+        // this.long = zipcode.LONG
+        outArr.push(zipcode.LAT, zipcode.LONG)
         return false
       }
       return true
     })
     // Check if input zip code found
-    if(this.lat == null) {
+    // if(this.lat == null) {
+    if(!outArr) {
       console.log("Invalid zip code")
       this.errors = this.errors + "Zip code not found. Please try again."
       let context = this;
@@ -323,20 +342,19 @@ export class HomeComponent implements OnInit {
       }, 8000)
     }
     else {
-      console.log("Lat: " + this.lat + " Lon: " + this.long)
+      // console.log("Lat: " + this.lat + " Lon: " + this.long)
     }
+    return outArr
   }
 
   // Check if input station ID valid
   getStationID(val: any){
     var num: string = val
+    var out:string = "";
     this.stationsJSON.every((station: any) => {
       if(station.USAF.concat(station.WBAN) == num){     // Each Station ID consists of a USAF + WBAN code
         if((station.BEGIN<=this.startStr) && (station.END>=this.endStr)) {
-          this.stationID = station.USAF.concat(station.WBAN)
-          // NOTE: below lat/long can be removed if not searching for stations near selected station
-          this.lat = station.LAT
-          this.long = station.LON
+          out = station.USAF.concat(station.WBAN)
         }
         else {    // Error if station exists but invalid date range
           console.log("Station doesn't report data within the selected period")
@@ -349,7 +367,7 @@ export class HomeComponent implements OnInit {
       return true
     })
     //Check if input station ID found in stations list
-    if (this.stationID == "") {
+    if (out == "") {
       console.log("Station not found")
       this.errors = this.errors + "Station not found. Please try again."
       let context = this;
@@ -360,6 +378,7 @@ export class HomeComponent implements OnInit {
     else {
       console.log("Station ID: " + this.stationID + " Lat: " + this.lat + " Lon: " + this.long)
     }
+    return out
   }
 
   getState(str:string) {
@@ -404,6 +423,18 @@ export class HomeComponent implements OnInit {
     else {
       console.log(console.log("Lat: " + this.lat + " Lon: " + this.long))
     }
+  }
+
+  // Used to find data for multiple zip codes or station IDs separated by semicolons
+  multiInputSearch(input: string) {
+    let out: string[] = []
+    if(input.length == 5 && !isNaN(+input)) {
+      out = this.getCoordsZip(input)
+    }
+    if(input.length == 11 && !isNaN(+(input.substring(1))) && (input[0] == 'A' || input[0] == 'a' || !isNaN(+input[0]))) {
+      out.push(this.getStationID(input))
+    }
+    return out;
   }
 
 
@@ -453,35 +484,68 @@ export class HomeComponent implements OnInit {
       this.listCities(val)
     }
 
-    if(val.length == 0) {
-      zipcode.style.backgroundColor="white"
-      dist.style.backgroundColor="#A9A9A9"
-      dist.disabled = true;
+    if(val.includes(';')) {   // Multi-Input
+      let inputs = val.split(';')
+      let needsDist: boolean = false;
+      let valid: boolean = true;
+      for(let value of inputs) {
+        if(isNaN(+value) || ((value.length != 5) && (value.length != 11))) {
+          valid = false;
+          break;
+        }
+        else if(!isNaN(+value) && (value.length == 5)){
+          needsDist = true;
+        }
+      }
+      if(valid) {
+        zipcode.style.backgroundColor="#82ed80" // Green
+        if(needsDist) {
+          dist.style.backgroundColor="white"
+          dist.disabled = false;
+        }
+        else {
+          dist.style.backgroundColor="#A9A9A9"
+          dist.disabled = true;
+        }
+      }
+      else {
+        zipcode.style.backgroundColor="#ff9191" // Red
+        dist.style.backgroundColor="#A9A9A9"
+        dist.disabled = true;
+      }
     }
-    else if(this.isState(val)) {  // City or State
-      zipcode.style.backgroundColor="#82ed80" // Green
-      dist.style.backgroundColor="#A9A9A9"
-      dist.disabled = true;
-    }
-    else if(this.isCity(val)) {  // City or State
-      zipcode.style.backgroundColor="#82ed80" // Green
-      dist.style.backgroundColor="white"
-      dist.disabled = false;
-    }
-    else if(!isNaN(+val) && (val.length == 5)){ // Zip Code
-      zipcode.style.backgroundColor="#82ed80" // Green
-      dist.style.backgroundColor="white"
-      dist.disabled = false;
-    }
-    else if(val.length == 11 && !isNaN(+(val.substring(1))) && (val[0] == 'A' || val[0] == 'a' || !isNaN(+val[0]))) {  // Station ID
-      zipcode.style.backgroundColor="#82ed80" // Green
-      dist.style.backgroundColor="#A9A9A9"
-      dist.disabled = true;
-    }
-    else {
-      zipcode.style.backgroundColor="#ff9191" // Red
-      dist.style.backgroundColor="#A9A9A9"
-      dist.disabled = true;
+
+    else {    // Single Input
+      if(val.length == 0) {
+        zipcode.style.backgroundColor="white"
+        dist.style.backgroundColor="#A9A9A9"
+        dist.disabled = true;
+      }
+      else if(this.isState(val)) {  // City or State
+        zipcode.style.backgroundColor="#82ed80" // Green
+        dist.style.backgroundColor="#A9A9A9"
+        dist.disabled = true;
+      }
+      else if(this.isCity(val)) {  // City or State
+        zipcode.style.backgroundColor="#82ed80" // Green
+        dist.style.backgroundColor="white"
+        dist.disabled = false;
+      }
+      else if(!isNaN(+val) && (val.length == 5)){ // Zip Code
+        zipcode.style.backgroundColor="#82ed80" // Green
+        dist.style.backgroundColor="white"
+        dist.disabled = false;
+      }
+      else if(val.length == 11 && !isNaN(+(val.substring(1))) && (val[0] == 'A' || val[0] == 'a' || !isNaN(+val[0]))) {  // Station ID
+        zipcode.style.backgroundColor="#82ed80" // Green
+        dist.style.backgroundColor="#A9A9A9"
+        dist.disabled = true;
+      }
+      else {
+        zipcode.style.backgroundColor="#ff9191" // Red
+        dist.style.backgroundColor="#A9A9A9"
+        dist.disabled = true;
+      }
     }
   }
 

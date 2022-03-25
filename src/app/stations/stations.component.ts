@@ -25,6 +25,7 @@ export class StationsComponent implements OnInit {
   endDate:any;
   endStr:string;
   stationsJSON:any;
+  multiInputs: string[] = [];
   stationsArray: any[] = [];
   selectedArray: any[] = [];
   sendingArray: any[] = [];
@@ -46,6 +47,7 @@ export class StationsComponent implements OnInit {
         this.numYears = state.years;
         this.startStr = state.dataStartStr;
         this.endStr = state.dataEndStr;
+        this.multiInputs = state.multiInputs;
       }
       else {
         this.lat = null;
@@ -59,6 +61,7 @@ export class StationsComponent implements OnInit {
         this.numYears = null;
         this.startStr = "";
         this.endStr = "";
+        this.multiInputs = [];
       }
   }
 
@@ -67,28 +70,48 @@ export class StationsComponent implements OnInit {
   }
 
   getStations() {
-    if(this.stationID != ""){   // Go directly to data if provided station id
-      this.sendingArray.push(this.stationID)
-      console.log("Station:");
-      console.log(this.sendingArray);
-      this.router.navigate(["/data"], {state: { stationID: this.sendingArray, startDate: this.startDate, endDate: this.endDate, years: this.numYears, startStr: this.startStr, endStr: this.endStr}})
-    }
-    else if(this.lat != null && this.long != null) {
-      this.getStationsZip();  // Get local stations list
-    }
-    else if(this.state != "") {
-      this.getStationsState();
+    if(this.multiInputs.length>0) {
+      let allStationIDs: boolean = true;
+      for(let i in this.multiInputs) {
+        if(this.multiInputs[i].length == 2){   // Lat, Lon Pair
+          this.getStationsZip(this.multiInputs[i][0], this.multiInputs[i][1]);
+          allStationIDs = false;
+        }
+        else if(this.multiInputs[i].length == 1) {
+          if(this.multiInputs[i][0].length == 11 && !isNaN(+(this.multiInputs[i][0].substring(1))) && (this.multiInputs[i][0][0] == 'A' || this.multiInputs[i][0][0] == 'a' || !isNaN(+this.multiInputs[i][0][0]))) {
+            this.sendingArray.push(this.multiInputs[i])
+          }
+        }
+      }
+      if(allStationIDs) {
+        this.router.navigate(["/data"], {state: { stationID: this.sendingArray, startDate: this.startDate, endDate: this.endDate, years: this.numYears, startStr: this.startStr, endStr: this.endStr}})
+      }
     }
     else {
-      console.log("Required data missing.")
+      if(this.stationID != ""){   // Go directly to data if provided station id
+        this.sendingArray.push(this.stationID)
+        console.log("Station:");
+        console.log(this.sendingArray);
+        this.router.navigate(["/data"], {state: { stationID: this.sendingArray, startDate: this.startDate, endDate: this.endDate, years: this.numYears, startStr: this.startStr, endStr: this.endStr}})
+      }
+      else if(this.lat != null && this.long != null) {
+        this.getStationsZip(this.lat, this.long);  // Get local stations list
+      }
+      else if(this.state != "") {
+        this.getStationsState();
+      }
+      else {
+        console.log("Required data missing.")
+      }
     }
+
   }
 
-  getStationsZip() {
+  getStationsZip(lat:string, long:string) {
     // Check each station for distance, date range
     this.stationsJSON.forEach((station: any) => {
       // Get station distance from zip code coordinates
-      let distance = this.Haversine(this.lat, this.long, station.LAT, station.LON)
+      let distance = this.Haversine(lat, long, station.LAT, station.LON)
 
       // Store valid stations and data required for display
       if(distance<this.dist && this.startStr>station.BEGIN && this.endStr<station.END) {
