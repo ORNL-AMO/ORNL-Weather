@@ -160,29 +160,33 @@ export class DisplayComponent implements OnInit {
       this.dailyObj.push(stationDObj);
       this.monthlyObj.push(stationMObj)
       this.allObj.push(stationObj);
-      this.displayObj = this.hourlyObj;
-      this.dataObj = this.hourlyDataObj;
+      this.displayObj = this.allObj;
+      this.dataObj = this.allDataObj;
     }
     console.log("Requested Data Retrieved Successfully");
     console.log(this.displayObj[this.displayIndex]);
     for(let i of this.allHeadersStats) {
       for(let j of i) {
-        j['RATE'] = (j['EMPTY']/j['TOTAL']*100).toFixed(2)
+        j['EMP_RATE'] = (j['EMPTY']/j['TOTAL']*100).toFixed(2)
+        j['AVAIL_RATE'] = ((j['TOTAL']-j['EMPTY'])/j['TOTAL']*100).toFixed(2)
       }
     }
     for(let i of this.hourlyHeadersStats) {
       for(let j of i) {
-        j['RATE'] = (j['EMPTY']/j['TOTAL']*100).toFixed(2)
+        j['EMP_RATE'] = (j['EMPTY']/j['TOTAL']*100).toFixed(2)
+        j['AVAIL_RATE'] = ((j['TOTAL']-j['EMPTY'])/j['TOTAL']*100).toFixed(2)
       }
     }
     for(let i of this.dailyHeadersStats) {
       for(let j of i) {
-        j['RATE'] = (j['EMPTY']/j['TOTAL']*100).toFixed(2)
+        j['EMP_RATE'] = (j['EMPTY']/j['TOTAL']*100).toFixed(2)
+        j['AVAIL_RATE'] = ((j['TOTAL']-j['EMPTY'])/j['TOTAL']*100).toFixed(2)
       }
     }
     for(let i of this.monthlyHeadersStats) {
       for(let j of i) {
-        j['RATE'] = (j['EMPTY']/j['TOTAL']*100).toFixed(2)
+        j['EMP_RATE'] = (j['EMPTY']/j['TOTAL']*100).toFixed(2)
+        j['AVAIL_RATE'] = ((j['TOTAL']-j['EMPTY'])/j['TOTAL']*100).toFixed(2)
       }
     }
 
@@ -403,7 +407,7 @@ export class DisplayComponent implements OnInit {
             }
             if((hObj[7] == "FM-15" && desiredHTypes.includes(j)) || (hObj[7] == "FM-12" && desiredHTypes.includes(j)) || (hObj[7] == "FM-16" && desiredHTypes.includes(j))){
               hObj[indH] = currLine[j+1];
-              dHObj[this.hourlyHeads[j]] = currLine[j+1];
+              dHObj[csvheaders[j]] = currLine[j+1];
 
               indH++
               tmpStatsH[statsIndH]['TOTAL'] += 1;
@@ -419,7 +423,7 @@ export class DisplayComponent implements OnInit {
             }
             else if(dayObj[7] == "SOD  " && desiredDTypes.includes(j)){
               dayObj[indD] = currLine[j+1];
-              dDObj[this.dailyHeads[j]] = currLine[j+1];
+              dDObj[csvheaders[j]] = currLine[j+1];
 
               indD++
               tmpStatsD[statsIndD]['TOTAL'] += 1;
@@ -434,7 +438,7 @@ export class DisplayComponent implements OnInit {
             }
             else if(mObj[7] == "SOM  " && desiredMTypes.includes(j)){
               mObj[indM] = currLine[j+1];
-              dMObj[this.monthlyHeads[j]] = currLine[j+1];
+              dMObj[csvheaders[j]] = currLine[j+1];
 
               indM++
               tmpStatsM[statsIndM]['TOTAL'] += 1;
@@ -499,8 +503,8 @@ export class DisplayComponent implements OnInit {
         }
       }
     })
-    this.headers = this.hourlyHeads;
-    this.headersStats = this.hourlyHeadersStats;
+    this.headers = this.allHeaders;
+    this.headersStats = this.allHeadersStats;
   }
 
   //triggers download of array data into a csv to users computer.
@@ -535,6 +539,7 @@ export class DisplayComponent implements OnInit {
       this.headers = this.hourlyHeads;
       this.headersStats = this.hourlyHeadersStats;
       this.config.currentPage = 1;
+      console.log(this.dataObj)
     }
     if(e.target.value == "Daily"){
       this.displayObj = this.dailyObj;
@@ -542,6 +547,7 @@ export class DisplayComponent implements OnInit {
       this.headers = this.dailyHeads;
       this.headersStats = this.dailyHeadersStats;
       this.config.currentPage = 1;
+      console.log(this.dataObj)
     }
     if(e.target.value == "Monthly"){
       this.displayObj = this.monthlyObj;
@@ -549,6 +555,7 @@ export class DisplayComponent implements OnInit {
       this.headers = this.monthlyHeads;
       this.headersStats = this.monthlyHeadersStats;
       this.config.currentPage = 1;
+      console.log(this.dataObj)
     }
     if(e.target.value == "All"){
       this.displayObj = this.allObj;
