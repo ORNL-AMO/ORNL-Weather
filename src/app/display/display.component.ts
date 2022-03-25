@@ -388,6 +388,10 @@ export class DisplayComponent implements OnInit {
 
           let ind = 9, indH = 9, indD = 9, indM = 9;
           let statsInd = -1, statsIndH = 0, statsIndD = 0, statsIndM = 0;
+          // Yes, the parse & stringify is actually needed
+          let tmpStatsH = JSON.parse(JSON.stringify(this.hourlyHeadersStats[stationsInd])),
+              tmpStatsD = JSON.parse(JSON.stringify(this.dailyHeadersStats[stationsInd])),
+              tmpStatsM = JSON.parse(JSON.stringify(this.monthlyHeadersStats[stationsInd]));
 
           //pushing the rest.
           for(let j = 9; j < csvheaders.length; j++) {
@@ -402,10 +406,11 @@ export class DisplayComponent implements OnInit {
               dHObj[this.hourlyHeads[j]] = currLine[j+1];
 
               indH++
-              this.hourlyHeadersStats[stationsInd][statsIndH]['TOTAL'] += 1;
+              tmpStatsH[statsIndH]['TOTAL'] += 1;
               if(!currLine[j+1]) {
-                this.hourlyHeadersStats[stationsInd][statsIndH]['EMPTY'] += 1;
+                tmpStatsH[statsIndH]['EMPTY'] += 1;
               }
+
               statsIndH++;
               this.allHeadersStats[stationsInd][statsInd]['TOTAL'] += 1;
               if(!currLine[j+1]) {
@@ -417,9 +422,9 @@ export class DisplayComponent implements OnInit {
               dDObj[this.dailyHeads[j]] = currLine[j+1];
 
               indD++
-              this.dailyHeadersStats[stationsInd][statsIndD]['TOTAL'] += 1;
+              tmpStatsD[statsIndD]['TOTAL'] += 1;
               if(!currLine[j+1]) {
-                this.dailyHeadersStats[stationsInd][statsIndD]['EMPTY'] += 1;
+                tmpStatsD[statsIndD]['EMPTY'] += 1;
               }
               statsIndD++;
               this.allHeadersStats[stationsInd][statsInd]['TOTAL'] += 1;
@@ -432,9 +437,9 @@ export class DisplayComponent implements OnInit {
               dMObj[this.monthlyHeads[j]] = currLine[j+1];
 
               indM++
-              this.monthlyHeadersStats[stationsInd][statsIndM]['TOTAL'] += 1;
+              tmpStatsM[statsIndM]['TOTAL'] += 1;
               if(!currLine[j+1]) {
-                this.monthlyHeadersStats[stationsInd][statsIndM]['EMPTY'] += 1;
+                tmpStatsM[statsIndM]['EMPTY'] += 1;
               }
               statsIndM++;
               this.allHeadersStats[stationsInd][statsInd]['TOTAL'] += 1;
@@ -458,6 +463,7 @@ export class DisplayComponent implements OnInit {
             } if(tmp) {
               stationHObj.push(hObj)
               this.hourlyDataObj.push(dHObj);
+              this.hourlyHeadersStats[stationsInd] = tmpStatsH.slice()
             }
           }
           if(dayObj.slice(9).length > 0){
@@ -467,6 +473,7 @@ export class DisplayComponent implements OnInit {
             } if(tmp) {
               stationDObj.push(dayObj)
               this.dailyDataObj.push(dDObj);
+              this.dailyHeadersStats[stationsInd] = tmpStatsD.slice()
             }
           }
           if(mObj.slice(9).length > 0){
@@ -476,6 +483,7 @@ export class DisplayComponent implements OnInit {
             } if(tmp) {
               stationMObj.push(mObj)
               this.monthlyDataObj.push(dMObj);
+              this.monthlyHeadersStats[stationsInd] = tmpStatsM.slice()
             }
           }
 

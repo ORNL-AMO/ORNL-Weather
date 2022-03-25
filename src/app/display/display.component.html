@@ -40,7 +40,7 @@
             <th *ngFor = "let row of headers">
                 {{row}}
             </th>
-            <tr class="empty_rate" (click)="toggleEmptyAvail()" style="font-style:italic">
+            <tr class="empty_rate" (click)="toggleEmptyAvail()" style="font-style:italic;cursor:pointer;">
               <td *ngIf="years>0 && emptyAvail" id="empty_rate_text">Empty Data Rate</td>
               <td *ngIf="years>0 && !emptyAvail" id="empty_rate_text">Reported Data Rate</td>
               <td id="empty_rate_text">--</td>
