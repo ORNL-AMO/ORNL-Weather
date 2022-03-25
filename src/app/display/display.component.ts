@@ -395,7 +395,8 @@ export class DisplayComponent implements OnInit {
           // Yes, the parse & stringify is actually needed
           let tmpStatsH = JSON.parse(JSON.stringify(this.hourlyHeadersStats[stationsInd])),
               tmpStatsD = JSON.parse(JSON.stringify(this.dailyHeadersStats[stationsInd])),
-              tmpStatsM = JSON.parse(JSON.stringify(this.monthlyHeadersStats[stationsInd]));
+              tmpStatsM = JSON.parse(JSON.stringify(this.monthlyHeadersStats[stationsInd])),
+              tmpStatsA = JSON.parse(JSON.stringify(this.allHeadersStats[stationsInd]));
 
           //pushing the rest.
           for(let j = 9; j < csvheaders.length; j++) {
@@ -416,9 +417,9 @@ export class DisplayComponent implements OnInit {
               }
 
               statsIndH++;
-              this.allHeadersStats[stationsInd][statsInd]['TOTAL'] += 1;
+              tmpStatsA[statsInd]['TOTAL'] += 1;
               if(!currLine[j+1]) {
-                this.allHeadersStats[stationsInd][statsInd]['EMPTY'] += 1;
+                tmpStatsA[statsInd]['EMPTY'] += 1;
               }
             }
             else if(dayObj[7] == "SOD  " && desiredDTypes.includes(j)){
@@ -431,9 +432,9 @@ export class DisplayComponent implements OnInit {
                 tmpStatsD[statsIndD]['EMPTY'] += 1;
               }
               statsIndD++;
-              this.allHeadersStats[stationsInd][statsInd]['TOTAL'] += 1;
+              tmpStatsA[statsInd]['TOTAL'] += 1;
               if(!currLine[j+1]) {
-                this.allHeadersStats[stationsInd][statsInd]['EMPTY'] += 1;
+                tmpStatsA[statsInd]['EMPTY'] += 1;
               }
             }
             else if(mObj[7] == "SOM  " && desiredMTypes.includes(j)){
@@ -446,16 +447,16 @@ export class DisplayComponent implements OnInit {
                 tmpStatsM[statsIndM]['EMPTY'] += 1;
               }
               statsIndM++;
-              this.allHeadersStats[stationsInd][statsInd]['TOTAL'] += 1;
+              tmpStatsA[statsInd]['TOTAL'] += 1;
               if(!currLine[j+1]) {
-                this.allHeadersStats[stationsInd][statsInd]['EMPTY'] += 1;
+                tmpStatsA[statsInd]['EMPTY'] += 1;
               }
             }
             // Data types without an Hourly/Daily/Monthly designation are calculated as if from any report type
             else if(desiredTypes.includes(j) && !desiredHTypes.includes(j) && !desiredDTypes.includes(j) && !desiredMTypes.includes(j)) {
-              this.allHeadersStats[stationsInd][statsInd]['TOTAL'] += 1;
+              tmpStatsA[statsInd]['TOTAL'] += 1;
               if(!currLine[j+1]) {
-                this.allHeadersStats[stationsInd][statsInd]['EMPTY'] += 1;
+                tmpStatsA[statsInd]['EMPTY'] += 1;
               }
             }
 
@@ -498,6 +499,7 @@ export class DisplayComponent implements OnInit {
             } if(tmp) {
               stationObj.push(obj);
               this.allDataObj.push(dObj);
+              this.allHeadersStats[stationsInd] = tmpStatsA.slice()
             }
           }
         }

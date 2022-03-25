@@ -34,6 +34,7 @@ export class HomeComponent implements OnInit {
 
 
   isError: boolean = false;
+  dataLoaded: boolean = false;
   private stationsJSON: any
   private zipJSON: any;
   private statesJSON: any;
@@ -124,6 +125,8 @@ export class HomeComponent implements OnInit {
       console.log(this.citiesJSON)
       console.log("Cities data loaded")
     }
+    this.dataLoaded = true;
+
 
     // Fetch newest station list data from NOAA
     this.stationsJSON = JSON.parse(await this.CSVtoJSON("https://www1.ncdc.noaa.gov/pub/data/noaa/isd-history.csv"))
@@ -282,6 +285,14 @@ export class HomeComponent implements OnInit {
         setTimeout(function(){
           context.errors = ""
         }, 8000)
+      }
+
+      if(!this.dataLoaded) {
+        this.errors = "Data has not finished loading. Please try again momentarily."
+        let context = this;
+        setTimeout(function(){
+          context.errors = ""
+        }, 3000)
       }
       // Pass data to stations page if no errors
       if(this.errors == "") {
