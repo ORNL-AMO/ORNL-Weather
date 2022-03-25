@@ -659,6 +659,17 @@ export class DisplayComponent implements OnInit {
     this.emptyAvail = !this.emptyAvail;
   }
 
+  stationDataDisplayEmpty() {
+    if(this.headersStats[this.displayIndex]) {
+      for(let row of this.headersStats[this.displayIndex]) {
+        if(row['TOTAL']>0) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
   goBack(){
     this.router.navigate(["/data"])
   }

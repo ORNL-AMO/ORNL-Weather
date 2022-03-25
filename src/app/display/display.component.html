@@ -34,32 +34,41 @@
             </div>
         </div>
 
-        <table class="table" *ngIf="!isLoading">
+        <ng-container *ngIf="!stationDataDisplayEmpty()">
+          <table class="table" *ngIf="!isLoading">
 
-         <!-- Display Headers -->
-            <th *ngFor = "let row of headers">
-                {{row}}
-            </th>
-            <tr class="empty_rate" (click)="toggleEmptyAvail()" style="font-style:italic;cursor:pointer;">
-              <td *ngIf="years>0 && emptyAvail" id="empty_rate_text">Empty Data Rate</td>
-              <td *ngIf="years>0 && !emptyAvail" id="empty_rate_text">Reported Data Rate</td>
-              <td id="empty_rate_text">--</td>
-              <td id="empty_rate_text">--</td>
-              <td id="empty_rate_text">--</td>
-              <td id="empty_rate_text">--</td>
-              <td id="empty_rate_text">--</td>
-              <td id="empty_rate_text">--</td>
-              <td id="empty_rate_text">--</td>
-              <td id="empty_rate_text">--</td>
-              <ng-container *ngIf="emptyAvail"><td *ngFor="let row of headersStats[displayIndex]">{{row['EMPTY']}} of {{row['TOTAL']}}: {{row['EMP_RATE']}}%</td></ng-container>
-              <ng-container *ngIf="!emptyAvail"><td *ngFor="let row of headersStats[displayIndex]">{{row['TOTAL']-row['EMPTY']}} of {{row['TOTAL']}}: {{row['AVAIL_RATE']}}%</td></ng-container>
-            </tr>
+           <!-- Display Headers -->
+              <th *ngFor = "let row of headers">
+                  {{row}}
+              </th>
+              <tr class="empty_rate" (click)="toggleEmptyAvail()" style="font-style:italic;cursor:pointer;">
+                <td *ngIf="years>0 && emptyAvail" id="empty_rate_text">Empty Data Rate</td>
+                <td *ngIf="years>0 && !emptyAvail" id="empty_rate_text">Reported Data Rate</td>
+                <td id="empty_rate_text">--</td>
+                <td id="empty_rate_text">--</td>
+                <td id="empty_rate_text">--</td>
+                <td id="empty_rate_text">--</td>
+                <td id="empty_rate_text">--</td>
+                <td id="empty_rate_text">--</td>
+                <td id="empty_rate_text">--</td>
+                <td id="empty_rate_text">--</td>
+                <ng-container *ngIf="emptyAvail"><td *ngFor="let row of headersStats[displayIndex]">{{row['EMPTY']}} of {{row['TOTAL']}}: {{row['EMP_RATE']}}%</td></ng-container>
+                <ng-container *ngIf="!emptyAvail"><td *ngFor="let row of headersStats[displayIndex]">{{row['TOTAL']-row['EMPTY']}} of {{row['TOTAL']}}: {{row['AVAIL_RATE']}}%</td></ng-container>
+              </tr>
 
-            <!-- Display Data -->
-            <tr *ngFor = "let row of displayObj[displayIndex] | paginate: config">
-                <td *ngFor = "let column of row" class="rows">{{ column }}</td>
-            </tr>
-        </table>
+              <!-- Display Data -->
+              <tr *ngFor = "let row of displayObj[displayIndex] | paginate: config">
+                  <td *ngFor = "let column of row" class="rows">{{ column }}</td>
+              </tr>
+          </table>
+        </ng-container>
+        <div class="loading" *ngIf="stationDataDisplayEmpty()" style="font-size:24px">
+            <!-- Hourglass Loading Spinner -->
+            <div *ngIf="stationID">
+              No {{typeValue.value}} Data Available For Station {{stationID[displayIndex]}}
+            </div>
+
+        </div>
     </div>
   </div>
 
