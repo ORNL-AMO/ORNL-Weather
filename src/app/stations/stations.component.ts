@@ -80,8 +80,13 @@ export class StationsComponent implements OnInit {
           allStationIDs = false;
         }
         else if(this.multiInputs[i].length == 1) {
-          if(this.multiInputs[i][0].length == 11 && !isNaN(+(this.multiInputs[i][0].substring(1))) && (this.multiInputs[i][0][0] == 'A' || this.multiInputs[i][0][0] == 'a' || !isNaN(+this.multiInputs[i][0][0]))) {
+          if(this.isSID(this.multiInputs[i][0])) {
             this.sendingArray.push(this.multiInputs[i])
+          }
+          else if(this.isStateFormat(this.multiInputs[i][0])) {
+            this.zipsList.push(this.multiInputs[i][0])
+            this.getStationsState(this.multiInputs[i][0])
+            allStationIDs = false;
           }
         }
       }
@@ -100,7 +105,7 @@ export class StationsComponent implements OnInit {
         this.getStationsZip(this.lat, this.long);  // Get local stations list
       }
       else if(this.state != "") {
-        this.getStationsState();
+        this.getStationsState(this.state);
       }
       else {
         console.log("Required data missing.")
@@ -144,11 +149,11 @@ export class StationsComponent implements OnInit {
     }
   }
 
-  getStationsState() {
+  getStationsState(str:string) {
     let tmpStationsArr: any[] = []
     this.stationsJSON.forEach((station: any) => {
       // Store valid stations and data required for display
-      if(station.CTRY=="US" && this.state==station.STATE && this.startStr>station.BEGIN && this.endStr<station.END) {
+      if(station.CTRY=="US" && str==station.STATE && this.startStr>station.BEGIN && this.endStr<station.END) {
         let tmp: any[] = []
         this.headers = ['', 'Station ID', 'Station Name', 'Coordinates']
         let headers: any[] = ['NAME', 'ID', 'OTHER']
@@ -224,5 +229,16 @@ export class StationsComponent implements OnInit {
     distance = R * c;
 
     return distance
+  }
+
+  isSID(str:string) {
+    if(str.length == 11 && !isNaN(+(str.substring(1))) && (str[0] == 'A' || str[0] == 'a' || !isNaN(+str[0]))) {
+      return true
+    }
+    return false
+  }
+
+  isStateFormat(str:string) {
+    return /^[A-Z]+$/i.test(str);
   }
 }

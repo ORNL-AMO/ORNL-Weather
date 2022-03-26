@@ -249,10 +249,11 @@ export class HomeComponent implements OnInit {
 
       // Check for input formatting or missing distance value errors
       if(val.includes(';')) {   // Multi-Input
-        val = val.replace(/([\s*;]+)/gm, ';').replace(/([;]+$)|(^[;]+)/gm, '')
+        val = val.replace(/([\s]+)/gm, ' ').replace(/([\s]*[;]+[\s]*)/gm, ';').replace(/([;]+$)|(^[;]+)/gm, '')
         let valsArr = val.split(';')
         for(let val of valsArr) {
           this.checkForInputErrors(val)
+          if(this.hasError) {break}
         }
       }
       else {  // Single Input
@@ -293,10 +294,10 @@ export class HomeComponent implements OnInit {
       if(!this.hasError) {
         // Replace multiple ; or whitespace with single ;, trim leading/trailing ;
         if(val.includes(';')) { // Multiple Inputs
-          val = val.replace(/([\s*;]+)/gm, ';').replace(/([;]+$)|(^[;]+)/gm, '')
+          val = val.replace(/([\s]+)/gm, ' ').replace(/([\s]*[;]+[\s]*)/gm, ';').replace(/([;]+$)|(^[;]+)/gm, '')
         }
-        // If value still contains ; after cleaning input, evaluate as multiple inputs
-        if(val.includes(';')) {
+
+        if(val.includes(';')) {   // Multiple Inputs
           let inputArr = val.split(';')
           for(let value of inputArr) {
             if(value) {
@@ -305,6 +306,7 @@ export class HomeComponent implements OnInit {
           }
           console.log(this.multiInputs);
         }
+
         else {  // Single Input
           // Evaluate input as zip code
           if(this.isZip(val)) {
@@ -319,7 +321,7 @@ export class HomeComponent implements OnInit {
           }
           // Parse as City or State
           else if(this.isStateFormat(val)){
-            this.getState(val)
+            this.state = this.getState(val)
           }
           else if(this.isCity(val)) {
             this.getCity(val)
@@ -402,14 +404,15 @@ export class HomeComponent implements OnInit {
   }
 
   getState(str:string) {
+    var out:string = "";
     this.statesJSON.every((state: any) => {
       if(state.CODE.toUpperCase() == str.toUpperCase() || state.STATE.toUpperCase() == str.toUpperCase()){
-        this.state = state.CODE;
+        out = state.CODE;
         return false
       }
       return true
     })
-    if(this.state=="") {
+    if(out=="") {
       console.log("State not found")
       this.checkZErrors(`State ${str} not found. Please try again.`)
       let context = this;
@@ -418,8 +421,9 @@ export class HomeComponent implements OnInit {
       }, 3000)
     }
     else {
-      console.log("State: " + this.state)
+      // console.log("State: " + out)
     }
+    return out
   }
 
   getCity(str:string) {
@@ -453,8 +457,11 @@ export class HomeComponent implements OnInit {
     if(this.isZip(input)) {
       out = this.getCoordsZip(input)
     }
-    if(this.isSID(input)) {
+    else if(this.isSID(input)) {
       out.push(this.getStationID(input))
+    }
+    else if(this.isState(input)) {
+      out.push(this.getState(input))
     }
     return out;
   }
@@ -622,7 +629,7 @@ export class HomeComponent implements OnInit {
     return isState;
   }
   isStateFormat(str:string) {
-    return /^[A-Z]+$/i.test(str);
+    return /^[A-Z\s]+$/i.test(str);
   }
   isSID(str:string) {
     if(str.length == 11 && !isNaN(+(str.substring(1))) && (str[0] == 'A' || str[0] == 'a' || !isNaN(+str[0]))) {
@@ -700,6 +707,8 @@ export class HomeComponent implements OnInit {
 
   checkForInputErrors(val:string) {
     if(!this.isZip(val) && !this.isSID(val) && !this.isState(val) && !this.isCity(val)) {
+      console.log(val);
+
       console.log("Input format unknown")
       this.checkZErrors("Please enter a valid City, State, Zip Code, or 11-digit Station ID.")
       let context = this;
