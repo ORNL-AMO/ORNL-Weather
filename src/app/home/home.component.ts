@@ -263,6 +263,11 @@ export class HomeComponent implements OnInit {
 
     // Valid Inputs
     else {  // Multiple Inputs
+      // Replace multiple ; or whitespace with single ;, trim leading/trailing ;
+      if(val.includes(';')) {
+        val = val.replace(/([\s*;]+)/gm, ';').replace(/([;]+$)|(^[;]+)/gm, '')
+      }
+      // If value still contains ; after cleaning input, evaluate as multiple inputs
       if(val.includes(';')) {
         let inputArr = val.split(';')
         for(let value of inputArr) {
@@ -326,7 +331,7 @@ export class HomeComponent implements OnInit {
       if(zipcode.ZIPCODE == num){
         // this.lat = zipcode.LAT
         // this.long = zipcode.LONG
-        outArr.push(zipcode.LAT, zipcode.LONG)
+        outArr.push(zipcode.LAT, zipcode.LONG, num)
         return false
       }
       return true
@@ -469,15 +474,29 @@ export class HomeComponent implements OnInit {
     return JSON.stringify(jsonFile)
   }
 
+  updateCachedInputs() {
+    let zip = (document.getElementById("zipcode") as HTMLInputElement).value.toString()
+    let dist = (document.getElementById("distance") as HTMLInputElement).value
+    let start = (document.getElementById("start-date") as HTMLInputElement).value
+    let end = (document.getElementById("end-date") as HTMLInputElement).value
+
+    sessionStorage.setItem('zipcode', zip);
+    sessionStorage.setItem('distance', dist);
+    sessionStorage.setItem('start-date', start);
+    sessionStorage.setItem('end-date', end);
+  }
+
   // Change input text box background color depending on validity of input
   checkInput() {
     this.zError = "*Invalid Input"
+    this.updateCachedInputs();
 
     let context = this;
     let zipcode = document.getElementById("zipcode") as HTMLInputElement
     let val = zipcode.value.toString().trim()
     let dist = document.getElementById("distance") as HTMLInputElement
     this.distDropdown = true;
+
 
     if(val.length >= 4) {
       this.matchList = []
@@ -502,16 +521,19 @@ export class HomeComponent implements OnInit {
         if(needsDist) {
           dist.style.backgroundColor="white"
           dist.disabled = false;
+          dist.style.cursor="pointer"
         }
         else {
           dist.style.backgroundColor="#A9A9A9"
           dist.disabled = true;
+          dist.style.cursor="not-allowed"
         }
       }
       else {
         zipcode.style.backgroundColor="#ff9191" // Red
         dist.style.backgroundColor="#A9A9A9"
         dist.disabled = true;
+        dist.style.cursor="not-allowed"
       }
     }
 
@@ -520,31 +542,37 @@ export class HomeComponent implements OnInit {
         zipcode.style.backgroundColor="white"
         dist.style.backgroundColor="#A9A9A9"
         dist.disabled = true;
+        dist.style.cursor="not-allowed"
       }
       else if(this.isState(val)) {  // City or State
         zipcode.style.backgroundColor="#82ed80" // Green
         dist.style.backgroundColor="#A9A9A9"
         dist.disabled = true;
+        dist.style.cursor="not-allowed"
       }
       else if(this.isCity(val)) {  // City or State
         zipcode.style.backgroundColor="#82ed80" // Green
         dist.style.backgroundColor="white"
         dist.disabled = false;
+        dist.style.cursor="pointer"
       }
       else if(!isNaN(+val) && (val.length == 5)){ // Zip Code
         zipcode.style.backgroundColor="#82ed80" // Green
         dist.style.backgroundColor="white"
         dist.disabled = false;
+        dist.style.cursor="pointer"
       }
       else if(val.length == 11 && !isNaN(+(val.substring(1))) && (val[0] == 'A' || val[0] == 'a' || !isNaN(+val[0]))) {  // Station ID
         zipcode.style.backgroundColor="#82ed80" // Green
         dist.style.backgroundColor="#A9A9A9"
         dist.disabled = true;
+        dist.style.cursor="not-allowed"
       }
       else {
         zipcode.style.backgroundColor="#ff9191" // Red
         dist.style.backgroundColor="#A9A9A9"
         dist.disabled = true;
+        dist.style.cursor="not-allowed"
       }
     }
   }

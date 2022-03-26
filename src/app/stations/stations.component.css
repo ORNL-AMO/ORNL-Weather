@@ -96,6 +96,18 @@ tr:hover{
 .rows {
   display: table-cell;
 }
+.group {
+  justify-content: center;
+  text-align: center;
+  align-content: center;
+  min-height: 100%;
+  padding: 10px;
+  font-size: 18px;
+  font-style: italic;
+  background-color: #6d8668;
+  border-bottom: 2px solid black;
+  border-top: 2px solid black;
+}
 
 .button1 {
   border-radius: 60px;

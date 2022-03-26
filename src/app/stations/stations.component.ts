@@ -26,6 +26,7 @@ export class StationsComponent implements OnInit {
   endStr:string;
   stationsJSON:any;
   multiInputs: string[] = [];
+  zipsList: string[] = [];
   stationsArray: any[] = [];
   selectedArray: any[] = [];
   sendingArray: any[] = [];
@@ -73,8 +74,9 @@ export class StationsComponent implements OnInit {
     if(this.multiInputs.length>0) {
       let allStationIDs: boolean = true;
       for(let i in this.multiInputs) {
-        if(this.multiInputs[i].length == 2){   // Lat, Lon Pair
+        if(this.multiInputs[i].length == 3){   // Lat, Lon, Zip
           this.getStationsZip(this.multiInputs[i][0], this.multiInputs[i][1]);
+          this.zipsList.push(this.multiInputs[i][2])
           allStationIDs = false;
         }
         else if(this.multiInputs[i].length == 1) {
@@ -104,11 +106,13 @@ export class StationsComponent implements OnInit {
         console.log("Required data missing.")
       }
     }
+    console.log(this.stationsArray);
 
   }
 
   getStationsZip(lat:string, long:string) {
     // Check each station for distance, date range
+    let tmpStationsArr: any[] = []
     this.stationsJSON.forEach((station: any) => {
       // Get station distance from zip code coordinates
       let distance = this.Haversine(lat, long, station.LAT, station.LON)
@@ -123,21 +127,25 @@ export class StationsComponent implements OnInit {
         tmp[headers[0]] = station["STATION NAME"]
         tmp[headers[1]] = id
         tmp[headers[2]] = distance.toFixed(2)
-        this.stationsArray.push(tmp)
+        tmpStationsArr.push(tmp)
       }
     });
-    this.stationsArray.sort(function(a,b) {
+    tmpStationsArr.sort(function(a,b) {
       return a.OTHER - b.OTHER
     });
     console.log("Matching Stations:");
-    console.log(this.stationsArray)
-    if(this.stationsArray.length == 0) {
+    console.log(tmpStationsArr)
+    if(tmpStationsArr.length == 0) {
       let error:string = "No matching stations found. Try increasing distance."
       this.router.navigate(["/home"], {state: {err: error}})
+    }
+    else {
+      this.stationsArray.push(tmpStationsArr)
     }
   }
 
   getStationsState() {
+    let tmpStationsArr: any[] = []
     this.stationsJSON.forEach((station: any) => {
       // Store valid stations and data required for display
       if(station.CTRY=="US" && this.state==station.STATE && this.startStr>station.BEGIN && this.endStr<station.END) {
@@ -151,17 +159,20 @@ export class StationsComponent implements OnInit {
         tmp[headers[0]] = station["STATION NAME"]
         tmp[headers[1]] = id
         tmp[headers[2]] = coords
-        this.stationsArray.push(tmp)
+        tmpStationsArr.push(tmp)
       }
     });
-    this.stationsArray.sort(function(a, b) {
-      return compareStrings(a.NAME, b.NAME);
+    tmpStationsArr.sort(function(a, b) {
+      return a.OTHER - b.OTHER
     })
     console.log("Matching Stations:");
-    console.log(this.stationsArray)
-    if(this.stationsArray.length == 0) {
+    console.log(tmpStationsArr)
+    if(tmpStationsArr.length == 0) {
       let error:string = "No matching stations found. Try another search method"
       this.router.navigate(["/home"], {state: {err: error}})
+    }
+    else {
+      this.stationsArray.push(tmpStationsArr)
     }
   }
 
@@ -179,19 +190,6 @@ export class StationsComponent implements OnInit {
         if (el) this.selectedArray.splice(this.selectedArray.indexOf(el), 1);
       }
 
-    }
-
-    selectAll(ev: any){
-      if(ev.target.checked){
-        for(let index in this.stationsArray){
-          this.getSelect(ev, index)
-        }
-      }
-      else{
-        for(let index in this.stationsArray){
-          this.getSelect(ev, index)
-        }
-      }
     }
 
     sendToData(){
@@ -229,10 +227,4 @@ export class StationsComponent implements OnInit {
 
     return distance
   }
-}
-
-function compareStrings(a:any, b:any) {
-  a = a.toLowerCase();
-  b = b.toLowerCase();
-  return (a < b) ? -1 : (a > b) ? 1 : 0;
 }
