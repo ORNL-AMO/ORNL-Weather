@@ -162,9 +162,7 @@ export class StationsComponent implements OnInit {
         tmpStationsArr.push(tmp)
       }
     });
-    tmpStationsArr.sort(function(a, b) {
-      return a.OTHER - b.OTHER
-    })
+    tmpStationsArr.sort((a, b) => a.NAME.localeCompare(b.NAME))
     console.log("Matching Stations:");
     console.log(tmpStationsArr)
     if(tmpStationsArr.length == 0) {
