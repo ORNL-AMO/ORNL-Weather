@@ -23,7 +23,7 @@
             </table>
         </div>
       </div>
-      <div *ngIf="isError" class="alertcenter" style="margin-top:45px;">
+      <div *ngIf="dispError" class="alertcenter" style="margin-top:45px;">
         {{ zError }}
       </div>
 
@@ -57,7 +57,7 @@
 
   </div>
 
-  <div *ngIf="isError" class="alertcenter">
+  <div *ngIf="dispError" class="alertcenter">
     {{ dError }}
   </div>
 
@@ -98,10 +98,10 @@
     </mat-form-field> -->
 
   <div class="center">
-    <div *ngIf="isError" class="alertcenterleft">
+    <div *ngIf="dispError" class="alertcenterleft">
       {{ sError }}
     </div>
-    <div *ngIf="isError" class="alertcenterright">
+    <div *ngIf="dispError" class="alertcenterright">
       {{ eError }}
     </div>
   </div>

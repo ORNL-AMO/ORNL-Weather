@@ -32,7 +32,8 @@ export class HomeComponent implements OnInit {
   zError: string = ""
   dError: string = ""
 
-  isError: boolean = false;
+  hasError: boolean = false;
+  dispError: boolean = false;
   dataLoaded: boolean = false;
   private stationsJSON: any
   private zipJSON: any;
@@ -160,6 +161,8 @@ export class HomeComponent implements OnInit {
     tmp = document.getElementById("end-date") as HTMLInputElement;
     let ED:any = tmp.value;
 
+    this.hasError = false;
+    this.dispError = false;
     this.lat = null
     this.long = null
     this.dist = dist
@@ -182,18 +185,18 @@ export class HomeComponent implements OnInit {
     console.log("End Date: " + ED);
 
     if(val == ""){
-      this.checkZErrors();
-    }
-    if(dist == " "){
-      this.checkDErrors();
+      this.checkZErrors("*This is a required input");
+      this.hasError = true;
     }
     if(SD == ""){
-      this.checkSErrors();
+      this.checkSErrors("*This is a required input");
+      this.hasError = true;
     }
     if(ED == ""){
-      this.checkEErrors();
+      this.checkEErrors("*This is a required input");
+      this.hasError = true;
     }
-    else{
+    if(!this.hasError){
 
       //splitting start and end date values into separate elements
       let tempStart = SD.split("-");
@@ -234,6 +237,7 @@ export class HomeComponent implements OnInit {
     this.endStr = this.endStr.concat(String(this.endDate[0].year) + String(this.endDate[0].month) + String(this.endDate[0].day));
 
     if(!this.dataLoaded) {
+      this.hasError = true;
       this.errors = "Data has not finished loading. Please try again momentarily."
       let context = this;
       setTimeout(function(){
@@ -257,6 +261,7 @@ export class HomeComponent implements OnInit {
       // Check for Date-related Errors
       // Start date should be prior to end date
       if(this.startStr>this.endStr) {
+        this.hasError = true;
         console.log("Start Date cannot be later than End Date")
         this.errors = "Start Date cannot be later than End Date."
         let context = this;
@@ -266,6 +271,7 @@ export class HomeComponent implements OnInit {
       }
       // Start and end dates should be numbers
       else if(isNaN(Number(this.startStr)) || isNaN(Number(this.endStr))) {
+        this.hasError = true;
         console.log("Date(s) missing")
         this.errors = "Please enter a valid date range."
         let context = this;
@@ -275,6 +281,7 @@ export class HomeComponent implements OnInit {
       }
       // Dates shouldn't be in the future
       else if(this.startStr>this.currDate || this.endStr>this.currDate) {
+        this.hasError = true;
         console.log("Future dates selected")
         this.errors = "Please enter a valid date range."
         let context = this;
@@ -283,7 +290,7 @@ export class HomeComponent implements OnInit {
         }, 8000)
       }
       // Valid Inputs
-      if(!this.errors) {
+      if(!this.hasError) {
         // Replace multiple ; or whitespace with single ;, trim leading/trailing ;
         if(val.includes(';')) { // Multiple Inputs
           val = val.replace(/([\s*;]+)/gm, ';').replace(/([;]+$)|(^[;]+)/gm, '')
@@ -317,10 +324,11 @@ export class HomeComponent implements OnInit {
           else if(this.isCity(val)) {
             this.getCity(val)
           }
-          // Incorrect input length
+          // Final Catch for Invalid Input
           else {
+            this.hasError = true;
             console.log("Invalid format for input")
-            this.errors = this.errors + "Invalid format for input. Please enter a 5-digit zipcode, an 11-digit station ID, a state, or a city."
+            this.errors = "Invalid format for input. Please enter a 5-digit zipcode, an 11-digit station ID, a state, or a city."
             let context = this;
             setTimeout(function(){
               context.errors = ""
@@ -328,7 +336,7 @@ export class HomeComponent implements OnInit {
           }
         }
         // Pass data to stations page if no errors
-        if(this.errors == "") {
+        if(!this.hasError) {
           this.router.navigate(["/stations"], {state: { dataLat: this.lat, dataLong: this.long, dataDist: this.dist, dataStationID: this.stationID, dataState: this.state, dataStartDate: this.startDate, dataEndDate: this.endDate, dataStationsJSON: this.stationsJSON, years: this.numYears, dataStartStr: this.startStr, dataEndStr: this.endStr, multiInputs: this.multiInputs}})
         }
       }
@@ -349,14 +357,9 @@ export class HomeComponent implements OnInit {
       return true
     })
     // Check if input zip code found
-    // if(this.lat == null) {
-    if(!outArr) {
+    if(outArr.length==0) {
       console.log("Invalid zip code")
-      this.errors = this.errors + "Zip code not found. Please try again."
-      let context = this;
-      setTimeout(function(){
-        context.errors = ""
-      }, 8000)
+      this.checkZErrors(`Zip code ${zip} not found. Please try again.`)
     }
     else {
       // console.log("Lat: " + this.lat + " Lon: " + this.long)
@@ -377,7 +380,7 @@ export class HomeComponent implements OnInit {
           console.log("Station doesn't report data within the selected period")
           let tmpBegin = station.BEGIN.substr(0,4) + "-" + station.BEGIN.substr(4,2) + "-" + station.BEGIN.substr(6,2)
           let tmpEnd = station.END.substr(0,4) + "-" + station.END.substr(4,2) + "-" + station.END.substr(6,2)
-          this.errors = this.errors + "Station reporting period (" + tmpBegin + ", " + tmpEnd + ") is not compatible with selected dates."
+          this.checkZErrors(`Station ${val} reporting period (${tmpBegin}, ${tmpEnd}) is not compatible with selected dates.`)
         }
         return false
       }
@@ -386,7 +389,7 @@ export class HomeComponent implements OnInit {
     //Check if input station ID found in stations list
     if (out == "") {
       console.log("Station not found")
-      this.errors = this.errors + "Station not found. Please try again."
+      this.checkZErrors(`Station ${val} not found. Please try again.`)
       let context = this;
       setTimeout(function(){
         context.errors = ""
@@ -408,7 +411,7 @@ export class HomeComponent implements OnInit {
     })
     if(this.state=="") {
       console.log("State not found")
-      this.errors = this.errors + "State not found. Please try again."
+      this.checkZErrors(`State ${str} not found. Please try again.`)
       let context = this;
       setTimeout(function(){
         context.errors = ""
@@ -433,7 +436,7 @@ export class HomeComponent implements OnInit {
     })
     if(this.lat==null) {
       console.log("City not found")
-      this.errors = this.errors + "City not found. Please try again or select one from the dropdown."
+      this.checkZErrors(`City ${str} not found. Please try again or select one from the dropdown.`)
       let context = this;
       setTimeout(function(){
         context.errors = ""
@@ -645,48 +648,52 @@ export class HomeComponent implements OnInit {
   }
 
   //error checks for empty field for zip, distance, and dates
-  checkZErrors(){
-    this.isError = true;
-    this.zError = "*This is a required input"
+  checkZErrors(str:string){
+    this.hasError = true;
+    this.dispError = true;
+    this.zError = str;
 
     let context = this;
-    context.isError = true;
+    context.dispError = true;
     setTimeout(function(){
-      context.isError = false;
+      context.dispError = false;
       context.zError = ""
     }, 8000)
 
   }
-  checkSErrors(){
-    this.isError = true;
-    this.sError = "*This is a required input"
+  checkSErrors(str:string){
+    this.hasError = true;
+    this.dispError = true;
+    this.sError = str;
 
     let context = this;
-    context.isError = true;
+    context.dispError = true;
     setTimeout(function(){
-      context.isError = false;
+      context.dispError = false;
       context.sError = ""
     }, 8000)
   }
-  checkEErrors(){
-    this.isError = true;
-    this.eError = "*This is a required input"
+  checkEErrors(str:string){
+    this.hasError = true;
+    this.dispError = true;
+    this.eError = str;
 
     let context = this;
-    context.isError = true;
+    context.dispError = true;
     setTimeout(function(){
-      context.isError = false;
+      context.dispError = false;
       context.eError = ""
     }, 8000)
   }
-  checkDErrors(){
-    this.isError = true;
-    this.dError = "*This is a required input"
+  checkDErrors(str:string){
+    this.hasError = true;
+    this.dispError = true;
+    this.dError = str;
 
     let context = this;
-    context.isError = true;
+    context.dispError = true;
     setTimeout(function(){
-      context.isError = false;
+      context.dispError = false;
       context.dError = ""
     }, 8000)
   }
@@ -694,16 +701,16 @@ export class HomeComponent implements OnInit {
   checkForInputErrors(val:string) {
     if(!this.isZip(val) && !this.isSID(val) && !this.isState(val) && !this.isCity(val)) {
       console.log("Input format unknown")
-      this.errors = "Please enter a valid City, State, Zip Code, or 11-digit Station ID."
+      this.checkZErrors("Please enter a valid City, State, Zip Code, or 11-digit Station ID.")
       let context = this;
       setTimeout(function(){
         context.errors = ""
       }, 8000)
     }
     // Distance should be selected if searching by zip code
-    else if((this.isZip(val) || this.isCity(val)) && !this.dist.trim()) {
+    else if((this.isZip(val) || this.isCity(val)) && this.dist==" ") {
       console.log("Distance missing for zip")
-      this.errors = "Please select a distance when using a City or Zip Code."
+      this.checkDErrors("Please select a distance when using a City or Zip Code.")
       let context = this;
       setTimeout(function(){
         context.errors = ""
