@@ -71,7 +71,7 @@ export class StationsComponent implements OnInit {
   }
 
   getStations() {
-    if(this.multiInputs.length>0) {
+    if(this.multiInputs.length>0) {   // Multi-Input Search
       let allStationIDs: boolean = true;
       for(let i in this.multiInputs) {
         if(this.multiInputs[i].length == 3){   // Lat, Lon, Zip
@@ -80,7 +80,7 @@ export class StationsComponent implements OnInit {
           allStationIDs = false;
         }
         else if(this.multiInputs[i].length == 1) {
-          if(this.isSID(this.multiInputs[i][0])) {
+          if(this.isSID(this.multiInputs[i][0]) && !this.sendingArray.includes(this.multiInputs[i][0])) {
             this.sendingArray.push(this.multiInputs[i])
           }
           else if(this.isStateFormat(this.multiInputs[i][0])) {
@@ -94,7 +94,7 @@ export class StationsComponent implements OnInit {
         this.router.navigate(["/data"], {state: { stationID: this.sendingArray, startDate: this.startDate, endDate: this.endDate, years: this.numYears, startStr: this.startStr, endStr: this.endStr}})
       }
     }
-    else {
+    else {    // Single Input Search
       if(this.stationID != ""){   // Go directly to data if provided station id
         this.sendingArray.push(this.stationID)
         console.log("Station:");
@@ -186,17 +186,26 @@ export class StationsComponent implements OnInit {
       };
 
       if(ev.target.checked){
+        this.checkUncheckAll(obj.ID.toString(), true);
         this.selectedArray.push(obj);
       }
       else{
+        this.checkUncheckAll(obj.ID.toString(), false);
         let el = this.selectedArray.find((itm) => itm.ID === val);
         if (el) this.selectedArray.splice(this.selectedArray.indexOf(el), 1);
       }
+    }
 
+    checkUncheckAll(id:string, val:boolean) {
+      var dupStations = <HTMLInputElement[]><any>document.getElementsByName(id);
+      for(var i = 0; i < dupStations.length; i++) {
+        dupStations[i].checked = val;
+      }
     }
 
     sendToData(){
       for(let index in this.selectedArray){
+        if(!this.sendingArray.includes(this.selectedArray[index].ID))
         this.sendingArray.push(this.selectedArray[index].ID)
       }
       console.log("Selected Stations:");

@@ -324,7 +324,10 @@ export class HomeComponent implements OnInit {
             this.state = this.getState(val)
           }
           else if(this.isCity(val)) {
-            this.getCity(val)
+            let out: string[] = []
+            out = this.getCity(val)
+            this.lat = out[0]
+            this.long = out[1]
           }
           // Final Catch for Invalid Input
           else {
@@ -351,8 +354,6 @@ export class HomeComponent implements OnInit {
     let outArr: string[] = [];
     this.zipJSON.every((zipcode: any) => {
       if(zipcode.ZIPCODE == num){
-        // this.lat = zipcode.LAT
-        // this.long = zipcode.LONG
         outArr.push(zipcode.LAT, zipcode.LONG, num)
         return false
       }
@@ -427,18 +428,18 @@ export class HomeComponent implements OnInit {
   }
 
   getCity(str:string) {
+    let outArr: string[] = [];
     str = str.replace(/[\s]/gi, '')
     str = str.replace(',', ', ')
     this.citiesJSON.every((city: any) => {
       let citystate:string = city.CITY.toUpperCase() + ", " + city.STATE.toUpperCase()
       if(str.toUpperCase() == citystate){
-        this.lat = city.LAT
-        this.long = city.LONG
+        outArr.push(city.LAT, city.LONG, citystate)
         return false
       }
       return true
     })
-    if(this.lat==null) {
+    if(outArr.length==0) {
       console.log("City not found")
       this.checkZErrors(`City ${str} not found. Please try again or select one from the dropdown.`)
       let context = this;
@@ -447,8 +448,9 @@ export class HomeComponent implements OnInit {
       }, 3000)
     }
     else {
-      console.log(console.log("Lat: " + this.lat + " Lon: " + this.long))
+      // console.log(console.log("Lat: " + this.lat + " Lon: " + this.long))
     }
+    return outArr
   }
 
   // Used to find data for multiple zip codes or station IDs separated by semicolons
@@ -462,6 +464,9 @@ export class HomeComponent implements OnInit {
     }
     else if(this.isState(input)) {
       out.push(this.getState(input))
+    }
+    else if(this.isCity(input)) {
+      out = this.getCity(input)
     }
     return out;
   }
