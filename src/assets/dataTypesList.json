@@ -1,7 +1,7 @@
 [
  {
    "DataTypes": "HourlyAltimeterSetting",
-   "Description": "Atmospheric pressure reduced to sea level using temperature profile of the �standard� atmosphere. Given in inches of Mercury (in Hg)."
+   "Description": "Atmospheric pressure reduced to sea level using temperature profile of the standard atmosphere. Given in inches of Mercury (in Hg)."
  },
  {
    "DataTypes": "HourlyDewPointTemperature",
@@ -13,7 +13,7 @@
  },
  {
    "DataTypes": "HourlyPrecipitation",
-   "Description": "Amount of precipitation in inches to hundredths over the past hour. For certain automated stations, precipitation will be reported at sub-hourly intervals (e.g. every 15 or 20 minutes) as an accumulated amount of all precipitation within the preceding hour. A �T� indicates a trace amount of precipitation"
+   "Description": "Amount of precipitation in inches to hundredths over the past hour. For certain automated stations, precipitation will be reported at sub-hourly intervals (e.g. every 15 or 20 minutes) as an accumulated amount of all precipitation within the preceding hour. A T indicates a trace amount of precipitation"
  },
  {
    "DataTypes": "HourlyPresentWeatherType",
@@ -21,7 +21,7 @@
  },
  {
    "DataTypes": "HourlyPressureChange",
-   "Description": "Difference in pressure over the past 3 hours. Prefixed with a �+� or �-� to indicate increase or decrease in pressure respectively. Given in inches of Mercury (in Hg)."
+   "Description": "Difference in pressure over the past 3 hours. Prefixed with a + or - to indicate increase or decrease in pressure respectively. Given in inches of Mercury (in Hg)."
  },
  {
    "DataTypes": "HourlyPressureTendency",
@@ -53,7 +53,7 @@
  },
  {
    "DataTypes": "HourlyWindDirection",
-   "Description": "Wind direction from true north using compass directions (e.g. 360 = true north, 180 = south, 270 = west, etc.). Note: A direction of �000� is given for calm winds."
+   "Description": "Wind direction from true north using compass directions (e.g. 360 = true north, 180 = south, 270 = west, etc.). Note: A direction of 000 is given for calm winds."
  },
  {
    "DataTypes": "HourlyWindGustSpeed",
@@ -65,11 +65,11 @@
  },
  {
    "DataTypes": "Sunrise",
-   "Description": "Time of sunrise using a 24-hour clock (Local Standard Time � Daylight Savings Time is not used)"
+   "Description": "Time of sunrise using a 24-hour clock (Local Standard Time  Daylight Savings Time is not used)"
  },
  {
    "DataTypes": "Sunset",
-   "Description": "Time of sunset using a 24-hour clock (Local Standard Time � Daylight Savings Time is not used)"
+   "Description": "Time of sunset using a 24-hour clock (Local Standard Time  Daylight Savings Time is not used)"
  },
  {
    "DataTypes": "DailyAverageDewPointTemperature",
@@ -105,7 +105,7 @@
  },
  {
    "DataTypes": "DailyDepartureFromNormalAverageTemperature",
-   "Description": "Average temperature�s departure from (1981-2010) normal temperature (in whole Fahrenheit degrees using �-� to indicate below normal"
+   "Description": "Average temperatures departure from (1981-2010) normal temperature (in whole Fahrenheit degrees using - to indicate below normal"
  },
  {
    "DataTypes": "DailyHeatingDegreeDays",
@@ -169,7 +169,7 @@
  },
  {
    "DataTypes": "MonthlyDaysWithGT90Temp",
-   "Description": "The number of days with minimum temperature 90 F (32.2 C) or higher, except for Alaska�70 F (21.1 C) or higher."
+   "Description": "The number of days with minimum temperature 90 F (32.2 C) or higher, except for Alaska 70 F (21.1 C) or higher."
  },
  {
    "DataTypes": "MonthlyDaysWithLT0Temp",
