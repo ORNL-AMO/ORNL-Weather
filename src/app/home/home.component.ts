@@ -455,10 +455,6 @@ export class HomeComponent implements OnInit {
     console.log(str.toUpperCase());
     this.citiesJSON.every((city: any) => {
       let citystate:string = city.CITY.toUpperCase() + ", " + city.STATE.toUpperCase()
-      if(citystate.includes('NEW YORK')) {
-        console.log(citystate);
-
-      }
       if(str.toUpperCase() == citystate){
         outArr.push(city.LAT, city.LONG, str)
         return false
