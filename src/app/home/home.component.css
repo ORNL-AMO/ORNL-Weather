@@ -36,7 +36,7 @@ td:hover{
 #scrollable-area {
   position: absolute;
   z-index: 2;
-  margin-top: 39px;
+  margin-top: 37px;
   width: 200px;
   height: 180px;
   border: 1.5px solid #587656;

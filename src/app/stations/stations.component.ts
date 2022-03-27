@@ -186,17 +186,17 @@ export class StationsComponent implements OnInit {
       };
 
       if(ev.target.checked){
-        this.checkUncheckAll(obj.ID.toString(), true);
+        this.checkUncheckDuplicates(obj.ID.toString(), true);
         this.selectedArray.push(obj);
       }
       else{
-        this.checkUncheckAll(obj.ID.toString(), false);
+        this.checkUncheckDuplicates(obj.ID.toString(), false);
         let el = this.selectedArray.find((itm) => itm.ID === val);
         if (el) this.selectedArray.splice(this.selectedArray.indexOf(el), 1);
       }
     }
 
-    checkUncheckAll(id:string, val:boolean) {
+    checkUncheckDuplicates(id:string, val:boolean) {
       var dupStations = <HTMLInputElement[]><any>document.getElementsByName(id);
       for(var i = 0; i < dupStations.length; i++) {
         dupStations[i].checked = val;

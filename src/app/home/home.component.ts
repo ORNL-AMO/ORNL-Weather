@@ -523,13 +523,21 @@ export class HomeComponent implements OnInit {
     let dist = document.getElementById("distance") as HTMLInputElement
     this.distDropdown = true;
 
-
-    if(val.length >= 4) {
+    // Get Matching Cities List
+    if(val.length >= 4 && !val.includes(';')) {
       this.matchList = []
       this.listCities(val)
     }
+    else if(val.includes(';')) {
+      let lastVal = val.slice(val.lastIndexOf(';')+1)
+      this.matchList = []
+      if(lastVal.length>=4) {
+        this.listCities(lastVal)
+      }
+    }
 
     if(val.includes(';')) {   // Multi-Input
+      val = val.replace(/([\s]+)/gm, ' ').replace(/([\s]*[;]+[\s]*)/gm, ';').replace(/([;]+$)|(^[;]+)/gm, '')
       let inputs = val.split(';')
       let needsDist: boolean = false;
       let valid: boolean = true;
@@ -615,8 +623,17 @@ export class HomeComponent implements OnInit {
 
   setCity(val:string) {
     let zipcode = document.getElementById("zipcode") as HTMLInputElement
-    zipcode.value = val;
-    this.checkInput();
+    if(zipcode.value.includes(';')) {
+      zipcode.value = zipcode.value.substring(0,zipcode.value.lastIndexOf(';')+1) + val + ';';
+      this.checkInput();
+    }
+    else {
+      zipcode.value = val;
+      this.checkInput();
+    }
+    this.matchList = []
+    zipcode.focus()
+    zipcode.setSelectionRange(zipcode.value.length, zipcode.value.length)
   }
 
   isCity(str:string){
