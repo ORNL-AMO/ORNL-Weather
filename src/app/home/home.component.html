@@ -74,14 +74,16 @@
   </div>
 
   <div class="center">
-    <div class="center">
+    <div class="startParent">
       <input class='startDate' #startdate type="date" id="start-date" name="start-date" style="width: 200px;" (change)="updateCachedInputs()">
-
-      </div>
-
+      <div *ngIf="dispError" class="alertcenter">{{ sError }}</div>
+    </div>
+    <div class="endParent">
       <input class='endDate' #enddate type="date" id="end-date" name="end-date" style="width: 200px;" (change)="updateCachedInputs()">
+      <div *ngIf="dispError" class="alertcenter">{{ eError }}</div>
+    </div>
 
-      </div>
+  </div>
 
     <!--<div class="startDate">
     <mat-form-field appearance="legacy" floatLabel="never">
@@ -98,19 +100,11 @@
       <mat-datepicker #picker2 #datepickercolor color="accent"></mat-datepicker>
     </mat-form-field> -->
 
-  <div class="center">
-    <div *ngIf="dispError" class="alertcenterleft">
-      {{ sError }}
-    </div>
-    <div *ngIf="dispError" class="alertcenterright">
-      {{ eError }}
-    </div>
+  <div class="center" style="margin-top: 100px;">
+    <button class="button button1" (click)="acceptVariables()" ><b>Station Select</b></button>
   </div>
   <div *ngIf="errors" class="alertcenter">
     {{ errors }}
-  </div>
-  <div class="center" style="margin-top: 100px;">
-    <button class="button button1" (click)="acceptVariables()" ><b>Station Select</b></button>
   </div>
 </body>
 
