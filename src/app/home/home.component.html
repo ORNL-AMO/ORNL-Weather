@@ -9,20 +9,21 @@
 
   <div class="zipParent">
 
-      <div class="center">
+      <div class="center" id="zipBox">
           <input class="zip" name="zipcode" #zipcode id="zipcode" type="text"
                  size=18 (click)="distDropdown=true" (keyup)="checkInput()" (keyup.enter)="acceptVariables()" autocomplete="none">
+         <div class="center" id="dropdown" tabindex="-1">
+           <div id="scrollable-area" *ngIf="matchList.length>0 && zipcode.value.toString().length>=4 && !matchList.includes(zipcode.value.toString()) && distDropdown">
+               <table fixed-table-headers="scrollable-area">
+                   <tr *ngFor = "let entry of matchList">
+                       <td class="rows" (click)=setCity(entry)>{{entry}}</td>
+                   </tr>
+               </table>
+           </div>
+         </div>
       </div>
 
-      <div class="center">
-        <div id="scrollable-area" *ngIf="matchList.length>0 && zipcode.value.toString().length>=4 && !matchList.includes(zipcode.value.toString()) && distDropdown">
-            <table fixed-table-headers="scrollable-area">
-                <tr *ngFor = "let entry of matchList">
-                    <td class="rows" (click)=setCity(entry)><label class="distLabel" for="{{entry}}">{{entry}}</label></td>
-                </tr>
-            </table>
-        </div>
-      </div>
+
       <div *ngIf="dispError" class="alertcenter" style="margin-top:45px;">
         {{ zError }}
       </div>

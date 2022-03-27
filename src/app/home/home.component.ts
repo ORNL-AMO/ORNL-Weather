@@ -79,24 +79,6 @@ export class HomeComponent implements OnInit {
   }
 
   async ngOnInit() {
-    let zipcode:any = null;
-    try {
-      zipcode = document.getElementById('zipcode') as HTMLInputElement;
-      if(zipcode) {
-        zipcode.addEventListener('focusout', (event:any) => {
-          // TODO: find a better way to do this
-          setTimeout(() => {  this.distDropdown = false; }, 100);
-        });
-      }
-    } catch (e){}
-    try {
-      zipcode = document.getElementById('zipcode') as HTMLInputElement;
-      if(zipcode) {
-        zipcode.addEventListener('focusin', (event:any) => {
-          this.distDropdown == true;
-        });
-      }
-    } catch (e){}
     // Load previous input if applicable
     this.getFormData("zipcode")
     this.getFormData("distance")
@@ -190,6 +172,10 @@ export class HomeComponent implements OnInit {
     this.startDate = []
     this.endDate = []
     this.errors = ""
+    this.dError = ""
+    this.zError = ""
+    this.sError = ""
+    this.eError = ""
     this.distDropdown = false;
     this.startStr = ""
     this.endStr = ""

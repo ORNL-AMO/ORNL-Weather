@@ -22,12 +22,7 @@ tr {
 td {
     align-content: center;
     background: white;
-}
-.distlabel {
-    display: block;
-    min-height: 100%;
-    padding: 2px;
-    align-content: center;
+    cursor: pointer;
 }
 
 td:hover{
@@ -49,7 +44,6 @@ td:hover{
   justify-content: center;
   font-size: 14px;
   text-align: center;
-  cursor: pointer;
 }
 #scrollable-area::-webkit-scrollbar {
   width: 9px;   /* width of the entire scrollbar */
@@ -72,6 +66,13 @@ td:hover{
 
 .zipParent{
   position: relative;
+}
+
+#zipcode + div {
+  display: none;
+}
+#zipBox:focus-within #dropdown {
+  display: flex;
 }
 
 
