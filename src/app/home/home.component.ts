@@ -79,6 +79,24 @@ export class HomeComponent implements OnInit {
   }
 
   async ngOnInit() {
+    let zipcode:any = null;
+    try {
+      zipcode = document.getElementById('zipcode') as HTMLInputElement;
+      if(zipcode) {
+        zipcode.addEventListener('focusout', (event:any) => {
+          // TODO: find a better way to do this
+          setTimeout(() => {  this.distDropdown = false; }, 100);
+        });
+      }
+    } catch (e){}
+    try {
+      zipcode = document.getElementById('zipcode') as HTMLInputElement;
+      if(zipcode) {
+        zipcode.addEventListener('focusin', (event:any) => {
+          this.distDropdown == true;
+        });
+      }
+    } catch (e){}
     // Load previous input if applicable
     this.getFormData("zipcode")
     this.getFormData("distance")
@@ -91,18 +109,8 @@ export class HomeComponent implements OnInit {
     document.getElementsByName("start-date")[0].setAttribute('max', today);
     document.getElementsByName("end-date")[0].setAttribute('max', today);
 
-    // Preload Zip Code and Station data into memory
 
-    // Load zip code JSON
-    await fetch("assets/ZipCodes.json")
-    .then((res) => res.json())
-    .then((data) =>{
-        this.zipJSON = data
-    })
-    if(this.zipJSON.length > 0) {
-      console.log(this.zipJSON)
-      console.log("Zip code data loaded")
-    }
+    // Preload Zip Code and Station data into memory
 
     // Load States JSON
     await fetch("assets/States.json")
@@ -113,6 +121,17 @@ export class HomeComponent implements OnInit {
     if(this.statesJSON.length > 0) {
       console.log(this.statesJSON)
       console.log("States data loaded")
+    }
+
+    // Load zip code JSON
+    await fetch("assets/ZipCodes.json")
+    .then((res) => res.json())
+    .then((data) =>{
+        this.zipJSON = data
+    })
+    if(this.zipJSON.length > 0) {
+      console.log(this.zipJSON)
+      console.log("Zip code data loaded")
     }
 
     // Load Cities JSON
@@ -126,6 +145,7 @@ export class HomeComponent implements OnInit {
       console.log("Cities data loaded")
     }
     this.dataLoaded = true;
+
 
 
     // Fetch newest station list data from NOAA
@@ -321,7 +341,7 @@ export class HomeComponent implements OnInit {
           }
           // Parse as City or State
           else if(this.isStateFormat(val)){
-            this.state = this.getState(val)
+            this.state = this.getState(val)[0]
           }
           else if(this.isCity(val)) {
             let out: string[] = []
@@ -405,15 +425,15 @@ export class HomeComponent implements OnInit {
   }
 
   getState(str:string) {
-    var out:string = "";
+    let outArr: string[] = [];
     this.statesJSON.every((state: any) => {
       if(state.CODE.toUpperCase() == str.toUpperCase() || state.STATE.toUpperCase() == str.toUpperCase()){
-        out = state.CODE;
+        outArr.push(state.CODE, state.STATE);
         return false
       }
       return true
     })
-    if(out=="") {
+    if(outArr.length==0) {
       console.log("State not found")
       this.checkZErrors(`State ${str} not found. Please try again.`)
       let context = this;
@@ -424,17 +444,23 @@ export class HomeComponent implements OnInit {
     else {
       // console.log("State: " + out)
     }
-    return out
+    return outArr
   }
 
   getCity(str:string) {
     let outArr: string[] = [];
-    str = str.replace(/[\s]/gi, '')
-    str = str.replace(',', ', ')
+    str = str.replace(/[\s]+/gi, ' ')
+    str = str.replace(/(^[\s]*[,]+)|([,]+[\s]*)/g, ', ')
+    str = str.trim()
+    console.log(str.toUpperCase());
     this.citiesJSON.every((city: any) => {
       let citystate:string = city.CITY.toUpperCase() + ", " + city.STATE.toUpperCase()
+      if(citystate.includes('NEW YORK')) {
+        console.log(citystate);
+
+      }
       if(str.toUpperCase() == citystate){
-        outArr.push(city.LAT, city.LONG, citystate)
+        outArr.push(city.LAT, city.LONG, str)
         return false
       }
       return true
@@ -463,7 +489,7 @@ export class HomeComponent implements OnInit {
       out.push(this.getStationID(input))
     }
     else if(this.isState(input)) {
-      out.push(this.getState(input))
+      out = this.getState(input)
     }
     else if(this.isCity(input)) {
       out = this.getCity(input)
@@ -520,6 +546,7 @@ export class HomeComponent implements OnInit {
     this.updateCachedInputs();
     let zipcode = document.getElementById("zipcode") as HTMLInputElement
     let val = zipcode.value.toString().trim()
+
     let dist = document.getElementById("distance") as HTMLInputElement
     this.distDropdown = true;
 
@@ -542,7 +569,7 @@ export class HomeComponent implements OnInit {
       let needsDist: boolean = false;
       let valid: boolean = true;
       for(let value of inputs) {
-        if(!this.isCity(value) && !this.isState(value) && !this.isZip(value) && !this.isSID(value)) {
+        if(!this.isCity(value) && !this.isStateFormat(value) && !this.isZip(value) && !this.isSID(value)) {
           valid = false;
           break;
         }
@@ -578,7 +605,7 @@ export class HomeComponent implements OnInit {
         dist.disabled = true;
         dist.style.cursor="not-allowed"
       }
-      else if(this.isState(val)) {  // State
+      else if(this.isStateFormat(val)) {  // State
         zipcode.style.backgroundColor="#82ed80" // Green
         dist.style.backgroundColor="#A9A9A9"
         dist.disabled = true;
@@ -637,7 +664,7 @@ export class HomeComponent implements OnInit {
   }
 
   isCity(str:string){
-    return /[A-Za-z]+[,][\s]*[A-Za-z]{2}/i.test(str);
+    return /[A-Za-z\s]+[,][\s]*[A-Za-z]{2}/i.test(str);
   }
   isState(str:string){
     let isState:boolean = false;

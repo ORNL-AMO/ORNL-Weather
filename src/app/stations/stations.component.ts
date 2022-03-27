@@ -74,20 +74,23 @@ export class StationsComponent implements OnInit {
     if(this.multiInputs.length>0) {   // Multi-Input Search
       let allStationIDs: boolean = true;
       for(let i in this.multiInputs) {
-        if(this.multiInputs[i].length == 3){   // Lat, Lon, Zip
+        if(this.multiInputs[i].length == 3){   // Lat, Lon, Zip or City
           this.getStationsZip(this.multiInputs[i][0], this.multiInputs[i][1]);
           this.zipsList.push(this.multiInputs[i][2])
           allStationIDs = false;
+        }
+        else if(this.multiInputs[i].length == 2) {  //  State
+          if(this.isStateFormat(this.multiInputs[i][0])) {
+            this.zipsList.push(this.multiInputs[i][1])
+            this.getStationsState(this.multiInputs[i][0])
+            allStationIDs = false;
+          }
         }
         else if(this.multiInputs[i].length == 1) {
           if(this.isSID(this.multiInputs[i][0]) && !this.sendingArray.includes(this.multiInputs[i][0])) {
             this.sendingArray.push(this.multiInputs[i])
           }
-          else if(this.isStateFormat(this.multiInputs[i][0])) {
-            this.zipsList.push(this.multiInputs[i][0])
-            this.getStationsState(this.multiInputs[i][0])
-            allStationIDs = false;
-          }
+
         }
       }
       if(allStationIDs) {
