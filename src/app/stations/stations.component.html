@@ -17,15 +17,15 @@
                 </th>
             </tr>
 
-            <ng-container *ngFor = "let zip of stationsArray; let i = index">
-              <tr *ngIf = "zipsList.length>0">
+            <ng-container *ngFor="let zip of stationsArray; let i = index">
+              <tr *ngIf="zipsList.length>0">
                 <td class="group" colspan="4">{{zipsList[i]}}</td>
               </tr>
               <tr *ngFor = "let row of zip">
-                  <label class="rows"><td class="center"><input type="checkbox" id="{{row.ID}}" (change)="getSelect($event, row.ID)"></td></label>
-                  <label class="rows" for="{{row.ID}}"><td class="rows">{{row.ID}}</td></label>
-                  <label class="rows" for="{{row.ID}}"><td class="rows">{{row.NAME}}</td></label>
-                  <label class="rows" for="{{row.ID}}"><td class="rows">{{row.OTHER}}</td></label>
+                  <label class="rows"><td class="center"><input type="checkbox" name="{{row.ID}}" id="{{row.ID+row.OTHER}}" (change)="getSelect($event, row.ID)"></td></label>
+                  <label class="rows" for="{{row.ID+row.OTHER}}"><td class="rows">{{row.ID}}</td></label>
+                  <label class="rows" for="{{row.ID+row.OTHER}}"><td class="rows">{{row.NAME}}</td></label>
+                  <label class="rows" for="{{row.ID+row.OTHER}}"><td class="rows">{{row.OTHER}}</td></label>
               </tr>
             </ng-container>
 

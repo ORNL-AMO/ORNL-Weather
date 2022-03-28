@@ -22,12 +22,7 @@ tr {
 td {
     align-content: center;
     background: white;
-}
-.distlabel {
-    display: block;
-    min-height: 100%;
-    padding: 2px;
-    align-content: center;
+    cursor: pointer;
 }
 
 td:hover{
@@ -36,7 +31,7 @@ td:hover{
 #scrollable-area {
   position: absolute;
   z-index: 2;
-  margin-top: 39px;
+  margin-top: 37px;
   width: 200px;
   height: 180px;
   border: 1.5px solid #587656;
@@ -49,7 +44,6 @@ td:hover{
   justify-content: center;
   font-size: 14px;
   text-align: center;
-  cursor: pointer;
 }
 #scrollable-area::-webkit-scrollbar {
   width: 9px;   /* width of the entire scrollbar */
@@ -72,20 +66,62 @@ td:hover{
 
 .zipParent{
   position: relative;
+  width: auto;
+  height: auto;
+  display: block;
+  justify-content: center;
+  min-height: 1px;
+  height: auto;
+  margin: auto;
+}
+
+#zipcode + div {
+  display: none;
+}
+#zipBox:focus-within #dropdown {
+  display: flex;
+}
+
+#zAlert {
+  position: absolute;
+  display: block;
+  justify-content: center;
+  float: center;
 }
 
 
+.startParent {
+  position: relative;
+  min-height: 1px;
+  width: auto;
+  height: auto;
+  display: block;
+  margin-right: 60px;
+  justify-content: center;
+}
+
+.endParent {
+  position: relative;
+  min-height: 1px;
+  width: auto;
+  height: auto;
+  display: block;
+  margin-left: 60px;
+  justify-content: center;
+}
+
 .startDate{ /* styling for start date button */
-    margin-right: 60px;
+
     padding:10px;
     padding-top: 4px;
     padding-bottom: 4px;
     border-radius:9px;
     border: 1.5px solid #587656;
     color: #2c386b;
-    justify-content: center;
+
     font-size: 17.4px;
     text-align: center;
+    justify-content: center;
     margin-top: 3px;
     width: 200px;
     z-index: 1;
@@ -93,16 +129,17 @@ td:hover{
 }
 
 .endDate{ /* styling for end date button */
-    margin-left: 60px;
+
     padding:10px;
     padding-top: 4px;
     padding-bottom: 4px;
     border-radius:9px;
     border: 1.5px solid #587656;
     color: #2c386b;
-    justify-content: center;
+
     font-size: 17.4px;
     text-align: center;
+    justify-content: center;
     margin-top: 3px;
     width: 200px;
     min-width: 150px;
@@ -251,45 +288,22 @@ select:focus {
 }
 
 .alertcenter {
-    color: #cc0033;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top:8px;
 
-    font-size: 13.5px;
-    line-height: 15px;
-    margin: 5px 0 0;
+  color: #cc0033;
+  font-size: 13.5px;
+  line-height: 15px;
 
-    display: flex;
-    justify-content: center;
-    float: center;
+  display: flex;
+  justify-content: center;
+  float: center;
+  text-align: center;
   }
-
-  .alertcenterleft {
-    color: #cc0033;
-
-    font-size: 13.5px;
-    line-height: 15px;
-    margin: 5px 0 0;
-
-    margin-right: 106px;
-    margin-left: 6%;
-    z-index: 1;
-  }
-
-  .alertcenterright {
-    color: #cc0033;
-
-    font-size: 13.5px;
-    line-height: 15px;
-    margin: 5px 0 0;
-
-    margin-left: 106px;
-    margin-right: 6%;
-    z-index: 1;
-  }
-
-
-
-
-
 
 .footer {
     height: auto;

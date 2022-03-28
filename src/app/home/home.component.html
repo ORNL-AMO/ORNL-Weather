@@ -9,21 +9,22 @@
 
   <div class="zipParent">
 
-      <div class="center">
+      <div class="center" id="zipBox">
           <input class="zip" name="zipcode" #zipcode id="zipcode" type="text"
                  size=18 (click)="distDropdown=true" (keyup)="checkInput()" (keyup.enter)="acceptVariables()" autocomplete="none">
+         <div class="center" id="dropdown" tabindex="-1">
+           <div id="scrollable-area" *ngIf="matchList.length>0 && zipcode.value.toString().length>=4 && !matchList.includes(zipcode.value.toString()) && distDropdown">
+               <table fixed-table-headers="scrollable-area">
+                   <tr *ngFor = "let entry of matchList">
+                       <td class="rows" (click)=setCity(entry)>{{entry}}</td>
+                   </tr>
+               </table>
+           </div>
+         </div>
       </div>
 
-      <div class="center">
-        <div id="scrollable-area" *ngIf="matchList.length>0 && zipcode.value.toString().length>=4 && !matchList.includes(zipcode.value.toString()) && distDropdown">
-            <table fixed-table-headers="scrollable-area">
-                <tr *ngFor = "let entry of matchList">
-                    <td class="rows" (click)=setCity(entry)><label class="distLabel" for="{{entry}}">{{entry}}</label></td>
-                </tr>
-            </table>
-        </div>
-      </div>
-      <div *ngIf="isError" class="alertcenter" style="margin-top:45px;">
+
+      <div *ngIf="dispError" class="alertcenter" style="margin-top:45px;">
         {{ zError }}
       </div>
 
@@ -57,7 +58,7 @@
 
   </div>
 
-  <div *ngIf="isError" class="alertcenter">
+  <div *ngIf="dispError" class="alertcenter">
     {{ dError }}
   </div>
 
@@ -73,14 +74,16 @@
   </div>
 
   <div class="center">
-    <div class="center">
+    <div class="startParent">
       <input class='startDate' #startdate type="date" id="start-date" name="start-date" style="width: 200px;" (change)="updateCachedInputs()">
-
-      </div>
-
+      <div *ngIf="dispError" class="alertcenter">{{ sError }}</div>
+    </div>
+    <div class="endParent">
       <input class='endDate' #enddate type="date" id="end-date" name="end-date" style="width: 200px;" (change)="updateCachedInputs()">
+      <div *ngIf="dispError" class="alertcenter">{{ eError }}</div>
+    </div>
 
-      </div>
+  </div>
 
     <!--<div class="startDate">
     <mat-form-field appearance="legacy" floatLabel="never">
@@ -97,22 +100,11 @@
       <mat-datepicker #picker2 #datepickercolor color="accent"></mat-datepicker>
     </mat-form-field> -->
 
-  <div class="center">
-    <div *ngIf="isError" class="alertcenterleft">
-      {{ sError }}
-    </div>
-    <div *ngIf="isError" class="alertcenterright">
-      {{ eError }}
-    </div>
-    <div *ngIf="stationsError" class="alert center">
-      {{ stationsError }}
-    </div>
+  <div class="center" style="margin-top: 100px;">
+    <button class="button button1" (click)="acceptVariables()" ><b>Station Select</b></button>
   </div>
   <div *ngIf="errors" class="alertcenter">
     {{ errors }}
-  </div>
-  <div class="center" style="margin-top: 100px;">
-    <button class="button button1" (click)="acceptVariables()" ><b>Station Select</b></button>
   </div>
 </body>
 

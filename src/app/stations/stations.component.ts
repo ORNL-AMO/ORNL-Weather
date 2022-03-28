@@ -71,25 +71,33 @@ export class StationsComponent implements OnInit {
   }
 
   getStations() {
-    if(this.multiInputs.length>0) {
+    if(this.multiInputs.length>0) {   // Multi-Input Search
       let allStationIDs: boolean = true;
       for(let i in this.multiInputs) {
-        if(this.multiInputs[i].length == 3){   // Lat, Lon, Zip
+        if(this.multiInputs[i].length == 3){   // Lat, Lon, Zip or City
           this.getStationsZip(this.multiInputs[i][0], this.multiInputs[i][1]);
           this.zipsList.push(this.multiInputs[i][2])
           allStationIDs = false;
         }
+        else if(this.multiInputs[i].length == 2) {  //  State
+          if(this.isStateFormat(this.multiInputs[i][0])) {
+            this.zipsList.push(this.multiInputs[i][1])
+            this.getStationsState(this.multiInputs[i][0])
+            allStationIDs = false;
+          }
+        }
         else if(this.multiInputs[i].length == 1) {
-          if(this.multiInputs[i][0].length == 11 && !isNaN(+(this.multiInputs[i][0].substring(1))) && (this.multiInputs[i][0][0] == 'A' || this.multiInputs[i][0][0] == 'a' || !isNaN(+this.multiInputs[i][0][0]))) {
+          if(this.isSID(this.multiInputs[i][0]) && !this.sendingArray.includes(this.multiInputs[i][0])) {
             this.sendingArray.push(this.multiInputs[i])
           }
+
         }
       }
       if(allStationIDs) {
         this.router.navigate(["/data"], {state: { stationID: this.sendingArray, startDate: this.startDate, endDate: this.endDate, years: this.numYears, startStr: this.startStr, endStr: this.endStr}})
       }
     }
-    else {
+    else {    // Single Input Search
       if(this.stationID != ""){   // Go directly to data if provided station id
         this.sendingArray.push(this.stationID)
         console.log("Station:");
@@ -100,7 +108,7 @@ export class StationsComponent implements OnInit {
         this.getStationsZip(this.lat, this.long);  // Get local stations list
       }
       else if(this.state != "") {
-        this.getStationsState();
+        this.getStationsState(this.state);
       }
       else {
         console.log("Required data missing.")
@@ -144,11 +152,11 @@ export class StationsComponent implements OnInit {
     }
   }
 
-  getStationsState() {
+  getStationsState(str:string) {
     let tmpStationsArr: any[] = []
     this.stationsJSON.forEach((station: any) => {
       // Store valid stations and data required for display
-      if(station.CTRY=="US" && this.state==station.STATE && this.startStr>station.BEGIN && this.endStr<station.END) {
+      if(station.CTRY=="US" && str==station.STATE && this.startStr>station.BEGIN && this.endStr<station.END) {
         let tmp: any[] = []
         this.headers = ['', 'Station ID', 'Station Name', 'Coordinates']
         let headers: any[] = ['NAME', 'ID', 'OTHER']
@@ -162,9 +170,7 @@ export class StationsComponent implements OnInit {
         tmpStationsArr.push(tmp)
       }
     });
-    tmpStationsArr.sort(function(a, b) {
-      return a.OTHER - b.OTHER
-    })
+    tmpStationsArr.sort((a, b) => a.NAME.localeCompare(b.NAME))
     console.log("Matching Stations:");
     console.log(tmpStationsArr)
     if(tmpStationsArr.length == 0) {
@@ -183,17 +189,26 @@ export class StationsComponent implements OnInit {
       };
 
       if(ev.target.checked){
+        this.checkUncheckDuplicates(obj.ID.toString(), true);
         this.selectedArray.push(obj);
       }
       else{
+        this.checkUncheckDuplicates(obj.ID.toString(), false);
         let el = this.selectedArray.find((itm) => itm.ID === val);
         if (el) this.selectedArray.splice(this.selectedArray.indexOf(el), 1);
       }
+    }
 
+    checkUncheckDuplicates(id:string, val:boolean) {
+      var dupStations = <HTMLInputElement[]><any>document.getElementsByName(id);
+      for(var i = 0; i < dupStations.length; i++) {
+        dupStations[i].checked = val;
+      }
     }
 
     sendToData(){
       for(let index in this.selectedArray){
+        if(!this.sendingArray.includes(this.selectedArray[index].ID))
         this.sendingArray.push(this.selectedArray[index].ID)
       }
       console.log("Selected Stations:");
@@ -226,5 +241,16 @@ export class StationsComponent implements OnInit {
     distance = R * c;
 
     return distance
+  }
+
+  isSID(str:string) {
+    if(str.length == 11 && !isNaN(+(str.substring(1))) && (str[0] == 'A' || str[0] == 'a' || !isNaN(+str[0]))) {
+      return true
+    }
+    return false
+  }
+
+  isStateFormat(str:string) {
+    return /^[A-Z]+$/i.test(str);
   }
 }

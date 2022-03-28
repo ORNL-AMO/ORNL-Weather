@@ -167,26 +167,50 @@ export class DisplayComponent implements OnInit {
     console.log(this.displayObj[this.displayIndex]);
     for(let i of this.allHeadersStats) {
       for(let j of i) {
-        j['EMP_RATE'] = (j['EMPTY']/j['TOTAL']*100).toFixed(2)
-        j['AVAIL_RATE'] = ((j['TOTAL']-j['EMPTY'])/j['TOTAL']*100).toFixed(2)
+        if(j['TOTAL']==0) {
+          j['EMP_RATE'] = "0.00"
+          j['AVAIL_RATE'] = "0.00"
+        }
+        else {
+          j['EMP_RATE'] = (j['EMPTY']/j['TOTAL']*100).toFixed(2)
+          j['AVAIL_RATE'] = ((j['TOTAL']-j['EMPTY'])/j['TOTAL']*100).toFixed(2)
+        }
       }
     }
     for(let i of this.hourlyHeadersStats) {
       for(let j of i) {
-        j['EMP_RATE'] = (j['EMPTY']/j['TOTAL']*100).toFixed(2)
-        j['AVAIL_RATE'] = ((j['TOTAL']-j['EMPTY'])/j['TOTAL']*100).toFixed(2)
+        if(j['TOTAL']==0) {
+          j['EMP_RATE'] = "0.00"
+          j['AVAIL_RATE'] = "0.00"
+        }
+        else {
+          j['EMP_RATE'] = (j['EMPTY']/j['TOTAL']*100).toFixed(2)
+          j['AVAIL_RATE'] = ((j['TOTAL']-j['EMPTY'])/j['TOTAL']*100).toFixed(2)
+        }
       }
     }
     for(let i of this.dailyHeadersStats) {
       for(let j of i) {
-        j['EMP_RATE'] = (j['EMPTY']/j['TOTAL']*100).toFixed(2)
-        j['AVAIL_RATE'] = ((j['TOTAL']-j['EMPTY'])/j['TOTAL']*100).toFixed(2)
+        if(j['TOTAL']==0) {
+          j['EMP_RATE'] = "0.00"
+          j['AVAIL_RATE'] = "0.00"
+        }
+        else {
+          j['EMP_RATE'] = (j['EMPTY']/j['TOTAL']*100).toFixed(2)
+          j['AVAIL_RATE'] = ((j['TOTAL']-j['EMPTY'])/j['TOTAL']*100).toFixed(2)
+        }
       }
     }
     for(let i of this.monthlyHeadersStats) {
       for(let j of i) {
-        j['EMP_RATE'] = (j['EMPTY']/j['TOTAL']*100).toFixed(2)
-        j['AVAIL_RATE'] = ((j['TOTAL']-j['EMPTY'])/j['TOTAL']*100).toFixed(2)
+        if(j['TOTAL']==0) {
+          j['EMP_RATE'] = "0.00"
+          j['AVAIL_RATE'] = "0.00"
+        }
+        else {
+          j['EMP_RATE'] = (j['EMPTY']/j['TOTAL']*100).toFixed(2)
+          j['AVAIL_RATE'] = ((j['TOTAL']-j['EMPTY'])/j['TOTAL']*100).toFixed(2)
+        }
       }
     }
 
