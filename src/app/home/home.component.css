@@ -110,6 +110,48 @@ td:hover{
   justify-content: center;
 }
 
+.card{
+  position: relative;
+  background-color: #fff;
+  padding: 5px 5px;
+  clip-path: circle(7% at 7.7% 14.7%);
+  transition: all ease-in-out .6s;
+  transition: all ease-in-out .6s;
+  cursor: pointer;
+  max-width: 120px;
+  z-index: 4;
+  left: 183px;
+}
+span{
+  position: static;
+  top: 10px;
+  right: 28px;
+  font-size: 10px;
+  color: #2c386b;
+  transition: ease-out .3s;
+  
+}
+
+h1{
+  margin-top: -12px;
+  font-size: 12px;
+}
+p{
+  font-size: 10px;
+  padding:0px;
+  
+  margin-top: -10px;
+}
+.card:hover{
+  clip-path: circle(75%);
+  border-radius: 20px;
+}
+.card:hover span{
+  opacity: 0;
+}
+
+
+
 .startDate{ /* styling for start date button */
 
     padding:10px;
