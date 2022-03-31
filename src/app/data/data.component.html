@@ -26,13 +26,24 @@
                   </th>
                   <th *ngIf="dispHeaders">Type</th>
                   <th *ngIf="dispHeaders">Description</th>
+                  <th *ngIf="dispHeaders"></th>
 
 
               <tr *ngFor="let item of displayList">
-                  <label class="rows"><td class="center"><input type="checkbox" id="{{item.id}}" [(ngModel)]="item.isSelected" name="list_name" value="{{item.id}}"
-                      (change)="isAllSelected()"></td></label>
-                      <label class="rows" for="{{item.id}}"><td class="rows">{{item.value}}</td></label>
-                      <label class="rows" for="{{item.id}}"><td class="rows">{{item.title}}</td></label>
+                  <label class="rows"><td class="center"><input type="checkbox" id="{{item.id}}" [(ngModel)]="item.isSelected" name="list_name" value="{{item.id}}" (change)="isAllSelected()"></td></label>
+                    <label class="rows" for="{{item.id}}">
+                        <td class="rows">
+                            
+                            {{item.value}}
+                        </td>
+                    </label>
+                    <label class="rows" for="{{item.id}}"><td class="rows">{{item.title}}</td></label>
+                    <label class="tooltip" for="{{item.id}}" >
+                        <img id="image" src="assets/info.png">
+                        <span class="tooltiptext">{{item.tooltip}}</span>
+                    </label>
+                      
+                      
               </tr>
           </table>
       </div>
