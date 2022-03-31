@@ -538,7 +538,7 @@ export class HomeComponent implements OnInit {
       this.listCities(val)
     }
     else if(val.includes(';')) {
-      let lastVal = val.slice(val.lastIndexOf(';')+1)
+      let lastVal = val.slice(val.lastIndexOf(';')+1).trim()
       this.matchList = []
       if(lastVal.length>=4) {
         this.listCities(lastVal)

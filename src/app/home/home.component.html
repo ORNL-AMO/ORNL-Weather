@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 
+  
+
 <body>
   <div class="center" style="margin-top:20px;">
       <label for="ZipCode"><b>Zip Code/Station ID</b></label>
@@ -12,6 +14,7 @@
       <div class="center" id="zipBox">
           <input class="zip" name="zipcode" #zipcode id="zipcode" type="text"
                  size=18 (click)="distDropdown=true" (keyup)="checkInput()" (keyup.enter)="acceptVariables()" autocomplete="none">
+                 
          <div class="center" id="dropdown" tabindex="-1">
            <div id="scrollable-area" *ngIf="matchList.length>0 && zipcode.value.toString().length>=4 && !matchList.includes(zipcode.value.toString()) && distDropdown">
                <table fixed-table-headers="scrollable-area">
@@ -24,14 +27,24 @@
       </div>
 
 
+
       <div *ngIf="dispError" class="alertcenter" style="margin-top:45px;">
         {{ zError }}
       </div>
-
+      <div class="center" >
+      <div class="card">
+        <span>&#8505;</span>
+        <h1>Input Options:</h1>
+        <p>Zipcode</p>
+        <p>city,STATE</p>
+        <p>Zipcode; city,STATE; ...</p>
+      </div>
+        
+      </div>
       <!-- Display potential errors regarding input data to user -->
 
 
-      <div class="center" style="margin-top:90px;">
+      <div class="center" style="margin-top:-15px;">
         <label class="distance"><b>Distance (miles)</b></label>
       </div>
 
