@@ -114,13 +114,14 @@ td:hover{
   position: relative;
   background-color: #fff;
   padding: 5px 5px;
-  clip-path: circle(7% at 7.7% 14.7%);
+  clip-path: circle(4% at 4.2% 11.3%);
   transition: all ease-in-out .6s;
   transition: all ease-in-out .6s;
   cursor: pointer;
-  max-width: 120px;
+  max-width: 220px;
   z-index: 4;
-  left: 183px;
+  left: 227px;
+  top: 3px;
 }
 span{
   position: static;

@@ -274,7 +274,7 @@ tr:hover{
   justify-content: center;
 }
 
-@media screen and (max-height: 650px) {
+@media screen and (max-height: 750px) {
 
   .footer {display:none;}
 }
@@ -283,7 +283,7 @@ tr:hover{
   position: relative;
   display: block;
   justify-content: center;
-  width: 80%;
+  width: 85%;
   min-height: 1px;
   height: auto;
   margin: auto;
@@ -292,28 +292,31 @@ tr:hover{
 #backButton {
   position: absolute;
   display: flex;
-  justify-content: left;
-  float: left;
-  margin-top: 0px;
-  margin-right: 0px;
-  z-index: 2 !important;
+  justify-content: center;
+  float: center;
+  margin-top: -13.5px;
+  
+  z-index: 2 ;
 }
 #pagingValue {
   display: flex;
   justify-content: right;
   float: right;
-  margin-right: 20px;
-  z-index: 2 !important;
+  
+  margin-left: 71%;
+  z-index: 2 ;
 }
 #typeValue {
   display: flex;
   justify-content: right;
   float: right;
-  z-index: 2 !important;
+  
+  margin-left: 2%;
+  z-index: 2 ;
 }
 
 select {
-  width: 160px;
+  width: 135px;
   height: 30px;
   padding:10px;
   border-radius:9px;
@@ -337,8 +340,9 @@ select {
 }
 
 .custom-pagination{
-  z-index: 1;
+  z-index: 2;
   width: auto;
+  
 }
 
 .custom-pagination .page-number{
@@ -404,10 +408,7 @@ select {
   z-index: 0 !important;
 }
 
-.pagingParent {
 
-
-}
 
 .arrow{
   margin-right: 5px;

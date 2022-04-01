@@ -4,13 +4,11 @@
     <button class="button button1" (click)="downloadCSV()">Download as CSV</button>
     <button class="button button1" value="Download JSON" (click)="exportTojson()">Download as JSON</button>
 </div>
-<div class="center" style="margin-top:0px;">
+<div class="center" style="margin-top:10px;">
     <header>
         <b>Preview Data</b>
     </header>
 </div>
-
-
 <div class="tableParent">
     <!-- TODO: Figure out something for potential tab overflow here -->
     <ng-container *ngIf="stationID && stationID.length>0">
