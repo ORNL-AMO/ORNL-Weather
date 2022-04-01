@@ -332,7 +332,7 @@ select {
   -moz-appearance: none;
   appearance: none;
   cursor: pointer;
-  background: url("../../assets/arrow.png")96% / 6% no-repeat white;
+  background: url("../../assets/arrow.png") 96% / 6% no-repeat white;
   z-index: 1;
 }
 
@@ -404,10 +404,10 @@ select {
   z-index: 0 !important;
 }
 
-.pagingParent {
+/* .pagingParent {
 
 
-}
+} */
 
 .arrow{
   margin-right: 5px;

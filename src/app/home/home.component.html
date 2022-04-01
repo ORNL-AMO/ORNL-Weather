@@ -5,7 +5,7 @@
 
 <body>
   <div class="center" style="margin-top:20px;">
-      <label for="ZipCode"><b>Search</b></label>
+      <label for="ZipCode"><b>Zip Code/Station ID</b></label>
   </div>
 
 
@@ -32,23 +32,21 @@
         {{ zError }}
       </div>
       <div class="center" >
-        <div class="card" style="margin-top: 10px;">
-          <span><img id="image" src="assets/info.png" height="20"></span>
-          <span class="tooltiptext">
-            <h1><b>Search Options:</b></h1>
-            <p><b>Search by Zipcode(i.e. "37830")</b></p>
-            <p><b>Enter Station ID(i.e. "72427053868")</b></p>
-            <p><b>Seach by City(i.e. "OakRidge, TN")</b></p>
-            <p><b>Search by State(i.e. "TN")</b></p>
-            <p><b>Multi-Location Search(i.e. "38730, 38501, Nashville")</b></p>
-          </span>
-          
-        </div>        
+      <div class="card">
+        <span>&#8505;</span>
+        <h1>Input Options:</h1>
+        <p>Zipcode: (i.e. "37830")</p>
+        <p>Station ID: (i.e. "72327400372")</p>
+        <p>City: (i.e. "Nashville, TN")</p>
+        <p>State: (i.e. "TN")</p>
+        <p>Multiple: (i.e. "37830; 84414; Nashville, TN")</p>
+      </div>
+        
       </div>
       <!-- Display potential errors regarding input data to user -->
 
 
-      <div class="center" style="margin-top:50px;">
+      <div class="center" style="margin-top:-50px;">
         <label class="distance"><b>Distance (miles)</b></label>
       </div>
 
