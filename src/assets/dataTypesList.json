@@ -13,7 +13,7 @@
  },
  {
    "DataTypes": "HourlyPrecipitation",
-   "Description": "Amount of precipitation in inches to hundredths over the past hour. For certain automated stations, precipitation will be reported at sub-hourly intervals (e.g. every 15 or 20 minutes) as an accumulated amount of all precipitation within the preceding hour. A T indicates a trace amount of precipitation"
+   "Description": "Amount of precipitation in inches to hundredths over the past hour. For certain automated stations, precipitation will be reported at sub-hourly intervals (e.g. every 15 or 20 minutes) as an accumulated amount of all precipitation within the preceding hour. A 'T' indicates a trace amount of precipitation"
  },
  {
    "DataTypes": "HourlyPresentWeatherType",
@@ -53,7 +53,7 @@
  },
  {
    "DataTypes": "HourlyWindDirection",
-   "Description": "Wind direction from true north using compass directions (e.g. 360 = true north, 180 = south, 270 = west, etc.). Note: A direction of 000 is given for calm winds."
+   "Description": "Wind direction from true north using compass directions (e.g. 360 = true north, 180 = south, 270 = west, etc.). Note: A direction of �000� is given for calm winds."
  },
  {
    "DataTypes": "HourlyWindGustSpeed",
@@ -65,11 +65,11 @@
  },
  {
    "DataTypes": "Sunrise",
-   "Description": "Time of sunrise using a 24-hour clock (Local Standard Time  Daylight Savings Time is not used)"
+   "Description": "Time of sunrise using a 24-hour clock (Local Standard Time Daylight Savings Time is not used)"
  },
  {
    "DataTypes": "Sunset",
-   "Description": "Time of sunset using a 24-hour clock (Local Standard Time  Daylight Savings Time is not used)"
+   "Description": "Time of sunset using a 24-hour clock (Local Standard Time Daylight Savings Time is not used)"
  },
  {
    "DataTypes": "DailyAverageDewPointTemperature",
@@ -153,7 +153,7 @@
  },
  {
    "DataTypes": "MonthlyAverageRH",
-   "Description": ""
+   "Description": "Average Relative Humdiity for the Month"
  },
  {
    "DataTypes": "MonthlyDaysWithGT001Precip",
@@ -169,7 +169,7 @@
  },
  {
    "DataTypes": "MonthlyDaysWithGT90Temp",
-   "Description": "The number of days with minimum temperature 90 F (32.2 C) or higher, except for Alaska 70 F (21.1 C) or higher."
+   "Description": "The number of days with minimum temperature 90 F (32.2 C) or higher, except for Alaska70 F (21.1 C) or higher."
  },
  {
    "DataTypes": "MonthlyDaysWithLT0Temp",
@@ -181,27 +181,27 @@
  },
  {
    "DataTypes": "MonthlyDepartureFromNormalAverageTemperature",
-   "Description": ""
+   "Description": "indicates if the dekadal average temperatures were above or below the 30-year normal. It is calculated for each grid cell by subtracting the average air temperature estimated by AFWA from the 30-year normal (from 1961-1990)."
  },
  {
    "DataTypes": "MonthlyDepartureFromNormalCoolingDegreeDays",
-   "Description": ""
+   "Description": "defined as a departure of the mean daily temperature from a given standard: one degree day for each degree of departure above (or below) the base temperature during one day. The degree day is related to the outside temperature and is not related to time."
  },
  {
    "DataTypes": "MonthlyDepartureFromNormalHeatingDegreeDays",
-   "Description": ""
+   "Description": "defined as a departure of the mean daily temperature from a given standard: one degree day for each degree of departure above (or below) the base temperature during one day. The degree day is related to the outside temperature and is not related to time."
  },
  {
    "DataTypes": "MonthlyDepartureFromNormalMaximumTemperature",
-   "Description": ""
+   "Description": "indicates if the dekadal maximum temperatures were above or below the 30-year normal. It is calculated for each WMO station by subtracting the maximum air temperature recorded at the station from the 30-year normal (1961-1990) for the station."
  },
  {
    "DataTypes": "MonthlyDepartureFromNormalMinimumTemperature",
-   "Description": ""
+   "Description": "The difference in degrees Fahrenheit between the forecast nighttime minimum temperature and the average minimum temperature for that station."
  },
  {
    "DataTypes": "MonthlyDepartureFromNormalPrecipitation",
-   "Description": ""
+   "Description": "The cumulative rainfall departure (CRD) from normal rainfall is a concept sometimes utilized to evaluate the temporal correlation of rainfall with surface water or ground water levels."
  },
  {
    "DataTypes": "MonthlyDewpointTemperature",
@@ -289,11 +289,11 @@
  },
  {
    "DataTypes": "AWND",
-   "Description": ""
+   "Description": "average daily wind speed from NOAA NCDC DAILY FSOD: Daily weather station data primarily from the United States and parts of South Pacific and Europe"
  },
  {
    "DataTypes": "CDSD",
-   "Description": ""
+   "Description": "Cooling Degree Days Season to Date"
  },
  {
    "DataTypes": "CLDD",
@@ -301,11 +301,11 @@
  },
  {
    "DataTypes": "DSNW",
-   "Description": ""
+   "Description": "Number days with snow depth > 1 inch."
  },
  {
    "DataTypes": "HDSD",
-   "Description": ""
+   "Description": "Heating Degree Days Season to Date"
  },
  {
    "DataTypes": "HTDD",
@@ -313,11 +313,11 @@
  },
  {
    "DataTypes": "NormalsCoolingDegreeDay",
-   "Description": ""
+   "Description": "It is the number of degrees that a day's average temperature is above 65 degrees Fahrenheit"
  },
  {
    "DataTypes": "NormalsHeatingDegreeDay",
-   "Description": ""
+   "Description": "It is the number of degrees that a day's average temperature is below 40 degrees Fahrenheit"
  },
  {
    "DataTypes": "ShortDurationEndDate005",

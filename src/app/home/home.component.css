@@ -117,7 +117,7 @@ justify-content: center;
   clip-path: circle(4% at 4.2% 11.3%);
   transition: all ease-in-out .6s;
   transition: all ease-in-out .6s;
-  cursor: pointer;
+  cursor: auto;
   max-width: 220px;
   z-index: 4;
   left: 227px;
