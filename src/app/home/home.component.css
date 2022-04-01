@@ -110,25 +110,64 @@ td:hover{
   justify-content: center;
 }
 
-.card{
+/* .card{
   position: relative;
   background-color: #fff;
   padding: 5px 5px;
-  clip-path: circle(7% at 7.7% 14.7%);
+  clip-path: circle(5%);
   transition: all ease-in-out .6s;
   transition: all ease-in-out .6s;
   cursor: pointer;
-  max-width: 120px;
+  width: 300px;
   z-index: 4;
-  left: 183px;
+  left: 150px;
+  top: -5px;
+  right: 105%;
+} */
+.card {
+  position: relative;
+  display: center;
+}
+
+/* card text */
+.card .tooltiptext {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s .5s, opacity .5s linear;
+  width: 300px;
+  background-color: tan;
+  color: black;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+  cursor: pointer;
+  
+  /* Position the card text - see examples below! */
+  position: absolute;
+  z-index: 1;
+}
+
+/* Show the card text when you mouse over the card container */
+.card:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity .5s linear;
+  cursor: pointer;
+
+}
+.card .tooltiptext {
+  /* top: -5px; */
+  bottom: -75px;
+  left: 8%;
 }
 span{
   position: static;
-  top: 10px;
-  right: 28px;
-  font-size: 11px;
+  /* top: 10px; */
+  /* right: 28px; */
+  font-size: 13px;
+  margin-left: 270px;
   color: #2c386b;
-  transition: ease-out .3s;
+  /* transition: ease-out .3s; */
   
 }
 
@@ -137,18 +176,18 @@ h1{
   font-size: 12px;
 }
 p{
-  font-size: 10px;
+  font-size: 11px;
   padding:0px;
-  
-  margin-top: -10px;
 }
-.card:hover{
+/* .card:hover{
   clip-path: circle(75%);
   border-radius: 20px;
+  top: -5px;
+  right: 105%;
 }
 .card:hover span{
   opacity: 0;
-}
+} */
 
 
 
@@ -315,7 +354,7 @@ select {
     -moz-appearance: none;
     appearance: none;
     cursor: pointer;
-    background: url("../../assets/arrow.png")96% / 6% no-repeat white;
+    background: url("../../assets/arrow.png") 96% / 6% no-repeat white;
 
 }
 

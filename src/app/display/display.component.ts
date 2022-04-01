@@ -55,6 +55,19 @@ export class DisplayComponent implements OnInit {
   //page variables
   yearsObj: any[] = [];
   years: number = 0;
+
+  //deleted row variables
+  rowsDeleted: number = 0;
+  rowString: string = "";
+  hourlyAll: number = 0;
+  hourKeep: number = 0;
+  dailyAll: number = 0;
+  dailyKeep: number = 0;
+  monthlyAll: number = 0;
+  monthlyKeep: number = 0;
+  rowAll: number = 0;
+  rowKeep: number = 0;
+  
   stationID: any;
   startDate: any[] = [];
   endDate: any[] = [];
@@ -162,6 +175,8 @@ export class DisplayComponent implements OnInit {
       this.allObj.push(stationObj);
       this.displayObj = this.allObj;
       this.dataObj = this.allDataObj;
+      this.rowsDeleted = this.rowAll - this.rowKeep;
+      this.rowString = "All"
     }
     console.log("Requested Data Retrieved Successfully");
     console.log(this.displayObj[this.displayIndex]);
@@ -227,7 +242,7 @@ export class DisplayComponent implements OnInit {
 
       let csv = data
       let csvheaders = csv.substring(0, csv.search("\n")).replace(/['"]+/g, '').split(/,/); // Why use many line, when one line do trick
-
+      
       // Only do this once
       if(this.allHeaders.length<1) {
         this.allHeaders = ["STATION", "DATE", "TIME", "LATITUDE", "LONGITUDE", "ELEVATION", "NAME", "REPORT_TYPE", "SOURCE"]
@@ -291,7 +306,6 @@ export class DisplayComponent implements OnInit {
       let desiredHTypes: number[] = []
       let desiredDTypes: number[] = []
       let desiredMTypes: number[] = []
-
 
       let hourly: any[] = [];
       let daily: any[] = [];
@@ -427,13 +441,11 @@ export class DisplayComponent implements OnInit {
             if(desiredTypes.includes(j)) {
               obj[ind++] = currLine[j+1];
               dObj[csvheaders[j]] = currLine[j+1];
-
               statsInd++;
             }
             if((hObj[7] == "FM-15" && desiredHTypes.includes(j)) || (hObj[7] == "FM-12" && desiredHTypes.includes(j)) || (hObj[7] == "FM-16" && desiredHTypes.includes(j))){
               hObj[indH] = currLine[j+1];
               dHObj[csvheaders[j]] = currLine[j+1];
-
               indH++
               tmpStatsH[statsIndH]['TOTAL'] += 1;
               if(!currLine[j+1]) {
@@ -449,7 +461,6 @@ export class DisplayComponent implements OnInit {
             else if(dayObj[7] == "SOD  " && desiredDTypes.includes(j)){
               dayObj[indD] = currLine[j+1];
               dDObj[csvheaders[j]] = currLine[j+1];
-
               indD++
               tmpStatsD[statsIndD]['TOTAL'] += 1;
               if(!currLine[j+1]) {
@@ -464,7 +475,6 @@ export class DisplayComponent implements OnInit {
             else if(mObj[7] == "SOM  " && desiredMTypes.includes(j)){
               mObj[indM] = currLine[j+1];
               dMObj[csvheaders[j]] = currLine[j+1];
-
               indM++
               tmpStatsM[statsIndM]['TOTAL'] += 1;
               if(!currLine[j+1]) {
@@ -485,46 +495,56 @@ export class DisplayComponent implements OnInit {
             }
 
           }
+
           if(hObj.slice(9).length > 0){
             let tmp: string = "";
+            this.hourlyAll++;
             for (let i of hObj.slice(9)) {
               tmp += i.toString().trim();
             } if(tmp) {
               stationHObj.push(hObj)
               this.hourlyDataObj.push(dHObj);
               this.hourlyHeadersStats[stationsInd] = tmpStatsH.slice()
+              this.hourKeep++;
             }
           }
           if(dayObj.slice(9).length > 0){
             let tmp: string = "";
+            this.dailyAll++;
             for (let i of dayObj.slice(9)) {
               tmp += i.toString().trim();
             } if(tmp) {
               stationDObj.push(dayObj)
               this.dailyDataObj.push(dDObj);
               this.dailyHeadersStats[stationsInd] = tmpStatsD.slice()
+              this.dailyKeep++;
             }
           }
           if(mObj.slice(9).length > 0){
             let tmp: string = "";
+            this.monthlyAll++;
             for (let i of mObj.slice(9)) {
               tmp += i.toString().trim();
             } if(tmp) {
               stationMObj.push(mObj)
               this.monthlyDataObj.push(dMObj);
               this.monthlyHeadersStats[stationsInd] = tmpStatsM.slice()
+              this.monthlyKeep++;
             }
           }
 
           if(obj.slice(9).length > 0){
             let tmp: string = "";
+            this.rowAll++;
             for (let i of obj.slice(9)) {
               tmp += i.toString().trim();
             } if(tmp) {
               stationObj.push(obj);
               this.allDataObj.push(dObj);
               this.allHeadersStats[stationsInd] = tmpStatsA.slice()
+              this.rowKeep++;
             }
+
           }
         }
       }
@@ -566,6 +586,8 @@ export class DisplayComponent implements OnInit {
       this.headersStats = this.hourlyHeadersStats;
       this.config.currentPage = 1;
       console.log(this.dataObj)
+      this.rowsDeleted = this.hourlyAll - this.hourKeep;
+      this.rowString = e.target.value;
     }
     if(e.target.value == "Daily"){
       this.displayObj = this.dailyObj;
@@ -574,6 +596,8 @@ export class DisplayComponent implements OnInit {
       this.headersStats = this.dailyHeadersStats;
       this.config.currentPage = 1;
       console.log(this.dataObj)
+      this.rowsDeleted = this.dailyAll - this.dailyKeep;
+      this.rowString = e.target.value;
     }
     if(e.target.value == "Monthly"){
       this.displayObj = this.monthlyObj;
@@ -582,6 +606,8 @@ export class DisplayComponent implements OnInit {
       this.headersStats = this.monthlyHeadersStats;
       this.config.currentPage = 1;
       console.log(this.dataObj)
+      this.rowsDeleted = this.monthlyAll - this.monthlyKeep;
+      this.rowString = e.target.value;
     }
     if(e.target.value == "All"){
       this.displayObj = this.allObj;
@@ -589,6 +615,8 @@ export class DisplayComponent implements OnInit {
       this.headers = this.allHeaders;
       this.headersStats = this.allHeadersStats;
       this.config.currentPage = 1;
+      this.rowsDeleted = this.rowAll - this.rowKeep;
+      this.rowString = e.target.value;
     }
   }
 
