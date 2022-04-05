@@ -16,9 +16,9 @@ export class HomeComponent implements OnInit {
   dist: any;
   stationID: string = ""
   state: string = ""
-  startDate: any[] = [];
+  startDate: any;
   startStr:string = "";
-  endDate: any[] = [];
+  endDate: any;
   endStr:string = "";
   numYears: number = 0;
   matchList: string[] = [];
@@ -218,10 +218,10 @@ export class HomeComponent implements OnInit {
         sObj[tempHead[i]] = tempStart[i];
         eObj[tempHead[i]] = tempEnd[i];
       }
-
-      //pushing into start and end date objects
-      this.startDate.push(sObj);
-      this.endDate.push(eObj);
+      this.startDate = Object.assign({}, sObj);
+      this.endDate = Object.assign({}, eObj);
+      sessionStorage.setItem('startDate', JSON.stringify(this.startDate));
+      sessionStorage.setItem('endDate', JSON.stringify(this.endDate));
 
       this.getYears();
       //passing station ID or zip code
@@ -239,8 +239,8 @@ export class HomeComponent implements OnInit {
     this.errors = "";
 
     // Format dates for easier comparison
-    this.startStr = this.startStr.concat(String(this.startDate[0].year) + String(this.startDate[0].month) + String(this.startDate[0].day));
-    this.endStr = this.endStr.concat(String(this.endDate[0].year) + String(this.endDate[0].month) + String(this.endDate[0].day));
+    this.startStr = this.startStr.concat(String(this.startDate.year) + String(this.startDate.month) + String(this.startDate.day));
+    this.endStr = this.endStr.concat(String(this.endDate.year) + String(this.endDate.month) + String(this.endDate.day));
 
     if(!this.dataLoaded) {
       this.hasError = true;
@@ -348,7 +348,18 @@ export class HomeComponent implements OnInit {
         }
         // Pass data to stations page if no errors
         if(!this.hasError) {
-          this.router.navigate(["/stations"], {state: { dataLat: this.lat, dataLong: this.long, dataDist: this.dist, dataStationID: this.stationID, dataState: this.state, dataStartDate: this.startDate, dataEndDate: this.endDate, dataStationsJSON: this.stationsJSON, years: this.numYears, dataStartStr: this.startStr, dataEndStr: this.endStr, multiInputs: this.multiInputs}})
+          if(this.lat) {sessionStorage.setItem('lat', this.lat)}
+          if(this.long) {sessionStorage.setItem('long', this.long)}
+          if(this.stationID) {sessionStorage.setItem('stationID', this.stationID)}
+          if(this.state) {sessionStorage.setItem('state', this.state)}
+          if(this.numYears) {sessionStorage.setItem('numYears', this.numYears.toString())}
+          if(this.startStr) {sessionStorage.setItem('startStr', this.startStr)}
+          if(this.endStr) {sessionStorage.setItem('endStr', this.endStr)}
+          if(this.multiInputs) {sessionStorage.setItem('multiInputs', JSON.stringify(this.multiInputs))}
+
+
+
+          this.router.navigate(["/stations"], {state: { stationsJSON: this.stationsJSON}})
         }
       }
     }
@@ -676,8 +687,8 @@ export class HomeComponent implements OnInit {
   }
 
   getYears(){
-    if(this.startDate[0].year != this.endDate[0].year){
-      this.numYears = this.endDate[0].year - this.startDate[0].year + 1;
+    if(this.startDate.year != this.endDate.year){
+      this.numYears = this.endDate.year - this.startDate.year + 1;
     }
     else{
       this.numYears = 1;

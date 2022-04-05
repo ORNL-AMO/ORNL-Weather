@@ -67,10 +67,10 @@ export class DisplayComponent implements OnInit {
   monthlyKeep: number = 0;
   rowAll: number = 0;
   rowKeep: number = 0;
-  
-  stationID: any;
-  startDate: any[] = [];
-  endDate: any[] = [];
+
+  stationIDArray: any;
+  startDate: any;
+  endDate: any;
   heightIndex = 0
   dataTypeObj: any[] = [];
   displayIndex: number = 0;
@@ -126,7 +126,7 @@ export class DisplayComponent implements OnInit {
       if(state) {
         this.startDate = state.startDate;
         this.endDate = state.endDate;
-        this.stationID = state.stationID;
+        this.stationIDArray = state.stationIDArray;
         this.years = state.years;
         this.startStr = state.startStr;
         this.endStr = state.endStr;
@@ -135,7 +135,7 @@ export class DisplayComponent implements OnInit {
       else {
         this.startDate = [];
         this.endDate = [];
-        this.stationID = null;
+        this.stationIDArray = null;
       }
       this.config = {
         itemsPerPage: 10,
@@ -145,7 +145,7 @@ export class DisplayComponent implements OnInit {
 
   async ngOnInit() {
 
-    if(this.stationID) {
+    if(this.stationIDArray) {
       await this.checkYears();
     }
 
@@ -155,18 +155,18 @@ export class DisplayComponent implements OnInit {
   async checkYears(){
 
     for(let k = 0; k < this.years; k++){
-      this.yearsObj[k] = Number(this.startDate[0].year) + k;
+      this.yearsObj[k] = Number(this.startDate.year) + k;
     }
     //for multiple csv pulls of same station
 
-    for(let i=0; i<this.stationID.length; i++) {
-      console.log("Fetching Station Data for " + this.stationID[i]);
+    for(let i=0; i<this.stationIDArray.length; i++) {
+      console.log("Fetching Station Data for " + this.stationIDArray[i]);
       let stationObj:any[] = [];
       let stationHObj:any[] = [];
       let stationDObj:any[] = [];
       let stationMObj:any[] = [];
       for(let j=0; j<this.years; j++) {
-        await this.fetchCSV(this.yearsObj[j].toString(), Number(this.stationID[i]), i, stationObj, stationHObj, stationDObj, stationMObj);
+        await this.fetchCSV(this.yearsObj[j].toString(), Number(this.stationIDArray[i]), i, stationObj, stationHObj, stationDObj, stationMObj);
         console.log(this.allDataObj)
       }
       this.hourlyObj.push(stationHObj);
@@ -242,7 +242,7 @@ export class DisplayComponent implements OnInit {
 
       let csv = data
       let csvheaders = csv.substring(0, csv.search("\n")).replace(/['"]+/g, '').split(/,/); // Why use many line, when one line do trick
-      
+
       // Only do this once
       if(this.allHeaders.length<1) {
         this.allHeaders = ["STATION", "DATE", "TIME", "LATITUDE", "LONGITUDE", "ELEVATION", "NAME", "REPORT_TYPE", "SOURCE"]
@@ -265,7 +265,7 @@ export class DisplayComponent implements OnInit {
         }
 
         // Initialize Empty Stats Object
-        for(let i=0; i<this.stationID.length; i++) {
+        for(let i=0; i<this.stationIDArray.length; i++) {
           let tmpA = []
           let tmpH = []
           let tmpD = []
@@ -382,7 +382,7 @@ export class DisplayComponent implements OnInit {
         currLine[2] = b[1];
 
         //begin pushing lines into elements of array.
-        if(currLine[1] >= `${this.startDate[0].year}-${this.startDate[0].month}-${this.startDate[0].day}` && currLine[1] <= `${this.endDate[0].year}-${this.endDate[0].month}-${this.endDate[0].day}`){
+        if(currLine[1] >= `${this.startDate.year}-${this.startDate.month}-${this.startDate.day}` && currLine[1] <= `${this.endDate.year}-${this.endDate.month}-${this.endDate.day}`){
           //station id through elevation.
           for(let j = 0; j < 6; j++) {
             obj[j] = currLine[j];
@@ -664,12 +664,12 @@ export class DisplayComponent implements OnInit {
   }
 
   trimToDates(csv:string, year:string) {
-    let tempStartDateObj = new Date(+this.startDate[0].year, +this.startDate[0].month-1, this.startDate[0].day)
+    let tempStartDateObj = new Date(+this.startDate.year, +this.startDate.month-1, this.startDate.day)
     let ind = -1
-    let minDate = new Date(+this.startDate[0].year, 0, 1)
-    let maxDate = new Date(+this.endDate[0].year, 11, 31)
+    let minDate = new Date(+this.startDate.year, 0, 1)
+    let maxDate = new Date(+this.endDate.year, 11, 31)
 
-    while(year == this.startDate[0].year && ind==-1 && tempStartDateObj>=minDate) {
+    while(year == this.startDate.year && ind==-1 && tempStartDateObj>=minDate) {
       let start = tempStartDateObj.getFullYear() + '-' + ("0"+(tempStartDateObj.getMonth()+1)).slice(-2) + '-' + ("0" + tempStartDateObj.getDate()).slice(-2)
       let startRegex = new RegExp(`[\n][0-9]*[,]*${start}`)
       ind = csv.search(startRegex)
@@ -681,9 +681,9 @@ export class DisplayComponent implements OnInit {
       }
     }
 
-    let tempEndDateObj = new Date(+this.endDate[0].year, +this.endDate[0].month-1, this.endDate[0].day)
+    let tempEndDateObj = new Date(+this.endDate.year, +this.endDate.month-1, this.endDate.day)
     ind = -1
-    while(year == this.endDate[0].year && ind==-1 && tempEndDateObj<=maxDate) {
+    while(year == this.endDate.year && ind==-1 && tempEndDateObj<=maxDate) {
       let end = tempEndDateObj.getFullYear() + '-' + ("0"+(tempEndDateObj.getMonth()+1)).slice(-2) + '-' + ("0" + tempEndDateObj.getDate()).slice(-2)
       ind = csv.search(end)
       if(ind!=-1) {
@@ -697,7 +697,7 @@ export class DisplayComponent implements OnInit {
   }
 
   changeStation(id:any) {
-    this.displayIndex = this.stationID.indexOf(id)
+    this.displayIndex = this.stationIDArray.indexOf(id)
     let tab:any = document.getElementById(id)
     let allTabs:any = document.getElementsByClassName("tab")
     this.config.currentPage = 1;

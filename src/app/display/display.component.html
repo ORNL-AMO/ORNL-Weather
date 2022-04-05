@@ -11,12 +11,12 @@
 </div>
 <div class="tableParent">
     <!-- TODO: Figure out something for potential tab overflow here -->
-    <ng-container *ngIf="stationID && stationID.length>0">
-      <div class="tabs" *ngFor="let id of stationID">
+    <ng-container *ngIf="stationIDArray && stationIDArray.length>0">
+      <div class="tabs" *ngFor="let id of stationIDArray">
         <div class="tab" (click)=changeStation(id) id={{id}}><label id="tabsLabel" for={{id}}>{{id}}</label></div>
       </div>
     </ng-container>
-    <ng-container *ngIf="!stationID || stationID.length==0">
+    <ng-container *ngIf="!stationIDArray || stationIDArray.length==0">
       <div class="tabs" style="margin-top:38px"></div>
     </ng-container>
 
@@ -62,8 +62,8 @@
         </ng-container>
         <div class="loading" *ngIf="stationDataDisplayEmpty()" style="font-size:24px">
             <!-- Hourglass Loading Spinner -->
-            <div *ngIf="stationID">
-              No {{typeValue.value}} Data Available For Station {{stationID[displayIndex]}}
+            <div *ngIf="stationIDArray">
+              No {{typeValue.value}} Data Available For Station {{stationIDArray[displayIndex]}}
             </div>
 
         </div>

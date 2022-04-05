@@ -15,59 +15,58 @@ export interface stationsElements {
 })
 
 export class StationsComponent implements OnInit {
-  lat:any;
-  long:any;
-  dist:any;
-  stationID:any;
-  state:any;
-  startDate:any;
-  startStr:string;
-  endDate:any;
-  endStr:string;
-  stationsJSON:any;
+  lat:any = null;
+  long:any = null;
+  dist:any = null;
+  stationID:any = "";
+  state:any = "";
+  startDate:any = null;
+  startStr:string = "";
+  endDate:any = null;
+  endStr:string = "";
+  stationsJSON:any = null;
   multiInputs: string[] = [];
   zipsList: string[] = [];
   stationsArray: any[] = [];
   selectedArray: any[] = [];
   sendingArray: any[] = [];
-  numYears: any;
+  numYears: any = null;
   headers: any;
 
   constructor(private router: Router) {
     // Get data from home page
       let state:any = this.router.getCurrentNavigation()!.extras.state;
       if(state) {
-        this.lat = state.dataLat;
-        this.long = state.dataLong;
-        this.dist = state.dataDist;
-        this.stationID = state.dataStationID;
-        this.state = state.dataState;
-        this.startDate = state.dataStartDate;
-        this.endDate = state.dataEndDate;
-        this.stationsJSON = state.dataStationsJSON;
-        this.numYears = state.years;
-        this.startStr = state.dataStartStr;
-        this.endStr = state.dataEndStr;
-        this.multiInputs = state.multiInputs;
-      }
-      else {
-        this.lat = null;
-        this.long = null;
-        this.dist = null;
-        this.stationID = "";
-        this.state = "";
-        this.startDate = null;
-        this.endDate = null;
-        this.stationsJSON = null;
-        this.numYears = null;
-        this.startStr = "";
-        this.endStr = "";
-        this.multiInputs = [];
+        this.stationsJSON = state.stationsJSON;
+        // this.multiInputs = state.multiInputs;
       }
   }
 
   async ngOnInit() {
-    this.getStations();
+    if(this.getSessionStorageItem('lat')) {this.lat = this.getSessionStorageItem('lat')}
+    if(this.getSessionStorageItem("long")) {this.long = this.getSessionStorageItem("long")}
+    if(this.getSessionStorageItem("distance")) {this.dist = this.getSessionStorageItem("distance")}
+    if(this.getSessionStorageItem("stationID")) {this.stationID = this.getSessionStorageItem("stationID")}
+    if(this.getSessionStorageItem("state")) {this.state = this.getSessionStorageItem("state")}
+    if(this.getSessionStorageItem("startDate")) {this.startDate = JSON.parse(this.getSessionStorageItem("startDate") as string)}
+    if(this.getSessionStorageItem("endDate")) {this.endDate = JSON.parse(this.getSessionStorageItem("endDate") as string)}
+    if(this.getSessionStorageItem("numYears")) {this.numYears = this.getSessionStorageItem("numYears")}
+    if(this.getSessionStorageItem("startStr")) {this.startStr = this.getSessionStorageItem("startStr") as string}
+    if(this.getSessionStorageItem("endStr")) {this.endStr = this.getSessionStorageItem("endStr") as string}
+    if(this.getSessionStorageItem("multiInputs")) {this.multiInputs = JSON.parse(this.getSessionStorageItem("multiInputs") as string)}
+
+    // this.multiInputs = this.getSSArrayItem("multiInputs")
+    await this.getStations();
+    // Load previous input data if exists
+    try {
+      let tmp = sessionStorage.getItem("selectedArrayStations");
+      if(tmp) {
+        this.selectedArray = JSON.parse(tmp)
+        for(let i of this.selectedArray) {
+          await this.checkUncheckDuplicates(i.ID.toString(), true)
+        }
+      }
+    } catch (e) {}
   }
 
   getStations() {
@@ -94,20 +93,22 @@ export class StationsComponent implements OnInit {
         }
       }
       if(allStationIDs) {
-        this.router.navigate(["/data"], {state: { stationID: this.sendingArray, startDate: this.startDate, endDate: this.endDate, years: this.numYears, startStr: this.startStr, endStr: this.endStr}})
+        sessionStorage.setItem("sendingArrayStations", JSON.stringify(this.sendingArray))
+        this.router.navigate(["/data"], {state: { stationsJSON: this.stationsJSON}})
       }
     }
     else {    // Single Input Search
-      if(this.stationID != ""){   // Go directly to data if provided station id
+      if(this.stationID){   // Go directly to data if provided station id
         this.sendingArray.push(this.stationID)
         console.log("Station:");
         console.log(this.sendingArray);
-        this.router.navigate(["/data"], {state: { stationID: this.sendingArray, startDate: this.startDate, endDate: this.endDate, years: this.numYears, startStr: this.startStr, endStr: this.endStr}})
+        sessionStorage.setItem("sendingArrayStations", JSON.stringify(this.sendingArray))
+        this.router.navigate(["/data"], {state: { stationsJSON: this.stationsJSON}})
       }
-      else if(this.lat != null && this.long != null) {
+      else if(this.lat && this.long) {
         this.getStationsZip(this.lat, this.long);  // Get local stations list
       }
-      else if(this.state != "") {
+      else if(this.state) {
         this.getStationsState(this.state);
       }
       else {
@@ -197,6 +198,7 @@ export class StationsComponent implements OnInit {
         let el = this.selectedArray.find((itm) => itm.ID === val);
         if (el) this.selectedArray.splice(this.selectedArray.indexOf(el), 1);
       }
+      sessionStorage.setItem('selectedArrayStations', JSON.stringify(this.selectedArray));
     }
 
     checkUncheckDuplicates(id:string, val:boolean) {
@@ -213,10 +215,15 @@ export class StationsComponent implements OnInit {
       }
       console.log("Selected Stations:");
       console.log(this.sendingArray);
-      this.router.navigate(["/data"], {state: { stationID: this.sendingArray, startDate: this.startDate, endDate: this.endDate, years: this.numYears, startStr: this.startStr, endStr: this.endStr}})
+      sessionStorage.setItem("sendingArrayStations", JSON.stringify(this.sendingArray))
+      this.router.navigate(["/data"], {state: { stationsJSON: this.stationsJSON}})
     }
 
     goBack(){
+      // Clear Stations sessionstorage items
+      sessionStorage.removeItem("selectedArrayStations")
+      sessionStorage.removeItem("sendingArrayStations")
+
       this.router.navigate(["/home"])
     }
 
@@ -252,5 +259,15 @@ export class StationsComponent implements OnInit {
 
   isStateFormat(str:string) {
     return /^[A-Z]+$/i.test(str);
+  }
+
+  getSessionStorageItem(str:string) {
+    try {
+      let tmp = sessionStorage.getItem(str);
+      if(tmp) {
+        return tmp
+      }
+    } catch (e) {}
+    return null
   }
 }

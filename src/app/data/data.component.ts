@@ -13,9 +13,9 @@ import { CommonModule } from '@angular/common';
 export class DataComponent implements OnInit {
   dataTypesArray: any[] = [];
   years: number = 0;
-  stationID: any;
-  startDate: any[] = [];
-  endDate: any[] = [];
+  stationIDArray: any;
+  startDate: any = null;
+  endDate: any = null;
   startStr:string = "";
   endStr:string = "";
   headers = ['Data Types']
@@ -26,6 +26,7 @@ export class DataComponent implements OnInit {
   stationDataTypes:string[] = []
   isLoading: boolean = true;
   dispHeaders: boolean = false;
+  stationsJSON: any = null;
 
   //page variables
   sendingArray: any[] = [];
@@ -34,21 +35,18 @@ export class DataComponent implements OnInit {
     {
       let state:any = this.router.getCurrentNavigation()!.extras.state;
       if(state) {
-        this.startDate = state.startDate;
-        this.endDate = state.endDate;
-        this.stationID = state.stationID;
-        this.years = state.years;
-        this.startStr = state.startStr;
-        this.endStr = state.endStr;
-      }
-      else {
-        this.startDate = [];
-        this.endDate = [];
-        this.stationID = null;
+        this.stationsJSON = state.stationsJSON
       }
     }
 
   async ngOnInit() {
+      if(this.getSessionStorageItem("startDate")) {this.startDate = JSON.parse(this.getSessionStorageItem("startDate") as string)}
+      if(this.getSessionStorageItem("endDate")) {this.endDate = JSON.parse(this.getSessionStorageItem("endDate") as string)}
+      if(this.getSessionStorageItem("sendingArrayStations")) {this.stationIDArray = JSON.parse(this.getSessionStorageItem("sendingArrayStations") as string)}
+      if(this.getSessionStorageItem("numYears")) {this.years = +<any>this.getSessionStorageItem("numYears")}
+      if(this.getSessionStorageItem("startStr")) {this.startStr = this.getSessionStorageItem("startStr") as string}
+      if(this.getSessionStorageItem("endStr")) {this.endStr = this.getSessionStorageItem("endStr") as string}
+
       this.masterSelected = false;
       // https://docs.opendata.aws/noaa-ghcn-pds/readme.html
       // Helpful for finding descriptions and units of Data Types
@@ -170,7 +168,7 @@ export class DataComponent implements OnInit {
         {id:116,value:'WindEquipmentChangeDate',isSelected:false,title:'Wind Equipment Change Date',tooltip:""}
 
       ];
-      if(this.stationID) {
+      if(this.stationIDArray) {
         this.isLoading = true;
         await this.getStationDataTypes();
         if(this.stationDataTypes.length>0) {
@@ -226,17 +224,17 @@ export class DataComponent implements OnInit {
   }
 
   async getStationDataTypes(){
-    for(let i=0; i<this.stationID.length; i++) {
-      await fetch(`https://www.ncei.noaa.gov/data/local-climatological-data/access/${this.startDate[0].year}/${this.stationID[i]}.csv`)
+    for(let i=0; i<this.stationIDArray.length; i++) {
+      await fetch(`https://www.ncei.noaa.gov/data/local-climatological-data/access/${this.startDate.year}/${this.stationIDArray[i]}.csv`)
       .then((res) => res.text())
       .then((data) =>{
-        console.log("Got Test CSV File for " + this.stationID[i]);
+        console.log("Got Test CSV File for " + this.stationIDArray[i]);
         let csv = data;
         let csvheaders = csv.substring(0, csv.search("\n")).replace(/['"]+/g, '').split(/,/);
         csv = csv.replace(/['"]+/g, '')
 
         // Hourly
-        let startDateObj = new Date(+this.startDate[0].year, +this.startDate[0].month-1, this.startDate[0].day)
+        let startDateObj = new Date(+this.startDate.year, +this.startDate.month-1, this.startDate.day)
         let oneDayData = this.trimToDates(csv, startDateObj)
         let dayLines = oneDayData.split("\n")
         for(let j = 1; j < dayLines.length-1; j++) {
@@ -282,7 +280,7 @@ export class DataComponent implements OnInit {
           counter++;
         }
 
-        console.log("Got Data Types for " + this.stationID[i]);
+        console.log("Got Data Types for " + this.stationIDArray[i]);
       })
     }
   }
@@ -290,7 +288,7 @@ export class DataComponent implements OnInit {
   trimToDates(csv:string, startDate:Date) {
     let ind = -1
     // Cannot be last day of year
-    let maxDate = new Date(+this.startDate[0].year, 11, 31)
+    let maxDate = new Date(+this.startDate.year, 11, 31)
     while(ind==-1 && startDate<maxDate) {
       let start = startDate.getFullYear() + '-' + ("0"+(startDate.getMonth()+1)).slice(-2) + '-' + ("0" + startDate.getDate()).slice(-2)
       let startRegex = new RegExp(`[\n][0-9]*[,]*${start}`)
@@ -320,16 +318,26 @@ export class DataComponent implements OnInit {
   }
 
   sendToDisplay(){
-    this.router.navigate(["/display"], {state: { stationID: this.stationID, startDate: this.startDate, endDate: this.endDate, years: this.years, startStr: this.startStr, endStr: this.endStr, dataTypes: this.checkedList}})
+    this.router.navigate(["/display"], {state: { stationIDArray: this.stationIDArray, startDate: this.startDate, endDate: this.endDate, years: this.years, startStr: this.startStr, endStr: this.endStr, dataTypes: this.checkedList}})
 
   }
 
   goBack(){
-    this.router.navigate(["/stations"])
+    this.router.navigate(["/stations"], {state: {stationsJSON: this.stationsJSON}})
+  }
+
+  getSessionStorageItem(str:string) {
+    try {
+      let tmp = sessionStorage.getItem(str);
+      if(tmp) {
+        return tmp
+      }
+    } catch (e) {}
+    return null
   }
 
   // fetchToolTip(){
-    
+
   //   fetch("assets/dataTypesList.json")
   //   .then((res) => res.json())
   //   .then((data) =>{
