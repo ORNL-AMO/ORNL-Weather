@@ -628,13 +628,13 @@ export class DisplayComponent implements OnInit {
     let header = this.headers;
     var temp: string = "";
     for(let i = 0; i < this.allObj.length; i++){
-      var csvFromArrayOfArrays: string = convertArrayToCSV(this.allObj[i], {
+      var csvFromArrayOfArrays: string = convertArrayToCSV(this.displayObj[i], {
         header,
         separator: ','
       });
       temp += csvFromArrayOfArrays
     }
-    temp = temp.substring(0, temp.length-2)
+    temp = temp.substring(0, temp.length-1)
 
     let exportData = JSON.parse(await this.CSVtoJSON(temp))
     return saveAs(

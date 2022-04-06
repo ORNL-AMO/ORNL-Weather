@@ -323,7 +323,12 @@ export class DataComponent implements OnInit {
   }
 
   goBack(){
-    this.router.navigate(["/stations"], {state: {stationsJSON: this.stationsJSON}})
+    if(!this.getSessionStorageItem("stationID")) {
+      this.router.navigate(["/stations"], {state: {stationsJSON: this.stationsJSON}})
+    }
+    else {
+      this.router.navigate(["/home"])
+    }
   }
 
   getSessionStorageItem(str:string) {
