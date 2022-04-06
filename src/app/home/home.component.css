@@ -5,7 +5,39 @@ body{ /* overall default styling for this page */
 
 }
 
+.tooltip {
+  position: relative;
+  display: center;
+}
 
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s .5s, opacity .5s linear;
+  width: 300px;
+  background-color: #839c7c;
+  color: black;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+ 
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity .5s linear;
+  cursor: auto;
+}
+.tooltip .tooltiptext {
+  top: -75px;
+  left: 105%;
+}
 
 table{
 font-family: 'Lato', sans-serif;
@@ -110,7 +142,7 @@ margin-left: 60px;
 justify-content: center;
 }
 
-.card{
+/* .card{
   position: relative;
   background-color: #fff;
   padding: 5px 5px;
@@ -122,7 +154,8 @@ justify-content: center;
   z-index: 4;
   left: 227px;
   top: 3px;
-}
+} */
+
 span{
 position: static;
 top: 10px;
@@ -135,21 +168,20 @@ transition: ease-out .3s;
 
 h1{
 margin-top: -12px;
-font-size: 12px;
+font-size: 15px;
 }
 p{
 font-size: 10px;
 padding:0px;
-
 margin-top: -10px;
 }
-.card:hover{
+/* .card:hover{
 clip-path: circle(75%);
 border-radius: 20px;
 }
 .card:hover span{
 opacity: 0;
-}
+} */
 
 
 
