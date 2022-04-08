@@ -8,7 +8,7 @@ body{ /* overall default styling for this page */
 .tooltip {
   position: relative;
   display: center;
-  padding-right: 2px;
+  padding-right: 3px;
 }
 
 /* Tooltip text */
