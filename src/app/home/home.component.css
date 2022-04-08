@@ -8,6 +8,7 @@ body{ /* overall default styling for this page */
 .tooltip {
   position: relative;
   display: center;
+  padding-right: 2px;
 }
 
 /* Tooltip text */
@@ -16,11 +17,14 @@ body{ /* overall default styling for this page */
   opacity: 0;
   transition: visibility 0s .5s, opacity .5s linear;
   width: 300px;
-  background-color: #839c7c;
-  color: black;
+  background-color: white;
+  border: 1.5px solid #587656;
+  color: #2c386b;
   text-align: center;
   padding: 5px 0;
   border-radius: 6px;
+  padding-top: 18px;
+  
  
   /* Position the tooltip text - see examples below! */
   position: absolute;
@@ -33,6 +37,7 @@ body{ /* overall default styling for this page */
   opacity: 1;
   transition: opacity .5s linear;
   cursor: auto;
+  padding-top: 18px;
 }
 .tooltip .tooltiptext {
   top: -75px;
