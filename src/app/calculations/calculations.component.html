@@ -1,1 +1,70 @@
-<p>calculations works!</p>
+<div>
+    <select class="selectOptions" name="calcOptions" #calcOptions id="calcOptions" (change)="onChangeCalc($event)">
+        <option value=" ">Select Calculation</option>
+        <option value="DD">Degree Days</option>
+  </select>
+</div>
+<div class="tableParent">
+    <div id="scrollable-area">
+
+        <div *ngIf="isStart">
+            <p class="p">
+                Please select a calculation to begin...
+            </p>
+        </div>
+        <div *ngIf="isDDError">
+            <p class="p">
+                No Data to Display.
+            </p>
+            <p class="p" style="margin-top: 0px;">
+                Please Ensure the correct Data Types were selected
+            </p>
+            <p class="p" style="margin-top: 0px;">
+                i.e. (HourlyDewPointTemperature & HourlyDryBulbTemperature)
+            </p>
+        </div>
+        <!-- Display Loading Circle -->
+        <div class="loading" *ngIf="isLoading" >
+            <!-- Hourglass Loading Spinner -->
+            <div class="cell">
+                <div class="pl pl-hourglass"></div>
+                <div class="pl-name">Compiling your Data...This May Take Several Minutes</div>
+            </div>
+        </div>
+        
+    </div>
+  </div>
+  <div class="controls" >
+    <div id="backButton">
+      <button class="button button1" (click)="goBack()" ><b>Back</b></button>
+    </div>
+  
+    <div class = centerPagi *ngIf="!isStart">
+      <pagination-template #p="paginationApi" (pageChange)="config.currentPage = $event">
+        <div class="custom-pagination">
+          <div class="pagination-previous" [class.disabled]="p.isFirstPage()">
+            <span *ngIf="!p.isFirstPage()" (click)="p.previous()">
+                <img src= "assets/arrowLeft.png" class="arrow">
+            </span>
+          </div>
+          <div *ngIf="p.isFirstPage()" style="display:inline-flex;width:17.5px;height:30"> </div>
+          <div class="page-number" *ngFor="let page of p.pages" [class.current]="p.getCurrent() === page.value">
+              <label class="page-number-label" for="page.label" *ngIf="p.getCurrent() !== page.value" (click)="p.setCurrent(page.value)"><span>{{ page.label }}</span></label>
+              <div *ngIf="p.getCurrent() === page.value">
+                <span>{{ page.label }}</span>
+              </div>
+          </div>
+          <div class="pagination-next" [class.disabled]="p.isLastPage()">
+            <span *ngIf="!p.isLastPage()" (click)="p.next()"> <img src= "assets/arrowRight.png" class="arrow"> </span>
+          </div>
+          <div *ngIf="p.isLastPage()" style="display:inline-flex;width:17.5px;height:30"> </div>
+        </div>
+      </pagination-template>
+    </div>
+  
+    <select name="pagingValue" #pagingValue id="pagingValue" (change)="onChange($event)" style="margin-right: 50px;" *ngIf="!isStart">
+          <option value="10">10 per page</option>
+          <option value="25">25 per page</option>
+          <option value="50">50 per page</option>
+          <option value="100">100 per page</option>
+    </select>

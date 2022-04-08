@@ -1,6 +1,36 @@
 div{
   z-index: 1;
 }
+
+.calculations{
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 120%;
+
+  display: flex;
+  justify-content: right;
+
+  margin-right: 10%;
+  margin-left: 10%;
+  float: right;
+
+  cursor: pointer;
+  margin-top: 30px;
+  width: 10%;
+  min-width: 100px;
+  z-index: 1;
+
+  border-radius: 60px;
+  background-color: #587656;
+  z-index: 1;
+}
+.calculations:hover {
+  background-color: #839c7c;
+}
+
 header{
   text-align: center;
   color: #2b376b;

@@ -733,7 +733,10 @@ export class DisplayComponent implements OnInit {
     }
     return true;
   }
+  goToCalc(){
+    this.router.navigate(["/calculations"], {state: { hourlyData: this.hourlyDataObj}})
 
+  }
   goBack(){
     this.router.navigate(["/data"])
   }
