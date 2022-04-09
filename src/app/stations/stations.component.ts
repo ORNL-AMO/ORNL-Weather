@@ -37,12 +37,33 @@ export class StationsComponent implements OnInit {
     // Get data from home page
       let state:any = this.router.getCurrentNavigation()!.extras.state;
       if(state) {
-        this.stationsJSON = state.stationsJSON;
+        // this.stationsJSON = state.stationsJSON;
         // this.multiInputs = state.multiInputs;
       }
   }
 
   async ngOnInit() {
+
+    // Fetch newest station list data from NOAA
+    this.stationsJSON = JSON.parse(await this.CSVtoJSON("https://www1.ncdc.noaa.gov/pub/data/noaa/isd-history.csv"))
+
+    // If fetch failed, fall back to older list
+    // XXX: may need to set flag to correctly filter by date if requesting data newer than included file
+    if(this.stationsJSON.length == 0) {
+      console.log("Unable to fetch current station list. Using older data set.")
+      await fetch("assets/isd-history.json")
+      .then((res) => res.json())
+      .then((data) =>{
+          this.stationsJSON = data
+      })
+      console.log(this.stationsJSON)
+      console.log("Cached stations list loaded")
+    }
+    else if(this.stationsJSON.length > 0) {
+      console.log(this.stationsJSON)
+      console.log("Current stations data loaded")
+    }
+
     if(this.getSessionStorageItem('lat')) {this.lat = this.getSessionStorageItem('lat')}
     if(this.getSessionStorageItem("long")) {this.long = this.getSessionStorageItem("long")}
     if(this.getSessionStorageItem("distance")) {this.dist = this.getSessionStorageItem("distance")}
@@ -269,5 +290,29 @@ export class StationsComponent implements OnInit {
       }
     } catch (e) {}
     return null
+  }
+
+  async CSVtoJSON(val: string):Promise<string> {
+    let path: string = val
+    let jsonFile: any = []
+    await fetch(path)
+    .then((res) => res.text())
+    .then((data) =>{
+      let csv = data
+      //Remove "" that are automatically added
+      csv = csv.replace(/['"]+/g, '')
+
+      let lines = csv.split("\n")
+      let headers = lines[0].split(",")
+      for(let i=1; i<lines.length; i++) {
+        let obj: any = {}
+        let currLine = lines[i].split(",")
+        for(let j=0; j<headers.length; j++) {
+          obj[headers[j]] = currLine[j];
+        }
+        jsonFile.push(obj)
+      }
+    });
+    return JSON.stringify(jsonFile)
   }
 }
