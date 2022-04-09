@@ -1,6 +1,36 @@
 div{
   z-index: 1;
 }
+
+.calculations{
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 120%;
+
+  display: flex;
+  justify-content: right;
+
+  margin-right: 10%;
+  margin-left: 10%;
+  float: right;
+
+  cursor: pointer;
+  margin-top: 30px;
+  width: 10%;
+  min-width: 100px;
+  z-index: 1;
+
+  border-radius: 60px;
+  background-color: #587656;
+  z-index: 1;
+}
+.calculations:hover {
+  background-color: #839c7c;
+}
+
 header{
   text-align: center;
   color: #2b376b;
@@ -139,11 +169,11 @@ tr:hover{
 .button {
   border: none;
   color: white;
-  padding: 10px 15px;
+  padding: 10px 17px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 120%;
+  font-size: 100%;
 
   cursor: pointer;
   margin-top: 10px;
@@ -236,7 +266,7 @@ tr:hover{
 }
 .pl-hourglass {
 	animation-name: hourglassA;
-	background: rgb(88, 118, 86);
+	background: rgb(200, 200, 200);
 	clip-path: polygon(0 0,100% 0,50% 50%,100% 100%,0 100%,50% 50%);
 	-webkit-clip-path: polygon(0 0,100% 0,50% 50%,100% 100%,0 100%,50% 50%);
 }

@@ -27,6 +27,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { CalculationsComponent } from './calculations/calculations.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     DataComponent,
     DisplayComponent,
     NavbarComponent,
+    CalculationsComponent,
   ],
   imports: [
     BrowserModule,

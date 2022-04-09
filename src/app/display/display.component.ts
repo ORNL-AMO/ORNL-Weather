@@ -57,16 +57,12 @@ export class DisplayComponent implements OnInit {
   years: number = 0;
 
   //deleted row variables
-  rowsDeleted: number = 0;
+  rowsDeleted: any[] = [];
   rowString: string = "";
-  hourlyAll: number = 0;
-  hourKeep: number = 0;
-  dailyAll: number = 0;
-  dailyKeep: number = 0;
-  monthlyAll: number = 0;
-  monthlyKeep: number = 0;
-  rowAll: number = 0;
-  rowKeep: number = 0;
+  removeHourly: any[] = [];
+  removeDaily: any[] = [];
+  removeMonthly: any[] = [];
+  removeAll: any[] = [];
 
   stationIDArray: any;
   startDate: any;
@@ -175,7 +171,7 @@ export class DisplayComponent implements OnInit {
       this.allObj.push(stationObj);
       this.displayObj = this.allObj;
       this.dataObj = this.allDataObj;
-      this.rowsDeleted = this.rowAll - this.rowKeep;
+      this.rowsDeleted = this.removeAll
       this.rowString = "All"
     }
     console.log("Requested Data Retrieved Successfully");
@@ -243,6 +239,11 @@ export class DisplayComponent implements OnInit {
       let csv = data
       let csvheaders = csv.substring(0, csv.search("\n")).replace(/['"]+/g, '').split(/,/); // Why use many line, when one line do trick
 
+      let removeHourly = 0;
+      let removeDaily = 0;
+      let removeMonthly = 0;
+      let removeAll = 0;
+
       // Only do this once
       if(this.allHeaders.length<1) {
         this.allHeaders = ["STATION", "DATE", "TIME", "LATITUDE", "LONGITUDE", "ELEVATION", "NAME", "REPORT_TYPE", "SOURCE"]
@@ -263,6 +264,8 @@ export class DisplayComponent implements OnInit {
             this.monthlyHeads.push(this.dataTypeObj[i])
           }
         }
+
+
 
         // Initialize Empty Stats Object
         for(let i=0; i<this.stationIDArray.length; i++) {
@@ -498,56 +501,65 @@ export class DisplayComponent implements OnInit {
 
           if(hObj.slice(9).length > 0){
             let tmp: string = "";
-            this.hourlyAll++;
             for (let i of hObj.slice(9)) {
               tmp += i.toString().trim();
             } if(tmp) {
               stationHObj.push(hObj)
               this.hourlyDataObj.push(dHObj);
               this.hourlyHeadersStats[stationsInd] = tmpStatsH.slice()
-              this.hourKeep++;
+            }
+            else{
+              removeHourly += 1;
             }
           }
           if(dayObj.slice(9).length > 0){
             let tmp: string = "";
-            this.dailyAll++;
             for (let i of dayObj.slice(9)) {
               tmp += i.toString().trim();
             } if(tmp) {
               stationDObj.push(dayObj)
               this.dailyDataObj.push(dDObj);
               this.dailyHeadersStats[stationsInd] = tmpStatsD.slice()
-              this.dailyKeep++;
+            }
+            else{
+              removeDaily += 1;
             }
           }
           if(mObj.slice(9).length > 0){
             let tmp: string = "";
-            this.monthlyAll++;
             for (let i of mObj.slice(9)) {
               tmp += i.toString().trim();
             } if(tmp) {
               stationMObj.push(mObj)
               this.monthlyDataObj.push(dMObj);
               this.monthlyHeadersStats[stationsInd] = tmpStatsM.slice()
-              this.monthlyKeep++;
+            }
+            else{
+              removeMonthly += 1;
             }
           }
 
           if(obj.slice(9).length > 0){
             let tmp: string = "";
-            this.rowAll++;
             for (let i of obj.slice(9)) {
               tmp += i.toString().trim();
             } if(tmp) {
               stationObj.push(obj);
               this.allDataObj.push(dObj);
               this.allHeadersStats[stationsInd] = tmpStatsA.slice()
-              this.rowKeep++;
+            }
+            else{
+              removeAll += 1;
             }
 
           }
         }
       }
+      this.removeHourly[stationsInd] = removeHourly;
+      this.removeDaily[stationsInd] = removeDaily;
+      this.removeMonthly[stationsInd] = removeMonthly;
+      this.removeAll[stationsInd] = removeAll;
+
     })
     this.headers = this.allHeaders;
     this.headersStats = this.allHeadersStats;
@@ -586,7 +598,7 @@ export class DisplayComponent implements OnInit {
       this.headersStats = this.hourlyHeadersStats;
       this.config.currentPage = 1;
       console.log(this.dataObj)
-      this.rowsDeleted = this.hourlyAll - this.hourKeep;
+      this.rowsDeleted = this.removeHourly
       this.rowString = e.target.value;
     }
     if(e.target.value == "Daily"){
@@ -596,7 +608,7 @@ export class DisplayComponent implements OnInit {
       this.headersStats = this.dailyHeadersStats;
       this.config.currentPage = 1;
       console.log(this.dataObj)
-      this.rowsDeleted = this.dailyAll - this.dailyKeep;
+      this.rowsDeleted = this.removeDaily
       this.rowString = e.target.value;
     }
     if(e.target.value == "Monthly"){
@@ -606,7 +618,7 @@ export class DisplayComponent implements OnInit {
       this.headersStats = this.monthlyHeadersStats;
       this.config.currentPage = 1;
       console.log(this.dataObj)
-      this.rowsDeleted = this.monthlyAll - this.monthlyKeep;
+      this.rowsDeleted = this.removeMonthly
       this.rowString = e.target.value;
     }
     if(e.target.value == "All"){
@@ -615,7 +627,7 @@ export class DisplayComponent implements OnInit {
       this.headers = this.allHeaders;
       this.headersStats = this.allHeadersStats;
       this.config.currentPage = 1;
-      this.rowsDeleted = this.rowAll - this.rowKeep;
+      this.rowsDeleted = this.removeAll
       this.rowString = e.target.value;
     }
   }
@@ -627,7 +639,7 @@ export class DisplayComponent implements OnInit {
     let filename = "NCEI_Weather_Data";
     let header = this.headers;
     var temp: string = "";
-    for(let i = 0; i < this.allObj.length; i++){
+    for(let i = 0; i < this.displayObj.length; i++){
       var csvFromArrayOfArrays: string = convertArrayToCSV(this.displayObj[i], {
         header,
         separator: ','
@@ -721,7 +733,10 @@ export class DisplayComponent implements OnInit {
     }
     return true;
   }
+  goToCalc(){
+    this.router.navigate(["/calculations"], {state: { hourlyData: this.hourlyDataObj}})
 
+  }
   goBack(){
     this.router.navigate(["/data"])
   }

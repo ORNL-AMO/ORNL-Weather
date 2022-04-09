@@ -189,7 +189,7 @@ input[type="checkbox"]{
 }
 .pl-hourglass {
 	animation-name: hourglassA;
-	background: rgb(88, 118, 86);
+	background: rgb(200, 200, 200);
 	clip-path: polygon(0 0,100% 0,50% 50%,100% 100%,0 100%,50% 50%);
 	-webkit-clip-path: polygon(0 0,100% 0,50% 50%,100% 100%,0 100%,50% 50%);
 }
@@ -253,7 +253,7 @@ input[type="checkbox"]{
   .tooltip .tooltiptext {
     visibility: hidden;
     width: 400px;
-    background-color: tan;
+    background-color: #ADC8E2;
     color: black;
     text-align: center;
     padding: 5px 0;
