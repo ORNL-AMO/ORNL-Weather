@@ -64,6 +64,7 @@ export class DisplayComponent implements OnInit {
   removeMonthly: any[] = [];
   removeAll: any[] = [];
 
+  stationsJSON: any;
   stationIDArray: any;
   startDate: any;
   endDate: any;
@@ -72,6 +73,7 @@ export class DisplayComponent implements OnInit {
   displayIndex: number = 0;
   startStr:string = "";
   endStr:string = "";
+  displayList: any;
   config: any;
   emptyAvail: boolean = true;
   public maxSize: number = 7;
@@ -127,6 +129,8 @@ export class DisplayComponent implements OnInit {
         this.startStr = state.startStr;
         this.endStr = state.endStr;
         this.dataTypeObj = state.dataTypes;
+        this.displayList = state.displayList;
+        this.stationsJSON = state.stationsJSON;
       }
       else {
         this.startDate = [];
@@ -738,6 +742,6 @@ export class DisplayComponent implements OnInit {
 
   }
   goBack(){
-    this.router.navigate(["/data"])
+    this.router.navigate(["/data"], {state: { stationIDArray: this.stationIDArray, stationsJSON: this.stationsJSON, startDate: this.startDate, endDate: this.endDate, years: this.years, startStr: this.startStr, endStr: this.endStr, dataTypes: this.displayList}})
   }
 }

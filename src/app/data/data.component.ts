@@ -43,6 +43,8 @@ export class DataComponent implements OnInit {
       if(this.getSessionStorageItem("startDate")) {this.startDate = JSON.parse(this.getSessionStorageItem("startDate") as string)}
       if(this.getSessionStorageItem("endDate")) {this.endDate = JSON.parse(this.getSessionStorageItem("endDate") as string)}
       if(this.getSessionStorageItem("sendingArrayStations")) {this.stationIDArray = JSON.parse(this.getSessionStorageItem("sendingArrayStations") as string)}
+      if(this.getSessionStorageItem("displayList")) {this.displayList = JSON.parse(this.getSessionStorageItem("displayList") as string)}
+      if(this.getSessionStorageItem("masterSelected")) {this.masterSelected = JSON.parse(this.getSessionStorageItem("masterSelected") as string)}
       if(this.getSessionStorageItem("numYears")) {this.years = +<any>this.getSessionStorageItem("numYears")}
       if(this.getSessionStorageItem("startStr")) {this.startStr = this.getSessionStorageItem("startStr") as string}
       if(this.getSessionStorageItem("endStr")) {this.endStr = this.getSessionStorageItem("endStr") as string}
@@ -318,6 +320,8 @@ export class DataComponent implements OnInit {
   }
 
   sendToDisplay(){
+    sessionStorage.setItem("masterSelected", JSON.stringify(this.masterSelected))
+    sessionStorage.setItem("displayList", JSON.stringify(this.displayList))
     this.router.navigate(["/display"], {state: { stationIDArray: this.stationIDArray, startDate: this.startDate, endDate: this.endDate, years: this.years, startStr: this.startStr, endStr: this.endStr, dataTypes: this.checkedList}})
 
   }

@@ -19,5 +19,8 @@ export class NavbarComponent {
   constructor(private breakpointObserver: BreakpointObserver) {}
 
   ssClr(){sessionStorage.clear()}
+  ssClrStationsFwd(){sessionStorage.clear()}
+  ssClrDataFwd(){sessionStorage.clear()}
+  ssClrDisplayFwd(){sessionStorage.clear()}
 
 }
