@@ -359,7 +359,7 @@ export class HomeComponent implements OnInit {
 
 
 
-          this.router.navigate(["/stations"])
+          this.router.navigate(["/stations"], {state: { stationsJSON: this.stationsJSON}})
         }
       }
     }

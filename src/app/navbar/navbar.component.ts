@@ -19,8 +19,21 @@ export class NavbarComponent {
   constructor(private breakpointObserver: BreakpointObserver) {}
 
   ssClr(){sessionStorage.clear()}
-  ssClrStationsFwd(){sessionStorage.clear()}
-  ssClrDataFwd(){sessionStorage.clear()}
-  ssClrDisplayFwd(){sessionStorage.clear()}
+  ssClrStationsFwd(){
+    // Stations
+    sessionStorage.removeItem("selectedArrayStations")
+    sessionStorage.removeItem("sendingArrayStations")
+    // Data
+    sessionStorage.removeItem("masterSelected")
+    sessionStorage.removeItem("displayList")
+    sessionStorage.removeItem("checkedList")
+  }
+  ssClrDataFwd(){
+    // Data
+    sessionStorage.removeItem("masterSelected")
+    sessionStorage.removeItem("displayList")
+    sessionStorage.removeItem("checkedList")
+  }
+  ssClrDisplayFwd(){}
 
 }

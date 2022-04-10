@@ -122,20 +122,7 @@ export class DisplayComponent implements OnInit {
   constructor(private router: Router) {
     let state:any = this.router.getCurrentNavigation()!.extras.state;
       if(state) {
-        this.startDate = state.startDate;
-        this.endDate = state.endDate;
-        this.stationIDArray = state.stationIDArray;
-        this.years = state.years;
-        this.startStr = state.startStr;
-        this.endStr = state.endStr;
-        this.dataTypeObj = state.dataTypes;
-        this.displayList = state.displayList;
         this.stationsJSON = state.stationsJSON;
-      }
-      else {
-        this.startDate = [];
-        this.endDate = [];
-        this.stationIDArray = null;
       }
       this.config = {
         itemsPerPage: 10,
@@ -144,6 +131,13 @@ export class DisplayComponent implements OnInit {
    }
 
   async ngOnInit() {
+    if(this.getSessionStorageItem("startDate")) {this.startDate = JSON.parse(this.getSessionStorageItem("startDate") as string)}
+    if(this.getSessionStorageItem("endDate")) {this.endDate = JSON.parse(this.getSessionStorageItem("endDate") as string)}
+    if(this.getSessionStorageItem("sendingArrayStations")) {this.stationIDArray = JSON.parse(this.getSessionStorageItem("sendingArrayStations") as string)}
+    if(this.getSessionStorageItem("numYears")) {this.years = +<any>this.getSessionStorageItem("numYears")}
+    if(this.getSessionStorageItem("checkedList")) {this.dataTypeObj = JSON.parse(this.getSessionStorageItem("checkedList") as string)}
+    if(this.getSessionStorageItem("startStr")) {this.startStr = this.getSessionStorageItem("startStr") as string}
+    if(this.getSessionStorageItem("endStr")) {this.endStr = this.getSessionStorageItem("endStr") as string}
 
     if(this.stationIDArray) {
       await this.checkYears();
@@ -737,11 +731,22 @@ export class DisplayComponent implements OnInit {
     }
     return true;
   }
+
+  getSessionStorageItem(str:string) {
+    try {
+      let tmp = sessionStorage.getItem(str);
+      if(tmp) {
+        return tmp
+      }
+    } catch (e) {}
+    return null
+  }
+
   goToCalc(){
-    this.router.navigate(["/calculations"], {state: { hourlyData: this.hourlyDataObj}})
+    this.router.navigate(["/calculations"], {state: { stationsJSON: this.stationsJSON, hourlyData: this.hourlyDataObj}})
 
   }
   goBack(){
-    this.router.navigate(["/data"], {state: { stationIDArray: this.stationIDArray, stationsJSON: this.stationsJSON, startDate: this.startDate, endDate: this.endDate, years: this.years, startStr: this.startStr, endStr: this.endStr, dataTypes: this.displayList}})
+    this.router.navigate(["/data"], {state: { stationsJSON: this.stationsJSON}})
   }
 }
