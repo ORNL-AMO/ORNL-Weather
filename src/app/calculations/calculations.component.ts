@@ -62,7 +62,7 @@ export class CalculationsComponent implements OnInit {
 
         
         if(k == 0){
-          if(this.displayObj[0][3] < 65.3){
+          if(this.displayObj[0][2] < 65.3){
             var date2 = new Date(this.displayObj[0][1]);
             let DF = ((date2.getTime() - dateStart.getTime())/60000)/(1440);
             let temp = 65.3 - this.displayObj[0][2];
@@ -75,7 +75,7 @@ export class CalculationsComponent implements OnInit {
           }
         }
         else{
-          if(this.displayObj[k][3] < 65.3){
+          if(this.displayObj[k][2] < 65.3){
             var date1 = new Date(this.displayObj[k-1][1]);
             var date2 = new Date(this.displayObj[k][1]);
             let DF = ((date2.getTime() - date1.getTime())/60000)/(1440);
