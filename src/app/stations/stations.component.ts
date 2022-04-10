@@ -37,31 +37,32 @@ export class StationsComponent implements OnInit {
     // Get data from home page
       let state:any = this.router.getCurrentNavigation()!.extras.state;
       if(state) {
-        // this.stationsJSON = state.stationsJSON;
-        // this.multiInputs = state.multiInputs;
+        this.stationsJSON = state.stationsJSON;
       }
   }
 
   async ngOnInit() {
 
     // Fetch newest station list data from NOAA
-    this.stationsJSON = JSON.parse(await this.CSVtoJSON("https://www1.ncdc.noaa.gov/pub/data/noaa/isd-history.csv"))
-
-    // If fetch failed, fall back to older list
-    // XXX: may need to set flag to correctly filter by date if requesting data newer than included file
-    if(this.stationsJSON.length == 0) {
-      console.log("Unable to fetch current station list. Using older data set.")
-      await fetch("assets/isd-history.json")
-      .then((res) => res.json())
-      .then((data) =>{
-          this.stationsJSON = data
-      })
-      console.log(this.stationsJSON)
-      console.log("Cached stations list loaded")
-    }
-    else if(this.stationsJSON.length > 0) {
-      console.log(this.stationsJSON)
-      console.log("Current stations data loaded")
+    // BUG: If stations data loaded from here, cached checkbox data not loaded
+    if(!this.stationsJSON) {
+      this.stationsJSON = JSON.parse(await this.CSVtoJSON("https://www1.ncdc.noaa.gov/pub/data/noaa/isd-history.csv"))
+      // If fetch failed, fall back to older list
+      // XXX: may need to set flag to correctly filter by date if requesting data newer than included file
+      if(this.stationsJSON.length == 0) {
+        console.log("Unable to fetch current station list. Using older data set.")
+        await fetch("assets/isd-history.json")
+        .then((res) => res.json())
+        .then((data) =>{
+            this.stationsJSON = data
+        })
+        console.log(this.stationsJSON)
+        console.log("Cached stations list loaded")
+      }
+      else if(this.stationsJSON.length > 0) {
+        console.log(this.stationsJSON)
+        console.log("Current stations data loaded")
+      }
     }
 
     if(this.getSessionStorageItem('lat')) {this.lat = this.getSessionStorageItem('lat')}
@@ -76,7 +77,6 @@ export class StationsComponent implements OnInit {
     if(this.getSessionStorageItem("endStr")) {this.endStr = this.getSessionStorageItem("endStr") as string}
     if(this.getSessionStorageItem("multiInputs")) {this.multiInputs = JSON.parse(this.getSessionStorageItem("multiInputs") as string)}
 
-    // this.multiInputs = this.getSSArrayItem("multiInputs")
     await this.getStations();
     // Load previous input data if exists
     try {
@@ -84,11 +84,12 @@ export class StationsComponent implements OnInit {
       if(tmp) {
         this.selectedArray = JSON.parse(tmp)
         for(let i of this.selectedArray) {
-          await this.checkUncheckDuplicates(i.ID.toString(), true)
+          this.checkUncheckDuplicates(i.ID.toString(), true)
         }
       }
     } catch (e) {}
   }
+
 
   getStations() {
     if(this.multiInputs.length>0) {   // Multi-Input Search

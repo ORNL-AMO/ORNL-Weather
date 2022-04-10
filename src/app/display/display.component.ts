@@ -64,6 +64,7 @@ export class DisplayComponent implements OnInit {
   removeMonthly: any[] = [];
   removeAll: any[] = [];
 
+  stationsJSON: any;
   stationIDArray: any;
   startDate: any;
   endDate: any;
@@ -72,6 +73,7 @@ export class DisplayComponent implements OnInit {
   displayIndex: number = 0;
   startStr:string = "";
   endStr:string = "";
+  displayList: any;
   config: any;
   emptyAvail: boolean = true;
   public maxSize: number = 7;
@@ -120,18 +122,7 @@ export class DisplayComponent implements OnInit {
   constructor(private router: Router) {
     let state:any = this.router.getCurrentNavigation()!.extras.state;
       if(state) {
-        this.startDate = state.startDate;
-        this.endDate = state.endDate;
-        this.stationIDArray = state.stationIDArray;
-        this.years = state.years;
-        this.startStr = state.startStr;
-        this.endStr = state.endStr;
-        this.dataTypeObj = state.dataTypes;
-      }
-      else {
-        this.startDate = [];
-        this.endDate = [];
-        this.stationIDArray = null;
+        this.stationsJSON = state.stationsJSON;
       }
       this.config = {
         itemsPerPage: 10,
@@ -140,6 +131,13 @@ export class DisplayComponent implements OnInit {
    }
 
   async ngOnInit() {
+    if(this.getSessionStorageItem("startDate")) {this.startDate = JSON.parse(this.getSessionStorageItem("startDate") as string)}
+    if(this.getSessionStorageItem("endDate")) {this.endDate = JSON.parse(this.getSessionStorageItem("endDate") as string)}
+    if(this.getSessionStorageItem("sendingArrayStations")) {this.stationIDArray = JSON.parse(this.getSessionStorageItem("sendingArrayStations") as string)}
+    if(this.getSessionStorageItem("numYears")) {this.years = +<any>this.getSessionStorageItem("numYears")}
+    if(this.getSessionStorageItem("checkedList")) {this.dataTypeObj = JSON.parse(this.getSessionStorageItem("checkedList") as string)}
+    if(this.getSessionStorageItem("startStr")) {this.startStr = this.getSessionStorageItem("startStr") as string}
+    if(this.getSessionStorageItem("endStr")) {this.endStr = this.getSessionStorageItem("endStr") as string}
 
     if(this.stationIDArray) {
       await this.checkYears();
@@ -733,11 +731,22 @@ export class DisplayComponent implements OnInit {
     }
     return true;
   }
+
+  getSessionStorageItem(str:string) {
+    try {
+      let tmp = sessionStorage.getItem(str);
+      if(tmp) {
+        return tmp
+      }
+    } catch (e) {}
+    return null
+  }
+
   goToCalc(){
-    this.router.navigate(["/calculations"], {state: { hourlyData: this.hourlyDataObj, headers: this.hourlyHeads}})
+    this.router.navigate(["/calculations"], {state: { stationsJSON: this.stationsJSON, hourlyData: this.hourlyDataObj, headers: this.hourlyHeads}})
 
   }
   goBack(){
-    this.router.navigate(["/data"])
+    this.router.navigate(["/data"], {state: { stationsJSON: this.stationsJSON}})
   }
 }

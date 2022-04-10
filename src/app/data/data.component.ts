@@ -43,11 +43,14 @@ export class DataComponent implements OnInit {
       if(this.getSessionStorageItem("startDate")) {this.startDate = JSON.parse(this.getSessionStorageItem("startDate") as string)}
       if(this.getSessionStorageItem("endDate")) {this.endDate = JSON.parse(this.getSessionStorageItem("endDate") as string)}
       if(this.getSessionStorageItem("sendingArrayStations")) {this.stationIDArray = JSON.parse(this.getSessionStorageItem("sendingArrayStations") as string)}
+      if(this.getSessionStorageItem("displayList")) {this.displayList = JSON.parse(this.getSessionStorageItem("displayList") as string)}
+      if(this.getSessionStorageItem("checkedList")) {this.checkedList = JSON.parse(this.getSessionStorageItem("checkedList") as string)}
+      if(this.getSessionStorageItem("masterSelected")) {this.masterSelected = JSON.parse(this.getSessionStorageItem("masterSelected") as string)}
+      else {this.masterSelected = false}
       if(this.getSessionStorageItem("numYears")) {this.years = +<any>this.getSessionStorageItem("numYears")}
       if(this.getSessionStorageItem("startStr")) {this.startStr = this.getSessionStorageItem("startStr") as string}
       if(this.getSessionStorageItem("endStr")) {this.endStr = this.getSessionStorageItem("endStr") as string}
 
-      this.masterSelected = false;
       // https://docs.opendata.aws/noaa-ghcn-pds/readme.html
       // Helpful for finding descriptions and units of Data Types
       this.checklist = [
@@ -168,7 +171,12 @@ export class DataComponent implements OnInit {
         {id:116,value:'WindEquipmentChangeDate',isSelected:false,title:'Wind Equipment Change Date',tooltip:""}
 
       ];
+      if(this.displayList.length > 0) {
+        this.isLoading = false;
+        this.dispHeaders = true;
+      }
       if(this.stationIDArray) {
+        if(this.displayList.length == 0) {
         this.isLoading = true;
         await this.getStationDataTypes();
         if(this.stationDataTypes.length>0) {
@@ -185,11 +193,14 @@ export class DataComponent implements OnInit {
             }
         })
         this.isLoading = false;
-        for(let i=0; i<this.checklist.length; i++) {
-          if(this.stationDataTypes.includes(this.checklist[i]["value"])) {
-            this.displayList.push(this.checklist[i])
+
+          for(let i=0; i<this.checklist.length; i++) {
+            if(this.stationDataTypes.includes(this.checklist[i]["value"])) {
+              this.displayList.push(this.checklist[i])
+            }
           }
         }
+
         this.getCheckedItemList();
         console.log("Available Data Types:");
         console.log(this.displayList);
@@ -209,8 +220,9 @@ export class DataComponent implements OnInit {
   // Check All Checkbox Checked
   isAllSelected() {
     this.masterSelected = this.displayList.every(function(item:any) {
-        return item.isSelected == true;
-      })
+      return item.isSelected == true;
+    })
+    sessionStorage.setItem("displayList", JSON.stringify(this.displayList))
     this.getCheckedItemList();
   }
 
@@ -318,16 +330,21 @@ export class DataComponent implements OnInit {
   }
 
   sendToDisplay(){
-    this.router.navigate(["/display"], {state: { stationIDArray: this.stationIDArray, startDate: this.startDate, endDate: this.endDate, years: this.years, startStr: this.startStr, endStr: this.endStr, dataTypes: this.checkedList}})
-
+    sessionStorage.setItem("masterSelected", JSON.stringify(this.masterSelected))
+    sessionStorage.setItem("displayList", JSON.stringify(this.displayList))
+    sessionStorage.setItem("checkedList", JSON.stringify(this.checkedList))
+    this.router.navigate(["/display"], {state: { stationsJSON: this.stationsJSON}})
   }
 
   goBack(){
+    sessionStorage.removeItem("masterSelected")
+    sessionStorage.removeItem("displayList")
+    sessionStorage.removeItem("checkedList")
     if(!this.getSessionStorageItem("stationID")) {
-      this.router.navigate(["/stations"], {state: {stationsJSON: this.stationsJSON}})
+      this.router.navigate(["/stations"], {state: { stationsJSON: this.stationsJSON}})
     }
     else {
-      this.router.navigate(["/home"])
+      this.router.navigate(["/home"], {state: { stationsJSON: this.stationsJSON}})
     }
   }
 
