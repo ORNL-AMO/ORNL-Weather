@@ -1,3 +1,7 @@
+<div class="right">
+  <button class="button button1" (click)="downloadCSV()">Download as CSV</button>
+  <button class="button button1" value="Download JSON" (click)="exportTojson()">Download as JSON</button>
+</div>
 <div>
     <select class="selectOptions" name="calcOptions" #calcOptions id="calcOptions" (change)="onChangeCalc($event)">
         <option value=" ">Select Calculation</option>
@@ -33,6 +37,15 @@
         </div>
         <table class="table" *ngIf="isLoaded">
 
+                <tr class="totals" style="font-style:italic">
+                  <td id="totals_text">Degree Day Totals</td>
+                  <td id="totals_text">--</td>
+                  <td id="totals_text">--</td>
+                  <td id="totals_text">{{ totalHTDD }}</td>
+                  <td id="totals_text">{{ totalCLDD }}</td>
+                  <td id="totals_text">{{ totalHTDH }}</td>
+                  <td id="totals_text">{{ totalCLDH }}</td>
+                  </tr>
             <!-- Display Headers -->
                <th *ngFor = "let row of degreeHeaders">
                    {{row}}
