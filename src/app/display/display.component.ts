@@ -163,7 +163,7 @@ export class DisplayComponent implements OnInit {
       let stationMObj:any[] = [];
       for(let j=0; j<this.years; j++) {
         await this.fetchCSV(this.yearsObj[j].toString(), Number(this.stationIDArray[i]), i, stationObj, stationHObj, stationDObj, stationMObj);
-        console.log(this.allDataObj)
+        
       }
       this.hourlyObj.push(stationHObj);
       this.dailyObj.push(stationDObj);
@@ -734,7 +734,7 @@ export class DisplayComponent implements OnInit {
     return true;
   }
   goToCalc(){
-    this.router.navigate(["/calculations"], {state: { hourlyData: this.hourlyDataObj}})
+    this.router.navigate(["/calculations"], {state: { hourlyData: this.hourlyDataObj, headers: this.hourlyHeads}})
 
   }
   goBack(){

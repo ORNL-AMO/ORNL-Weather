@@ -31,7 +31,18 @@
                 <div class="pl-name">Compiling your Data...This May Take Several Minutes</div>
             </div>
         </div>
-        
+        <table class="table" *ngIf="isLoaded">
+
+            <!-- Display Headers -->
+               <th *ngFor = "let row of degreeHeaders">
+                   {{row}}
+               </th>
+ 
+               <!-- Display Data -->
+               <tr *ngFor = "let row of displayObj | paginate: config">
+                   <td *ngFor = "let column of row" class="rows">{{ column }}</td>
+               </tr>
+           </table>
     </div>
   </div>
   <div class="controls" >
