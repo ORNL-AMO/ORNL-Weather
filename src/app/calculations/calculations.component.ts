@@ -93,10 +93,10 @@ export class CalculationsComponent implements OnInit {
       //HTDD
       for(let k = 0; k < this.displayObj.length; k++){
         if(k == 0){
-          if(this.displayObj[0][2] < 65.3){
+          if(this.displayObj[0][2] < 65){
             var date2 = new Date(this.displayObj[0][1]);
             let DF = ((date2.getTime() - dateStart.getTime())/60000)/(1440);
-            let temp = 65.3 - this.displayObj[0][2];
+            let temp = 65 - this.displayObj[0][2];
             this.degreeDaysObj[k].HTDD = DF*temp;
             this.displayObj[k][3] = DF*temp;
             this.totalHTDD += DF*temp;
@@ -107,11 +107,11 @@ export class CalculationsComponent implements OnInit {
           }
         }
         else{
-          if(this.displayObj[k][2] < 65.3){
+          if(this.displayObj[k][2] < 65){
             var date1 = new Date(this.displayObj[k-1][1]);
             var date2 = new Date(this.displayObj[k][1]);
             let DF = ((date2.getTime() - date1.getTime())/60000)/(1440);
-            let temp = 65.3 - this.displayObj[k][2];
+            let temp = 65 - this.displayObj[k][2];
             this.degreeDaysObj[k].HTDD = DF*temp;
             this.displayObj[k][3] = DF*temp;
             this.totalHTDD += DF*temp;
@@ -126,10 +126,10 @@ export class CalculationsComponent implements OnInit {
       //CLDD
       for(let k = 0; k < this.displayObj.length; k++){
         if(k == 0){
-          if(this.displayObj[0][2] > 65.3){
+          if(this.displayObj[0][2] > 75){
             var date2 = new Date(this.displayObj[0][1]);
             let DF = ((date2.getTime() - dateStart.getTime())/60000)/(1440);
-            let temp = this.displayObj[0][2] - 65.3;
+            let temp = this.displayObj[0][2] - 75;
             this.degreeDaysObj[k].CLDD = DF*temp;
             this.displayObj[k][4] = DF*temp;
             this.totalCLDD += DF*temp;
@@ -140,11 +140,11 @@ export class CalculationsComponent implements OnInit {
           }
         }
         else{
-          if(this.displayObj[k][2] > 65.3){
+          if(this.displayObj[k][2] > 75){
             var date1 = new Date(this.displayObj[k-1][1]);
             var date2 = new Date(this.displayObj[k][1]);
             let DF = ((date2.getTime() - date1.getTime())/60000)/(1440);
-            let temp = this.displayObj[k][2] - 65.3;
+            let temp = this.displayObj[k][2] - 75;
             this.degreeDaysObj[k].CLDD = DF*temp;
             this.displayObj[k][4] = DF*temp;
             this.totalCLDD += DF*temp;
