@@ -88,27 +88,27 @@ label {
 }
 
 #scrollable-area {
-  margin: auto;
   min-height: 100px;
-  max-height: 300px;
-  width: 80%;
+  max-height: 400px;
+  width: 68%;
   height: auto;
   border: 2px solid #2b376b;
   overflow-y: scroll;
   border-radius: 8px;
   background: white;
+  margin-left: 100px;
 }
 
 #scrollable-area2 {
-  margin: auto;
   min-height: 100px;
-  max-height: 200px;
-  width: 80%;
+  max-height: 400px;
+  width: 25%;
   height: auto;
   border: 2px solid #2b376b;
   overflow-y: scroll;
   border-radius: 8px;
   background: white;
+  margin-right: 100px;
 }
 
 .footer {
@@ -130,6 +130,10 @@ label {
     height: 75px;
     margin-right: 12.5%;
     margin-top: 25px;
+  }
+  .side_by_side{
+    display : flex;
+    flex-direction : row;
   }
 
 .spacer{
@@ -155,6 +159,6 @@ label {
     -moz-appearance: none;
     appearance: none;
     cursor: pointer;
-    background: url("/assets/arrow.png")96% / 6% no-repeat white;
+    background: url("/assets/arrow.png") 96% / 6% no-repeat white;
 
 }
