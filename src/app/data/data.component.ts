@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
 
 
 @Component({
@@ -200,9 +199,11 @@ export class DataComponent implements OnInit {
   // Get List of Checked Items
   getCheckedItemList(){
     this.checkedList = [];
+    this.displayList = [];
     for (var i = 0; i < this.checklist.length; i++) {
       if(this.checklist[i].isSelected)
         this.checkedList.push(this.checklist[i]);
+        this.displayList.push(this.checklist[i]);
     }
     this.checkedList = JSON.stringify(this.checkedList);
     console.log(this.checkedList)
