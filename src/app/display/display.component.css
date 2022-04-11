@@ -138,18 +138,35 @@ tr:hover{
   display: block;
   justify-content: center;
   margin: auto;
-  width: 80%;
+  width: 85%;
   height: 490px;
+  
+  
 }
+
+.ohno{
+  overflow: auto;
+  white-space: nowrap;
+  width: 85%;
+  justify-content: center;
+  position:relative;
+  display: block;
+  margin: auto;
+}
+
+
+
 
 .tabs {
   position: relative;
-  font-size: 20px;
+  font-size: 18.5px;
   display: inline-block;
   align-content: center;
   text-align: left;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
+  
+
 }
 .tabs:nth-child(even){
   background-color: #f2f2f2;
@@ -164,6 +181,7 @@ tr:hover{
   border: 2px solid #2b376b;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
+  display:inline-block;
 }
 
 .button {
@@ -317,6 +335,7 @@ tr:hover{
   min-height: 1px;
   height: auto;
   margin: auto;
+  margin-bottom: 3px;
 }
 
 #backButton {
@@ -324,7 +343,7 @@ tr:hover{
   display: flex;
   justify-content: center;
   float: center;
-  margin-top: -13.5px;
+  margin-top: -12px;
   
   z-index: 2 ;
 }
