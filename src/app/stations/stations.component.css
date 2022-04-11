@@ -155,9 +155,16 @@ tr:hover{
 
 }
 
+#scrollable-area{
+  overflow: overlay;
+}
+
 #scrollable-area::-webkit-scrollbar {
   width: 9px;   /* width of the entire scrollbar */
   height: 9px;
+  background: white;
+  border-radius: 50px;
+  
 }
 #scrollable-area::-webkit-scrollbar-corner{
   background: none;

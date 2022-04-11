@@ -37,7 +37,7 @@ header{
   font-size: 30px;
   font-family: 'Lato', sans-serif;
   z-index: 1;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 
 }
 
@@ -53,7 +53,7 @@ table{
   display: flex;
   justify-content: right;
 
-  margin-right: 10%;
+  margin-right: 7%;
   margin-left: 10%
 }
 .right2 { /* right side align */
@@ -146,12 +146,37 @@ tr:hover{
 
 .ohno{
   overflow: auto;
+  overflow: overlay;
   white-space: nowrap;
   width: 85%;
   justify-content: center;
   position:relative;
   display: block;
   margin: auto;
+}
+
+
+.ohno::-webkit-scrollbar {
+  width: 9px;   /* width of the entire scrollbar */
+  height: 9px;
+  background: white;
+  border-radius: 50px;
+}
+#scrollable-area::-webkit-scrollbar-corner{
+  background: white;
+  border-bottom-right-radius: 20px;
+}
+.ohno::-webkit-scrollbar-track {
+
+  border-radius: 50px;
+  border: double black 1px;
+}
+
+.ohno::-webkit-scrollbar-thumb {
+  background-color: rgb(179, 179, 179);
+  border-radius: 20px;
+  border: 1px solid black;
+
 }
 
 

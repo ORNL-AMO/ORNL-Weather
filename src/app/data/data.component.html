@@ -19,7 +19,7 @@
         </div>
 
           <table *ngIf="!isLoading">
-
+                <tr>
                   <th *ngIf="dispHeaders">
                       <label class="center"><input type="checkbox" [(ngModel)]="masterSelected" name="list_name" value="m1"
                       (change)="checkUncheckAll()"></label>
@@ -27,6 +27,7 @@
                   <th *ngIf="dispHeaders">Type</th>
                   <th *ngIf="dispHeaders">Description</th>
                   <th *ngIf="dispHeaders">Info</th>
+                </tr>
 
 
               <tr *ngFor="let item of displayList">
