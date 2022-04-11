@@ -50,7 +50,7 @@ export class DisplayComponent implements OnInit {
         this.years = state.years;
         this.startStr = state.startStr;
         this.endStr = state.endStr;
-        this.dataTypeObj = state.dataTypes;
+        this.dataTypeObj = state.checkedList;
       }
       else {
         this.startDate = [];
