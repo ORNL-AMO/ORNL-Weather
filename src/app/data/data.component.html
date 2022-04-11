@@ -62,9 +62,7 @@
                     Selected Data Types
                 </th>
                 <tr *ngFor="let item of checkedList">
-                    <div *ngIf= "item.isSelected">
-                        <td class="rows"><label for="{{item.id}}">{{item.value}}</label></td>
-                    </div>
+                        <td class="rows"><label>{{item}}</label></td>
                 </tr>
     
             </table>

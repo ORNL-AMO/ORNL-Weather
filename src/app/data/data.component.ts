@@ -27,6 +27,7 @@ export class DataComponent implements OnInit {
   isLoading: boolean = true;
   dispHeaders: boolean = false;
   stationsJSON: any = null;
+  masterCheckedList: any[] = [];
 
   //page variables
   sendingArray: any[] = [];
@@ -200,7 +201,6 @@ export class DataComponent implements OnInit {
             }
           }
         }
-
         this.getCheckedItemList();
         console.log("Available Data Types:");
         console.log(this.displayList);
@@ -225,14 +225,33 @@ export class DataComponent implements OnInit {
     sessionStorage.setItem("displayList", JSON.stringify(this.displayList))
     this.getCheckedItemList();
   }
-
+  getMasterList(){
+    for (var i = 0; i < this.displayList.length; i++) {
+      if(this.displayList[i].isSelected)
+        this.masterCheckedList.push(this.displayList[i].value);
+    }
+    console.log(this.masterCheckedList)
+  }
   // Get List of Checked Items
   getCheckedItemList(){
+    this.getMasterList()
     this.checkedList = [];
     for (var i = 0; i < this.displayList.length; i++) {
       if(this.displayList[i].isSelected)
         this.checkedList.push(this.displayList[i].value);
     }
+    let temp: any[] = []
+    for (var i = 0; i < this.masterCheckedList.length; i++) {
+      if(this.masterCheckedList[i].isSelected)
+        temp.push(this.masterCheckedList[i].value);
+    }
+    for (var i = 0; i < this.checkedList.length; i++) {
+      if(this.checkedList[i].isSelected && !temp.includes(this.checkedList[i].value) )
+        temp.push(this.checkedList[i].value);
+    }
+    this.masterCheckedList = temp;
+    console.log(this.checkedList)
+    console.log(this.masterCheckedList)
   }
 
   async getStationDataTypes(){
