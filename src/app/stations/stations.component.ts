@@ -86,8 +86,6 @@ export class StationsComponent implements OnInit {
       let tmp = sessionStorage.getItem("selectedArrayStations");
       if(tmp) {
         this.selectedArray = JSON.parse(tmp)
-        console.log("TEST2");
-        console.log(this.selectedArray);
         for(let i of this.selectedArray) {
           this.checkUncheckDuplicates(i.ID.toString(), true)
         }
@@ -98,16 +96,11 @@ export class StationsComponent implements OnInit {
 
   ngAfterViewInit() {
     this.stationsTable.changes.subscribe(t => {
-      console.log("TEST");
-      console.log(this.stationsTable);
-
       // Load previous input data if exists
       try {
         let tmp = sessionStorage.getItem("selectedArrayStations");
         if(tmp) {
           this.selectedArray = JSON.parse(tmp)
-          console.log("TEST2");
-          console.log(this.selectedArray);
           for(let i of this.selectedArray) {
             this.checkUncheckDuplicates(i.ID.toString(), true)
           }

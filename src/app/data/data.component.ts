@@ -26,6 +26,7 @@ export class DataComponent implements OnInit {
   displayList:any[] = [];
   sendingDataList:string[] = []
   stationDataTypes:string[] = []
+  stationDataObjs:any[] = []
   isLoading: boolean = true;
   dispHeaders: boolean = false;
   stationsJSON: any = null;
@@ -46,153 +47,143 @@ export class DataComponent implements OnInit {
       if(this.getSessionStorageItem("startDate")) {this.startDate = JSON.parse(this.getSessionStorageItem("startDate") as string)}
       if(this.getSessionStorageItem("endDate")) {this.endDate = JSON.parse(this.getSessionStorageItem("endDate") as string)}
       if(this.getSessionStorageItem("sendingArrayStations")) {this.stationIDArray = JSON.parse(this.getSessionStorageItem("sendingArrayStations") as string)}
-      // FIXME: make new dataList variable rather than displaylist
-      if(this.getSessionStorageItem("displayList")) {this.displayList = JSON.parse(this.getSessionStorageItem("displayList") as string)}
+      if(this.getSessionStorageItem("stationDataObjs")) {this.stationDataObjs = JSON.parse(this.getSessionStorageItem("stationDataObjs") as string)}
       if(this.getSessionStorageItem("masterCheckedList")) {this.masterCheckedList = JSON.parse(this.getSessionStorageItem("masterCheckedList") as string)}
       if(this.getSessionStorageItem("masterSelected")) {this.masterSelected = JSON.parse(this.getSessionStorageItem("masterSelected") as string)}
       else {this.masterSelected.fill(false, 0, 5)}
       if(this.getSessionStorageItem("numYears")) {this.years = +<any>this.getSessionStorageItem("numYears")}
       if(this.getSessionStorageItem("startStr")) {this.startStr = this.getSessionStorageItem("startStr") as string}
       if(this.getSessionStorageItem("endStr")) {this.endStr = this.getSessionStorageItem("endStr") as string}
-      if(sessionStorage.getItem("DataTypeValue")) {
-        let a:any = document.getElementById("typeValue") as HTMLInputElement
-        a.value = sessionStorage.getItem("DataTypeValue");
-      }
-      if(this.getSessionStorageItem("checkList")) {this.checklist = JSON.parse(this.getSessionStorageItem("checkList") as string)}
-      else {
-        // https://docs.opendata.aws/noaa-ghcn-pds/readme.html
-        // Helpful for finding descriptions and units of Data Types
-        this.checklist = [
-          {id:1,value:'HourlyAltimeterSetting',isSelected:false,title:'Hourly Altimeter Setting',tooltip:"", type: 'hourly'},
-          {id:2,value:'HourlyDewPointTemperature',isSelected:true,title:'Hourly Dew Point Temperature',tooltip:"", type: 'hourly'},
-          {id:3,value:'HourlyDryBulbTemperature',isSelected:true,title:'Hourly Dry Bulb Temperature',tooltip:"", type: 'hourly'},
-          {id:4,value:'HourlyPrecipitation',isSelected:false,title:'Hourly Precipitation',tooltip:"", type: 'hourly'},
-          {id:5,value:'HourlyPresentWeatherType',isSelected:false,title:'Hourly Present Weather Type',tooltip:"", type: 'hourly'},
-          {id:6,value:'HourlyPressureChange',isSelected:false,title:'Hourly Pressure Change',tooltip:"", type: 'hourly'},
-          {id:7,value:'HourlyPressureTendency',isSelected:false,title:'Hourly Pressure Tendency',tooltip:"", type: 'hourly'},
-          {id:8,value:'HourlyRelativeHumidity',isSelected:true,title:'Hourly Relative Humidity',tooltip:"", type: 'hourly'},
-          {id:9,value:'HourlySkyConditions',isSelected:false,title:'Hourly Sky Conditions',tooltip:"", type: 'hourly'},
-          {id:10,value:'HourlySeaLevelPressure',isSelected:false,title:'Hourly Sea Level Pressure',tooltip:"", type: 'hourly'},
-          {id:11,value:'HourlyStationPressure',isSelected:false,title:'Hourly Station Pressure',tooltip:"", type: 'hourly'},
-          {id:12,value:'HourlyVisibility',isSelected:false,title:'Hourly Visibility',tooltip:"", type: 'hourly'},
-          {id:13,value:'HourlyWetBulbTemperature',isSelected:true,title:'Hourly Wet Bulb Temperature',tooltip:"", type: 'hourly'},
-          {id:14,value:'HourlyWindDirection',isSelected:false,title:'Hourly Wind Direction',tooltip:"", type: 'hourly'},
-          {id:15,value:'HourlyWindGustSpeed',isSelected:false,title:'Hourly WindGust Speed',tooltip:"", type: 'hourly'},
-          {id:16,value:'HourlyWindSpeed',isSelected:true,title:'Hourly Wind Speed',tooltip:"", type: 'hourly'},
-          {id:17,value:'Sunrise',isSelected:false,title:'Sunrise',tooltip:"", type: 'daily'},
-          {id:18,value:'Sunset',isSelected:false,title:'Sunset',tooltip:"", type: 'daily'},
-          {id:19,value:'DailyAverageDewPointTemperature',isSelected:true,title:'Daily Average Dew Point Temperature',tooltip:"", type: 'daily'},
-          {id:20,value:'DailyAverageDryBulbTemperature',isSelected:true,title:'Daily Average Dry Bulb Temperature',tooltip:"", type: 'daily'},
-          {id:21,value:'DailyAverageRelativeHumidity',isSelected:true,title:'Daily Average Relative Humidity',tooltip:"", type: 'daily'},
-          {id:22,value:'DailyAverageSeaLevelPressure',isSelected:false,title:'Daily Average Sea Level Pressure',tooltip:"", type: 'daily'},
-          {id:23,value:'DailyAverageStationPressure',isSelected:false,title:'Daily Average Station Pressure',tooltip:"", type: 'daily'},
-          {id:24,value:'DailyAverageWetBulbTemperature',isSelected:true,title:'Daily Average Wet Bulb Temperature',tooltip:"", type: 'daily'},
-          {id:25,value:'DailyAverageWindSpeed',isSelected:false,title:'Daily Average Wind Speed',tooltip:"", type: 'daily'},
-          {id:26,value:'DailyCoolingDegreeDays',isSelected:false,title:'Daily Cooling Degree Days',tooltip:"", type: 'daily'},
-          {id:27,value:'DailyDepartureFromNormalAverageTemperature',isSelected:false,title:'Daily Departure From Normal Average Temperature',tooltip:"", type: 'daily'},
-          {id:28,value:'DailyHeatingDegreeDays',isSelected:false,title:'Daily Heating Degree Days',tooltip:"", type: 'daily'},
-          {id:29,value:'DailyMaximumDryBulbTemperature',isSelected:false,title:'Daily Maximum Dry Bulb Temperature',tooltip:"", type: 'daily'},
-          {id:30,value:'DailyMinimumDryBulbTemperature',isSelected:false,title:'Daily Minimum Dry Bulb Temperature',tooltip:"", type: 'daily'},
-          {id:31,value:'DailyPeakWindDirection',isSelected:false,title:'Daily Peak Wind Direction',tooltip:"", type: 'daily'},
-          {id:32,value:'DailyPeakWindSpeed',isSelected:false,title:'Daily Peak Wind Speed',tooltip:"", type: 'daily'},
-          {id:33,value:'DailyPrecipitation',isSelected:false,title:'Daily Precipitation',tooltip:"", type: 'daily'},
-          {id:34,value:'DailySnowDepth',isSelected:false,title:'Daily Snow Depth',tooltip:"", type: 'daily'},
-          {id:35,value:'DailySnowfall',isSelected:false,title:'Daily Snowfall',tooltip:"", type: 'daily'},
-          {id:36,value:'DailySustainedWindDirection',isSelected:false,title:'Daily Sustained Wind Direction',tooltip:"", type: 'daily'},
-          {id:37,value:'DailySustainedWindSpeed',isSelected:false,title:'Daily Sustained WindSpeed',tooltip:"", type: 'daily'},
-          {id:38,value:'DailyWeather',isSelected:false,title:'Daily Weather',tooltip:"", type: 'daily'},
-          {id:39,value:'MonthlyAverageRH',isSelected:false,title:'Monthly Average Relative Humidity',tooltip:"", type: 'monthly'},
-          {id:40,value:'MonthlyDaysWithGT001Precip',isSelected:false,title:'Monthly Days With >0.001" Precipitation',tooltip:"", type: 'monthly'},
-          {id:41,value:'MonthlyDaysWithGT010Precip',isSelected:false,title:'Monthly Days With >0.010" Precipitation',tooltip:"", type: 'monthly'},
-          {id:42,value:'MonthlyDaysWithGT32Temp',isSelected:false,title:'Monthly Days With >32°F Temp',tooltip:"", type: 'monthly'},
-          {id:43,value:'MonthlyDaysWithGT90Temp',isSelected:false,title:'Monthly Days With >90°F Temp',tooltip:"", type: 'monthly'},
-          {id:44,value:'MonthlyDaysWithLT0Temp',isSelected:false,title:'Monthly Days With <0°F Temp',tooltip:"", type: 'monthly'},
-          {id:45,value:'MonthlyDaysWithLT32Temp',isSelected:false,title:'Monthly Days With <32°F Temp',tooltip:"", type: 'monthly'},
-          {id:46,value:'MonthlyDepartureFromNormalAverageTemperature',isSelected:false,title:'Monthly Departure From Normal Average Temperature',tooltip:"", type: 'monthly'},
-          {id:47,value:'MonthlyDepartureFromNormalCoolingDegreeDays',isSelected:false,title:'Monthly Departure From Normal Cooling Degree Days',tooltip:"", type: 'monthly'},
-          {id:48,value:'MonthlyDepartureFromNormalHeatingDegreeDays',isSelected:false,title:'Monthly Departure From Normal Heating Degree Days',tooltip:"", type: 'monthly'},
-          {id:49,value:'MonthlyDepartureFromNormalMaximumTemperature',isSelected:false,title:'Monthly Departure From Normal Maximum Temperature',tooltip:"", type: 'monthly'},
-          {id:50,value:'MonthlyDepartureFromNormalMinimumTemperature',isSelected:false,title:'Monthly Departure From Normal Minimum Temperature',tooltip:"", type: 'monthly'},
-          {id:51,value:'MonthlyDepartureFromNormalPrecipitation',isSelected:false,title:'Monthly Departure From Normal Precipitation',tooltip:"", type: 'monthly'},
-          {id:52,value:'MonthlyDewpointTemperature',isSelected:false,title:'Monthly Average Dew Point Temperature',tooltip:"", type: 'monthly'},
-          {id:53,value:'MonthlyGreatestPrecip',isSelected:false,title:'Monthly Greatest Precipitation',tooltip:"", type: 'monthly'},
-          {id:54,value:'MonthlyGreatestPrecipDate',isSelected:false,title:'Monthly Greatest Precipitation Date',tooltip:"", type: 'monthly'},
-          {id:55,value:'MonthlyGreatestSnowDepth',isSelected:false,title:'Monthly Greatest Snow Depth',tooltip:"", type: 'monthly'},
-          {id:56,value:'MonthlyGreatestSnowDepthDate',isSelected:false,title:'Monthly Greatest Snow Depth Date',tooltip:"", type: 'monthly'},
-          {id:57,value:'MonthlyGreatestSnowfall',isSelected:false,title:'Monthly Greatest Snowfall',tooltip:"", type: 'monthly'},
-          {id:58,value:'MonthlyGreatestSnowfallDate',isSelected:false,title:'Monthly Greatest Snowfall Date',tooltip:"", type: 'monthly'},
-          {id:59,value:'MonthlyMaxSeaLevelPressureValue',isSelected:false,title:'Monthly Max Sea Level Pressure Value',tooltip:"", type: 'monthly'},
-          {id:60,value:'MonthlyMaxSeaLevelPressureValueDate',isSelected:false,title:'Monthly Max Sea Level Pressure Value Date',tooltip:"", type: 'monthly'},
-          {id:61,value:'MonthlyMaxSeaLevelPressureValueTime',isSelected:false,title:'Monthly Max Sea Level Pressure Value Time',tooltip:"", type: 'monthly'},
-          {id:62,value:'MonthlyMaximumTemperature',isSelected:true,title:'Monthly Maximum Temperature',tooltip:"", type: 'monthly'},
-          {id:63,value:'MonthlyMeanTemperature',isSelected:true,title:'Monthly Mean Temperature',tooltip:"", type: 'monthly'},
-          {id:64,value:'MonthlyMinSeaLevelPressureValue',isSelected:false,title:'Monthly Minimum Sea Level Pressure Value',tooltip:"", type: 'monthly'},
-          {id:65,value:'MonthlyMinSeaLevelPressureValueDate',isSelected:false,title:'Monthly Minimum Sea Level Pressure Value Date',tooltip:"", type: 'monthly'},
-          {id:66,value:'MonthlyMinSeaLevelPressureValueTime',isSelected:false,title:'Monthly Minimum Sea Level Pressure Value Time',tooltip:"", type: 'monthly'},
-          {id:67,value:'MonthlyMinimumTemperature',isSelected:true,title:'Monthly Minimum Temperature',tooltip:"", type: 'monthly'},
-          {id:68,value:'MonthlySeaLevelPressure',isSelected:false,title:'Monthly Sea Level Pressure',tooltip:"", type: 'monthly'},
-          {id:69,value:'MonthlyStationPressure',isSelected:false,title:'Monthly Station Pressure',tooltip:"", type: 'monthly'},
-          {id:70,value:'MonthlyTotalLiquidPrecipitation',isSelected:false,title:'Monthly Total Liquid Precipitation',tooltip:"", type: 'monthly'},
-          {id:71,value:'MonthlyTotalSnowfall',isSelected:false,title:'Monthly Total Snowfall',tooltip:"", type: 'monthly'},
-          {id:72,value:'MonthlyWetBulb',isSelected:false,title:'Monthly Average Wet Bulb Temperature',tooltip:"", type: 'monthly'},
-          {id:73,value:'AWND',isSelected:false,title:'AWND - Average Daily Wind Speed',tooltip:"", type: 'monthly'},
-          {id:74,value:'CDSD',isSelected:false,title:'CDSD - Cloud Droplet Size Distribution',tooltip:"", type: 'monthly'},
-          {id:75,value:'CLDD',isSelected:true,title:'CLDD - Cooling Degree Days',tooltip:"", type: 'monthly'},
-          {id:76,value:'DSNW',isSelected:false,title:'DSNW - Days With Snow Depth >1"',tooltip:"", type: 'monthly'},
-          {id:77,value:'HDSD',isSelected:false,title:'HDSD - Heating Degree Days (Season to Date)',tooltip:"", type: 'monthly'},
-          {id:78,value:'HTDD',isSelected:true,title:'HDD - Heating Degree Days',tooltip:"", type: 'monthly'},
-          {id:79,value:'NormalsCoolingDegreeDay',isSelected:false,title:'Normals Cooling Degree Day',tooltip:"", type: 'misc'},
-          {id:80,value:'NormalsHeatingDegreeDay',isSelected:false,title:'Normals Heating Degree Day',tooltip:"", type: 'misc'},
-          {id:81,value:'ShortDurationEndDate005',isSelected:false,title:'Short Duration End Date 005',tooltip:"", type: 'misc'},
-          {id:82,value:'ShortDurationEndDate010',isSelected:false,title:'Short Duration End Date 010',tooltip:"", type: 'misc'},
-          {id:83,value:'ShortDurationEndDate015',isSelected:false,title:'Short Duration End Date 015',tooltip:"", type: 'misc'},
-          {id:84,value:'ShortDurationEndDate020',isSelected:false,title:'Short Duration End Date 020',tooltip:"", type: 'misc'},
-          {id:85,value:'ShortDurationEndDate030',isSelected:false,title:'Short Duration End Date 030',tooltip:"", type: 'misc'},
-          {id:86,value:'ShortDurationEndDate045',isSelected:false,title:'Short Duration End Date 045',tooltip:"", type: 'misc'},
-          {id:87,value:'ShortDurationEndDate060',isSelected:false,title:'Short Duration End Date 060',tooltip:"", type: 'misc'},
-          {id:88,value:'ShortDurationEndDate080',isSelected:false,title:'Short Duration End Date 080',tooltip:"", type: 'misc'},
-          {id:89,value:'ShortDurationEndDate100',isSelected:false,title:'Short Duration End Date 100',tooltip:"", type: 'misc'},
-          {id:90,value:'ShortDurationEndDate120',isSelected:false,title:'Short Duration End Date 120',tooltip:"", type: 'misc'},
-          {id:91,value:'ShortDurationEndDate150',isSelected:false,title:'Short Duration End Date 150',tooltip:"", type: 'misc'},
-          {id:93,value:'ShortDurationEndDate180',isSelected:false,title:'Short Duration End Date 180',tooltip:"", type: 'misc'},
-          {id:94,value:'ShortDurationPrecipitationValue005',isSelected:false,title:'Short Duration Precipitation Value 005',tooltip:"", type: 'misc'},
-          {id:95,value:'ShortDurationPrecipitationValue010',isSelected:false,title:'Short Duration Precipitation Value 010',tooltip:"", type: 'misc'},
-          {id:96,value:'ShortDurationPrecipitationValue015',isSelected:false,title:'Short Duration Precipitation Value 015',tooltip:"", type: 'misc'},
-          {id:97,value:'ShortDurationPrecipitationValue020',isSelected:false,title:'Short Duration Precipitation Value 020',tooltip:"", type: 'misc'},
-          {id:98,value:'ShortDurationPrecipitationValue030',isSelected:false,title:'Short Duration Precipitation Value 030',tooltip:"", type: 'misc'},
-          {id:99,value:'ShortDurationPrecipitationValue045',isSelected:false,title:'Short Duration Precipitation Value 045',tooltip:"", type: 'misc'},
-          {id:100,value:'ShortDurationPrecipitationValue060',isSelected:false,title:'Short Duration Precipitation Value 060',tooltip:"", type: 'misc'},
-          {id:101,value:'ShortDurationPrecipitationValue080',isSelected:false,title:'Short Duration Precipitation Value 080',tooltip:"", type: 'misc'},
-          {id:102,value:'ShortDurationPrecipitationValue100',isSelected:false,title:'Short Duration Precipitation Value 100',tooltip:"", type: 'misc'},
-          {id:103,value:'ShortDurationPrecipitationValue120',isSelected:false,title:'Short Duration Precipitation Value 120',tooltip:"", type: 'misc'},
-          {id:104,value:'ShortDurationPrecipitationValue150',isSelected:false,title:'Short Duration Precipitation Value 150',tooltip:"", type: 'misc'},
-          {id:105,value:'ShortDurationPrecipitationValue180',isSelected:false,title:'Short Duration Precipitation Value 180',tooltip:"", type: 'misc'},
-          {id:106,value:'REM',isSelected:false,title:'REM - Remarks',tooltip:"", type: 'misc'},
-          {id:107,value:'BackupDirection',isSelected:false,title:'Backup Direction',tooltip:"", type: 'misc'},
-          {id:108,value:'BackupDistance',isSelected:false,title:'Backup Distance',tooltip:"", type: 'misc'},
-          {id:109,value:'BackupDistanceUnit',isSelected:false,title:'Backup Distance Unit',tooltip:"", type: 'misc'},
-          {id:110,value:'BackupElements',isSelected:false,title:'Backup Elements',tooltip:"", type: 'misc'},
-          {id:111,value:'BackupElevation',isSelected:false,title:'Backup Elevation',tooltip:"", type: 'misc'},
-          {id:112,value:'BackupEquipment',isSelected:false,title:'Backup Equipment',tooltip:"", type: 'misc'},
-          {id:113,value:'BackupLatitude',isSelected:false,title:'Backup Latitude',tooltip:"", type: 'misc'},
-          {id:114,value:'BackupLongitude',isSelected:false,title:'Backup Longitude',tooltip:"", type: 'misc'},
-          {id:115,value:'BackupName',isSelected:false,title:'Backup Name',tooltip:"", type: 'misc'},
-          {id:116,value:'WindEquipmentChangeDate',isSelected:false,title:'Wind Equipment Change Date',tooltip:"", type: 'misc'}
 
-        ];
-      }
 
-      if(this.displayList.length > 0) {
+      // https://docs.opendata.aws/noaa-ghcn-pds/readme.html
+      // Helpful for finding descriptions and units of Data Types
+      this.checklist = [
+        {id:1,value:'HourlyAltimeterSetting',isSelected:false,title:'Hourly Altimeter Setting',tooltip:"", type: 'hourly'},
+        {id:2,value:'HourlyDewPointTemperature',isSelected:true,title:'Hourly Dew Point Temperature',tooltip:"", type: 'hourly'},
+        {id:3,value:'HourlyDryBulbTemperature',isSelected:true,title:'Hourly Dry Bulb Temperature',tooltip:"", type: 'hourly'},
+        {id:4,value:'HourlyPrecipitation',isSelected:false,title:'Hourly Precipitation',tooltip:"", type: 'hourly'},
+        {id:5,value:'HourlyPresentWeatherType',isSelected:false,title:'Hourly Present Weather Type',tooltip:"", type: 'hourly'},
+        {id:6,value:'HourlyPressureChange',isSelected:false,title:'Hourly Pressure Change',tooltip:"", type: 'hourly'},
+        {id:7,value:'HourlyPressureTendency',isSelected:false,title:'Hourly Pressure Tendency',tooltip:"", type: 'hourly'},
+        {id:8,value:'HourlyRelativeHumidity',isSelected:true,title:'Hourly Relative Humidity',tooltip:"", type: 'hourly'},
+        {id:9,value:'HourlySkyConditions',isSelected:false,title:'Hourly Sky Conditions',tooltip:"", type: 'hourly'},
+        {id:10,value:'HourlySeaLevelPressure',isSelected:false,title:'Hourly Sea Level Pressure',tooltip:"", type: 'hourly'},
+        {id:11,value:'HourlyStationPressure',isSelected:false,title:'Hourly Station Pressure',tooltip:"", type: 'hourly'},
+        {id:12,value:'HourlyVisibility',isSelected:false,title:'Hourly Visibility',tooltip:"", type: 'hourly'},
+        {id:13,value:'HourlyWetBulbTemperature',isSelected:true,title:'Hourly Wet Bulb Temperature',tooltip:"", type: 'hourly'},
+        {id:14,value:'HourlyWindDirection',isSelected:false,title:'Hourly Wind Direction',tooltip:"", type: 'hourly'},
+        {id:15,value:'HourlyWindGustSpeed',isSelected:false,title:'Hourly WindGust Speed',tooltip:"", type: 'hourly'},
+        {id:16,value:'HourlyWindSpeed',isSelected:true,title:'Hourly Wind Speed',tooltip:"", type: 'hourly'},
+        {id:17,value:'Sunrise',isSelected:false,title:'Sunrise',tooltip:"", type: 'daily'},
+        {id:18,value:'Sunset',isSelected:false,title:'Sunset',tooltip:"", type: 'daily'},
+        {id:19,value:'DailyAverageDewPointTemperature',isSelected:true,title:'Daily Average Dew Point Temperature',tooltip:"", type: 'daily'},
+        {id:20,value:'DailyAverageDryBulbTemperature',isSelected:true,title:'Daily Average Dry Bulb Temperature',tooltip:"", type: 'daily'},
+        {id:21,value:'DailyAverageRelativeHumidity',isSelected:true,title:'Daily Average Relative Humidity',tooltip:"", type: 'daily'},
+        {id:22,value:'DailyAverageSeaLevelPressure',isSelected:false,title:'Daily Average Sea Level Pressure',tooltip:"", type: 'daily'},
+        {id:23,value:'DailyAverageStationPressure',isSelected:false,title:'Daily Average Station Pressure',tooltip:"", type: 'daily'},
+        {id:24,value:'DailyAverageWetBulbTemperature',isSelected:true,title:'Daily Average Wet Bulb Temperature',tooltip:"", type: 'daily'},
+        {id:25,value:'DailyAverageWindSpeed',isSelected:false,title:'Daily Average Wind Speed',tooltip:"", type: 'daily'},
+        {id:26,value:'DailyCoolingDegreeDays',isSelected:false,title:'Daily Cooling Degree Days',tooltip:"", type: 'daily'},
+        {id:27,value:'DailyDepartureFromNormalAverageTemperature',isSelected:false,title:'Daily Departure From Normal Average Temperature',tooltip:"", type: 'daily'},
+        {id:28,value:'DailyHeatingDegreeDays',isSelected:false,title:'Daily Heating Degree Days',tooltip:"", type: 'daily'},
+        {id:29,value:'DailyMaximumDryBulbTemperature',isSelected:false,title:'Daily Maximum Dry Bulb Temperature',tooltip:"", type: 'daily'},
+        {id:30,value:'DailyMinimumDryBulbTemperature',isSelected:false,title:'Daily Minimum Dry Bulb Temperature',tooltip:"", type: 'daily'},
+        {id:31,value:'DailyPeakWindDirection',isSelected:false,title:'Daily Peak Wind Direction',tooltip:"", type: 'daily'},
+        {id:32,value:'DailyPeakWindSpeed',isSelected:false,title:'Daily Peak Wind Speed',tooltip:"", type: 'daily'},
+        {id:33,value:'DailyPrecipitation',isSelected:false,title:'Daily Precipitation',tooltip:"", type: 'daily'},
+        {id:34,value:'DailySnowDepth',isSelected:false,title:'Daily Snow Depth',tooltip:"", type: 'daily'},
+        {id:35,value:'DailySnowfall',isSelected:false,title:'Daily Snowfall',tooltip:"", type: 'daily'},
+        {id:36,value:'DailySustainedWindDirection',isSelected:false,title:'Daily Sustained Wind Direction',tooltip:"", type: 'daily'},
+        {id:37,value:'DailySustainedWindSpeed',isSelected:false,title:'Daily Sustained WindSpeed',tooltip:"", type: 'daily'},
+        {id:38,value:'DailyWeather',isSelected:false,title:'Daily Weather',tooltip:"", type: 'daily'},
+        {id:39,value:'MonthlyAverageRH',isSelected:false,title:'Monthly Average Relative Humidity',tooltip:"", type: 'monthly'},
+        {id:40,value:'MonthlyDaysWithGT001Precip',isSelected:false,title:'Monthly Days With >0.001" Precipitation',tooltip:"", type: 'monthly'},
+        {id:41,value:'MonthlyDaysWithGT010Precip',isSelected:false,title:'Monthly Days With >0.010" Precipitation',tooltip:"", type: 'monthly'},
+        {id:42,value:'MonthlyDaysWithGT32Temp',isSelected:false,title:'Monthly Days With >32°F Temp',tooltip:"", type: 'monthly'},
+        {id:43,value:'MonthlyDaysWithGT90Temp',isSelected:false,title:'Monthly Days With >90°F Temp',tooltip:"", type: 'monthly'},
+        {id:44,value:'MonthlyDaysWithLT0Temp',isSelected:false,title:'Monthly Days With <0°F Temp',tooltip:"", type: 'monthly'},
+        {id:45,value:'MonthlyDaysWithLT32Temp',isSelected:false,title:'Monthly Days With <32°F Temp',tooltip:"", type: 'monthly'},
+        {id:46,value:'MonthlyDepartureFromNormalAverageTemperature',isSelected:false,title:'Monthly Departure From Normal Average Temperature',tooltip:"", type: 'monthly'},
+        {id:47,value:'MonthlyDepartureFromNormalCoolingDegreeDays',isSelected:false,title:'Monthly Departure From Normal Cooling Degree Days',tooltip:"", type: 'monthly'},
+        {id:48,value:'MonthlyDepartureFromNormalHeatingDegreeDays',isSelected:false,title:'Monthly Departure From Normal Heating Degree Days',tooltip:"", type: 'monthly'},
+        {id:49,value:'MonthlyDepartureFromNormalMaximumTemperature',isSelected:false,title:'Monthly Departure From Normal Maximum Temperature',tooltip:"", type: 'monthly'},
+        {id:50,value:'MonthlyDepartureFromNormalMinimumTemperature',isSelected:false,title:'Monthly Departure From Normal Minimum Temperature',tooltip:"", type: 'monthly'},
+        {id:51,value:'MonthlyDepartureFromNormalPrecipitation',isSelected:false,title:'Monthly Departure From Normal Precipitation',tooltip:"", type: 'monthly'},
+        {id:52,value:'MonthlyDewpointTemperature',isSelected:false,title:'Monthly Average Dew Point Temperature',tooltip:"", type: 'monthly'},
+        {id:53,value:'MonthlyGreatestPrecip',isSelected:false,title:'Monthly Greatest Precipitation',tooltip:"", type: 'monthly'},
+        {id:54,value:'MonthlyGreatestPrecipDate',isSelected:false,title:'Monthly Greatest Precipitation Date',tooltip:"", type: 'monthly'},
+        {id:55,value:'MonthlyGreatestSnowDepth',isSelected:false,title:'Monthly Greatest Snow Depth',tooltip:"", type: 'monthly'},
+        {id:56,value:'MonthlyGreatestSnowDepthDate',isSelected:false,title:'Monthly Greatest Snow Depth Date',tooltip:"", type: 'monthly'},
+        {id:57,value:'MonthlyGreatestSnowfall',isSelected:false,title:'Monthly Greatest Snowfall',tooltip:"", type: 'monthly'},
+        {id:58,value:'MonthlyGreatestSnowfallDate',isSelected:false,title:'Monthly Greatest Snowfall Date',tooltip:"", type: 'monthly'},
+        {id:59,value:'MonthlyMaxSeaLevelPressureValue',isSelected:false,title:'Monthly Max Sea Level Pressure Value',tooltip:"", type: 'monthly'},
+        {id:60,value:'MonthlyMaxSeaLevelPressureValueDate',isSelected:false,title:'Monthly Max Sea Level Pressure Value Date',tooltip:"", type: 'monthly'},
+        {id:61,value:'MonthlyMaxSeaLevelPressureValueTime',isSelected:false,title:'Monthly Max Sea Level Pressure Value Time',tooltip:"", type: 'monthly'},
+        {id:62,value:'MonthlyMaximumTemperature',isSelected:true,title:'Monthly Maximum Temperature',tooltip:"", type: 'monthly'},
+        {id:63,value:'MonthlyMeanTemperature',isSelected:true,title:'Monthly Mean Temperature',tooltip:"", type: 'monthly'},
+        {id:64,value:'MonthlyMinSeaLevelPressureValue',isSelected:false,title:'Monthly Minimum Sea Level Pressure Value',tooltip:"", type: 'monthly'},
+        {id:65,value:'MonthlyMinSeaLevelPressureValueDate',isSelected:false,title:'Monthly Minimum Sea Level Pressure Value Date',tooltip:"", type: 'monthly'},
+        {id:66,value:'MonthlyMinSeaLevelPressureValueTime',isSelected:false,title:'Monthly Minimum Sea Level Pressure Value Time',tooltip:"", type: 'monthly'},
+        {id:67,value:'MonthlyMinimumTemperature',isSelected:true,title:'Monthly Minimum Temperature',tooltip:"", type: 'monthly'},
+        {id:68,value:'MonthlySeaLevelPressure',isSelected:false,title:'Monthly Sea Level Pressure',tooltip:"", type: 'monthly'},
+        {id:69,value:'MonthlyStationPressure',isSelected:false,title:'Monthly Station Pressure',tooltip:"", type: 'monthly'},
+        {id:70,value:'MonthlyTotalLiquidPrecipitation',isSelected:false,title:'Monthly Total Liquid Precipitation',tooltip:"", type: 'monthly'},
+        {id:71,value:'MonthlyTotalSnowfall',isSelected:false,title:'Monthly Total Snowfall',tooltip:"", type: 'monthly'},
+        {id:72,value:'MonthlyWetBulb',isSelected:false,title:'Monthly Average Wet Bulb Temperature',tooltip:"", type: 'monthly'},
+        {id:73,value:'AWND',isSelected:false,title:'AWND - Average Daily Wind Speed',tooltip:"", type: 'monthly'},
+        {id:74,value:'CDSD',isSelected:false,title:'CDSD - Cloud Droplet Size Distribution',tooltip:"", type: 'monthly'},
+        {id:75,value:'CLDD',isSelected:true,title:'CLDD - Cooling Degree Days',tooltip:"", type: 'monthly'},
+        {id:76,value:'DSNW',isSelected:false,title:'DSNW - Days With Snow Depth >1"',tooltip:"", type: 'monthly'},
+        {id:77,value:'HDSD',isSelected:false,title:'HDSD - Heating Degree Days (Season to Date)',tooltip:"", type: 'monthly'},
+        {id:78,value:'HTDD',isSelected:true,title:'HDD - Heating Degree Days',tooltip:"", type: 'monthly'},
+        {id:79,value:'NormalsCoolingDegreeDay',isSelected:false,title:'Normals Cooling Degree Day',tooltip:"", type: 'misc'},
+        {id:80,value:'NormalsHeatingDegreeDay',isSelected:false,title:'Normals Heating Degree Day',tooltip:"", type: 'misc'},
+        {id:81,value:'ShortDurationEndDate005',isSelected:false,title:'Short Duration End Date 005',tooltip:"", type: 'misc'},
+        {id:82,value:'ShortDurationEndDate010',isSelected:false,title:'Short Duration End Date 010',tooltip:"", type: 'misc'},
+        {id:83,value:'ShortDurationEndDate015',isSelected:false,title:'Short Duration End Date 015',tooltip:"", type: 'misc'},
+        {id:84,value:'ShortDurationEndDate020',isSelected:false,title:'Short Duration End Date 020',tooltip:"", type: 'misc'},
+        {id:85,value:'ShortDurationEndDate030',isSelected:false,title:'Short Duration End Date 030',tooltip:"", type: 'misc'},
+        {id:86,value:'ShortDurationEndDate045',isSelected:false,title:'Short Duration End Date 045',tooltip:"", type: 'misc'},
+        {id:87,value:'ShortDurationEndDate060',isSelected:false,title:'Short Duration End Date 060',tooltip:"", type: 'misc'},
+        {id:88,value:'ShortDurationEndDate080',isSelected:false,title:'Short Duration End Date 080',tooltip:"", type: 'misc'},
+        {id:89,value:'ShortDurationEndDate100',isSelected:false,title:'Short Duration End Date 100',tooltip:"", type: 'misc'},
+        {id:90,value:'ShortDurationEndDate120',isSelected:false,title:'Short Duration End Date 120',tooltip:"", type: 'misc'},
+        {id:91,value:'ShortDurationEndDate150',isSelected:false,title:'Short Duration End Date 150',tooltip:"", type: 'misc'},
+        {id:93,value:'ShortDurationEndDate180',isSelected:false,title:'Short Duration End Date 180',tooltip:"", type: 'misc'},
+        {id:94,value:'ShortDurationPrecipitationValue005',isSelected:false,title:'Short Duration Precipitation Value 005',tooltip:"", type: 'misc'},
+        {id:95,value:'ShortDurationPrecipitationValue010',isSelected:false,title:'Short Duration Precipitation Value 010',tooltip:"", type: 'misc'},
+        {id:96,value:'ShortDurationPrecipitationValue015',isSelected:false,title:'Short Duration Precipitation Value 015',tooltip:"", type: 'misc'},
+        {id:97,value:'ShortDurationPrecipitationValue020',isSelected:false,title:'Short Duration Precipitation Value 020',tooltip:"", type: 'misc'},
+        {id:98,value:'ShortDurationPrecipitationValue030',isSelected:false,title:'Short Duration Precipitation Value 030',tooltip:"", type: 'misc'},
+        {id:99,value:'ShortDurationPrecipitationValue045',isSelected:false,title:'Short Duration Precipitation Value 045',tooltip:"", type: 'misc'},
+        {id:100,value:'ShortDurationPrecipitationValue060',isSelected:false,title:'Short Duration Precipitation Value 060',tooltip:"", type: 'misc'},
+        {id:101,value:'ShortDurationPrecipitationValue080',isSelected:false,title:'Short Duration Precipitation Value 080',tooltip:"", type: 'misc'},
+        {id:102,value:'ShortDurationPrecipitationValue100',isSelected:false,title:'Short Duration Precipitation Value 100',tooltip:"", type: 'misc'},
+        {id:103,value:'ShortDurationPrecipitationValue120',isSelected:false,title:'Short Duration Precipitation Value 120',tooltip:"", type: 'misc'},
+        {id:104,value:'ShortDurationPrecipitationValue150',isSelected:false,title:'Short Duration Precipitation Value 150',tooltip:"", type: 'misc'},
+        {id:105,value:'ShortDurationPrecipitationValue180',isSelected:false,title:'Short Duration Precipitation Value 180',tooltip:"", type: 'misc'},
+        {id:106,value:'REM',isSelected:false,title:'REM - Remarks',tooltip:"", type: 'misc'},
+        {id:107,value:'BackupDirection',isSelected:false,title:'Backup Direction',tooltip:"", type: 'misc'},
+        {id:108,value:'BackupDistance',isSelected:false,title:'Backup Distance',tooltip:"", type: 'misc'},
+        {id:109,value:'BackupDistanceUnit',isSelected:false,title:'Backup Distance Unit',tooltip:"", type: 'misc'},
+        {id:110,value:'BackupElements',isSelected:false,title:'Backup Elements',tooltip:"", type: 'misc'},
+        {id:111,value:'BackupElevation',isSelected:false,title:'Backup Elevation',tooltip:"", type: 'misc'},
+        {id:112,value:'BackupEquipment',isSelected:false,title:'Backup Equipment',tooltip:"", type: 'misc'},
+        {id:113,value:'BackupLatitude',isSelected:false,title:'Backup Latitude',tooltip:"", type: 'misc'},
+        {id:114,value:'BackupLongitude',isSelected:false,title:'Backup Longitude',tooltip:"", type: 'misc'},
+        {id:115,value:'BackupName',isSelected:false,title:'Backup Name',tooltip:"", type: 'misc'},
+        {id:116,value:'WindEquipmentChangeDate',isSelected:false,title:'Wind Equipment Change Date',tooltip:"", type: 'misc'}
+      ];
+
+      if(this.stationDataObjs.length > 0) {
         this.isLoading = false;
-        this.dispHeaders = true;
+        this.displayList = this.stationDataObjs.slice()
       }
       if(this.stationIDArray) {
-        if(this.displayList.length == 0) {
+        if(this.stationDataObjs.length == 0) {
         this.isLoading = true;
         await this.getStationDataTypes();
-        if(this.stationDataTypes.length>0) {
-          this.dispHeaders = true;
-        }
         fetch("assets/dataTypesList.json")
         .then((res) => res.json())
         .then((data) =>{
@@ -207,16 +198,24 @@ export class DataComponent implements OnInit {
 
           for(let i=0; i<this.checklist.length; i++) {
             if(this.stationDataTypes.includes(this.checklist[i]["value"])) {
-              this.displayList.push(this.checklist[i])
+              this.stationDataObjs.push(this.checklist[i])
             }
           }
+          sessionStorage.setItem("stationDataObjs", JSON.stringify(this.stationDataObjs))
         }
-        this.getMasterList();
-        this.getCheckedItemList();
-        console.log("Available Data Types:");
-        console.log(this.displayList);
       }
-      // this.fetchToolTip();
+      // Set display to All
+      let a:any = document.getElementById("typeValue") as HTMLInputElement
+      a.value = 'All'
+      this.displayList = this.stationDataObjs.slice()
+      this.masterSelected[0] = this.masterSelected[1]
+      this.isAllSelected()
+
+      this.dispHeaders = true;
+      this.getMasterList();
+      this.getCheckedItemList();
+      console.log("Available Data Types:");
+      console.log(this.displayList);
   }
 
 
@@ -338,14 +337,13 @@ export class DataComponent implements OnInit {
     console.log(this.masterCheckedList);
 
     for(let displayType of this.displayList) {
-      let tmpInd:any = this.checklist.findIndex((obj:any) => {
+      let tmpInd:any = this.stationDataObjs.findIndex((obj:any) => {
         return obj.id == displayType.id;
       });
-      this.checklist[tmpInd].isSelected = displayType.isSelected;
+      this.stationDataObjs[tmpInd].isSelected = displayType.isSelected;
     }
     sessionStorage.setItem("masterSelected", JSON.stringify(this.masterSelected))
-    sessionStorage.setItem("displayList", JSON.stringify(this.displayList))
-    sessionStorage.setItem("checkList", JSON.stringify(this.checklist))
+    sessionStorage.setItem("stationDataObjs", JSON.stringify(this.stationDataObjs))
     sessionStorage.setItem("masterCheckedList", JSON.stringify(this.masterCheckedList))
   }
 
@@ -448,17 +446,17 @@ export class DataComponent implements OnInit {
       this.sendingDataList.push(i.value)
     }
     sessionStorage.setItem("masterSelected", JSON.stringify(this.masterSelected))
-    sessionStorage.setItem("displayList", JSON.stringify(this.displayList))
-    sessionStorage.setItem("checkList", JSON.stringify(this.checklist))
+    sessionStorage.setItem("stationDataObjs", JSON.stringify(this.stationDataObjs))
     sessionStorage.setItem("masterCheckedList", JSON.stringify(this.masterCheckedList))
     sessionStorage.setItem("sendingDataList", JSON.stringify(this.sendingDataList))
     this.router.navigate(["/display"], {state: { stationsJSON: this.stationsJSON}})
   }
 
   goBack(){
+    sessionStorage.removeItem("stationDataObjs")
     sessionStorage.removeItem("masterSelected")
-    sessionStorage.removeItem("displayList")
     sessionStorage.removeItem("masterCheckedList")
+    sessionStorage.removeItem("sendingDataList")
     if(!this.getSessionStorageItem("stationID")) {
       this.router.navigate(["/stations"], {state: { stationsJSON: this.stationsJSON}})
     }
@@ -478,37 +476,35 @@ export class DataComponent implements OnInit {
   }
 
   onChangeType(type: any){
-    sessionStorage.setItem("DataTypeValue", type.target.value)
-
     if(type.target.value == "All"){
-      this.displayList = this.checklist
+      this.displayList = this.stationDataObjs.slice()
       this.masterSelected[0] = this.masterSelected[1]
       this.isAllSelected()
     }
     else if(type.target.value == "Hourly"){
       this.masterSelected[0] = this.masterSelected[2]
-      this.displayList = this.checklist.filter(function( obj:any ) {
+      this.displayList = this.stationDataObjs.filter(function( obj:any ) {
         return obj.type == "hourly";
       });
       this.isAllSelected()
     }
     else if(type.target.value == "Daily"){
       this.masterSelected[0] = this.masterSelected[3]
-      this.displayList = this.checklist.filter(function( obj:any ) {
+      this.displayList = this.stationDataObjs.filter(function( obj:any ) {
         return obj.type == "daily";
       });
       this.isAllSelected()
     }
     else if(type.target.value == "Monthly"){
       this.masterSelected[0] = this.masterSelected[4]
-      this.displayList = this.checklist.filter(function( obj:any ) {
+      this.displayList = this.stationDataObjs.filter(function( obj:any ) {
         return obj.type == "monthly";
       });
       this.isAllSelected()
     }
     else if(type.target.value == "Misc"){
       this.masterSelected[0] = this.masterSelected[5]
-      this.displayList = this.checklist.filter(function( obj:any ) {
+      this.displayList = this.stationDataObjs.filter(function( obj:any ) {
         return obj.type == "misc";
       });
       this.isAllSelected()
