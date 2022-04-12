@@ -28,6 +28,8 @@ export class DataComponent implements OnInit {
   dispHeaders: boolean = false;
   stationsJSON: any = null;
   masterCheckedList: any[] = [];
+  masterCheckedListValues: any[] = [];
+
 
   //page variables
   sendingArray: any[] = [];
@@ -194,7 +196,7 @@ export class DataComponent implements OnInit {
             }
         })
         this.isLoading = false;
-
+          
           for(let i=0; i<this.checklist.length; i++) {
             if(this.stationDataTypes.includes(this.checklist[i]["value"])) {
               this.displayList.push(this.checklist[i])
@@ -234,7 +236,8 @@ export class DataComponent implements OnInit {
   }
   // Get List of Checked Items
   getCheckedItemList(){
-    let temp: any[] = []
+    let temp: any[] = [];
+    this.masterCheckedListValues = [];
     for (var i = 0; i < this.masterCheckedList.length; i++){
         temp.push(this.masterCheckedList[i])
     }
@@ -248,12 +251,9 @@ export class DataComponent implements OnInit {
         temp.push(this.checkedList[i])
       }
     }
-    for (var i = 0; i < temp.length; i++){
-      if(temp[i].isSelected === false){
-        delete temp[i]
-        temp.splice(i, 1)
-      }
-    }
+    temp = temp.filter(function( obj ) {
+      return obj.isSelected === true;
+    });
     temp = temp.reduce((a,b)=>{
       if(!a.find((data: { id: any; }) => data.id === b.id)){
         a.push(b);
@@ -262,8 +262,13 @@ export class DataComponent implements OnInit {
     }, [])
     temp = temp.sort((a,b)=> a.id - b.id)
     this.masterCheckedList = temp;
+    for(var i = 0; i < this.masterCheckedList.length; i++){
+      this.masterCheckedListValues.push(this.masterCheckedList[i].value)
+    }
     console.log(temp)
     console.log(this.checkedList)
+    console.log("display list:" + this.displayList)
+
 
   }
 
@@ -364,14 +369,18 @@ export class DataComponent implements OnInit {
   sendToDisplay(){
     sessionStorage.setItem("masterSelected", JSON.stringify(this.masterSelected))
     sessionStorage.setItem("displayList", JSON.stringify(this.displayList))
-    sessionStorage.setItem("checkedList", JSON.stringify(this.checkedList))
+    sessionStorage.setItem("masterCheckedList", JSON.stringify(this.masterCheckedList))
+    sessionStorage.setItem("masterCheckedListValues", JSON.stringify(this.masterCheckedListValues))
+    sessionStorage.setItem("displayList", JSON.stringify(this.displayList))
     this.router.navigate(["/display"], {state: { stationsJSON: this.stationsJSON}})
   }
-
+  
   goBack(){
     sessionStorage.removeItem("masterSelected")
     sessionStorage.removeItem("displayList")
-    sessionStorage.removeItem("checkedList")
+    sessionStorage.removeItem("masterCheckedList")
+    sessionStorage.removeItem("masterCheckedListValues")
+
     if(!this.getSessionStorageItem("stationID")) {
       this.router.navigate(["/stations"], {state: { stationsJSON: this.stationsJSON}})
     }

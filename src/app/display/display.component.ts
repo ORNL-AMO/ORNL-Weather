@@ -135,7 +135,7 @@ export class DisplayComponent implements OnInit {
     if(this.getSessionStorageItem("endDate")) {this.endDate = JSON.parse(this.getSessionStorageItem("endDate") as string)}
     if(this.getSessionStorageItem("sendingArrayStations")) {this.stationIDArray = JSON.parse(this.getSessionStorageItem("sendingArrayStations") as string)}
     if(this.getSessionStorageItem("numYears")) {this.years = +<any>this.getSessionStorageItem("numYears")}
-    if(this.getSessionStorageItem("checkedList")) {this.dataTypeObj = JSON.parse(this.getSessionStorageItem("checkedList") as string)}
+    if(this.getSessionStorageItem("masterCheckedListValues")) {this.dataTypeObj = JSON.parse(this.getSessionStorageItem("masterCheckedListValues") as string)}
     if(this.getSessionStorageItem("startStr")) {this.startStr = this.getSessionStorageItem("startStr") as string}
     if(this.getSessionStorageItem("endStr")) {this.endStr = this.getSessionStorageItem("endStr") as string}
 

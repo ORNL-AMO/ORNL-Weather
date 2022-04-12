@@ -31,7 +31,6 @@ export class NavbarComponent {
   ssClrDataFwd(){
     // Data
     sessionStorage.removeItem("masterSelected")
-    sessionStorage.removeItem("displayList")
     sessionStorage.removeItem("checkedList")
   }
   ssClrDisplayFwd(){}
