@@ -135,7 +135,7 @@ export class DisplayComponent implements OnInit {
     if(this.getSessionStorageItem("endDate")) {this.endDate = JSON.parse(this.getSessionStorageItem("endDate") as string)}
     if(this.getSessionStorageItem("sendingArrayStations")) {this.stationIDArray = JSON.parse(this.getSessionStorageItem("sendingArrayStations") as string)}
     if(this.getSessionStorageItem("numYears")) {this.years = +<any>this.getSessionStorageItem("numYears")}
-    if(this.getSessionStorageItem("checkedList")) {this.dataTypeObj = JSON.parse(this.getSessionStorageItem("checkedList") as string)}
+    if(this.getSessionStorageItem("sendingDataList")) {this.dataTypeObj = JSON.parse(this.getSessionStorageItem("sendingDataList") as string)}
     if(this.getSessionStorageItem("startStr")) {this.startStr = this.getSessionStorageItem("startStr") as string}
     if(this.getSessionStorageItem("endStr")) {this.endStr = this.getSessionStorageItem("endStr") as string}
 
@@ -161,7 +161,7 @@ export class DisplayComponent implements OnInit {
       let stationMObj:any[] = [];
       for(let j=0; j<this.years; j++) {
         await this.fetchCSV(this.yearsObj[j].toString(), Number(this.stationIDArray[i]), i, stationObj, stationHObj, stationDObj, stationMObj);
-        
+
       }
       this.hourlyObj.push(stationHObj);
       this.dailyObj.push(stationDObj);

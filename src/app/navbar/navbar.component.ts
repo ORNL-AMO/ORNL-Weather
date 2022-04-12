@@ -26,13 +26,13 @@ export class NavbarComponent {
     // Data
     sessionStorage.removeItem("masterSelected")
     sessionStorage.removeItem("displayList")
-    sessionStorage.removeItem("checkedList")
+    sessionStorage.removeItem("masterCheckedList")
   }
   ssClrDataFwd(){
     // Data
     sessionStorage.removeItem("masterSelected")
     sessionStorage.removeItem("displayList")
-    sessionStorage.removeItem("checkedList")
+    sessionStorage.removeItem("masterCheckedList")
   }
   ssClrDisplayFwd(){}
 
