@@ -70,7 +70,9 @@
     </div>
     <div class="center" style="margin-top: 75px;">
         <button class="button button1" (click)="goBack()" ><b>Back</b></button>
-
+        <div *ngIf="error" class="alertcenter">
+          {{ error }}
+        </div>
         <button class="button button1" (click)="sendToDisplay()"><b>Display Data</b></button>
     </div>
 

@@ -37,6 +37,9 @@
     <div class="right">
         <button class="button button1" (click)="sendToData()"><b>Data</b></button>
     </div>
+    <div *ngIf="error" class="alertcenter" style="margin-top: 30px">
+      {{ error }}
+    </div>
     <div class="center">
         <img src= "assets/industrial-skyline-2.png" class="footer"/>
     </div>

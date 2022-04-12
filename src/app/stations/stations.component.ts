@@ -32,6 +32,7 @@ export class StationsComponent implements OnInit {
   sendingArray: any[] = [];
   numYears: any = null;
   headers: any;
+  error: string = "";
 
   @ViewChildren('stationsTable') stationsTable: QueryList<any>;
 
@@ -250,14 +251,23 @@ export class StationsComponent implements OnInit {
     }
 
     sendToData(){
-      for(let index in this.selectedArray){
-        if(!this.sendingArray.includes(this.selectedArray[index].ID))
-        this.sendingArray.push(this.selectedArray[index].ID)
+      if(this.selectedArray.length == 0) {
+        this.error = "Please Select One or More Stations"
+        let context = this;
+        setTimeout(function(){
+          context.error = ""
+        }, 5000)
       }
-      console.log("Selected Stations:");
-      console.log(this.sendingArray);
-      sessionStorage.setItem("sendingArrayStations", JSON.stringify(this.sendingArray))
-      this.router.navigate(["/data"], {state: { stationsJSON: this.stationsJSON}})
+      else {
+        for(let index in this.selectedArray){
+          if(!this.sendingArray.includes(this.selectedArray[index].ID))
+          this.sendingArray.push(this.selectedArray[index].ID)
+        }
+        console.log("Selected Stations:");
+        console.log(this.sendingArray);
+        sessionStorage.setItem("sendingArrayStations", JSON.stringify(this.sendingArray))
+        this.router.navigate(["/data"], {state: { stationsJSON: this.stationsJSON}})
+      }
     }
 
     goBack(){
