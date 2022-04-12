@@ -133,11 +133,13 @@ export class DisplayComponent implements OnInit {
   async ngOnInit() {
     if(this.getSessionStorageItem("startDate")) {this.startDate = JSON.parse(this.getSessionStorageItem("startDate") as string)}
     if(this.getSessionStorageItem("endDate")) {this.endDate = JSON.parse(this.getSessionStorageItem("endDate") as string)}
-    if(this.getSessionStorageItem("sendingArrayStations")) {this.stationIDArray = JSON.parse(this.getSessionStorageItem("sendingArrayStations") as string)}
     if(this.getSessionStorageItem("numYears")) {this.years = +<any>this.getSessionStorageItem("numYears")}
-    if(this.getSessionStorageItem("sendingDataList")) {this.dataTypeObj = JSON.parse(this.getSessionStorageItem("sendingDataList") as string)}
     if(this.getSessionStorageItem("startStr")) {this.startStr = this.getSessionStorageItem("startStr") as string}
     if(this.getSessionStorageItem("endStr")) {this.endStr = this.getSessionStorageItem("endStr") as string}
+    if(this.getSessionStorageItem("sendingArrayStations")) {this.stationIDArray = JSON.parse(this.getSessionStorageItem("sendingArrayStations") as string)}
+    else {this.goBack()}
+    if(this.getSessionStorageItem("sendingDataList")) {this.dataTypeObj = JSON.parse(this.getSessionStorageItem("sendingDataList") as string)}
+    else {this.goBack()}
 
     if(this.stationIDArray) {
       await this.checkYears();

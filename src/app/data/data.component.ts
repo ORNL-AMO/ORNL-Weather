@@ -48,6 +48,7 @@ export class DataComponent implements OnInit {
     if(this.getSessionStorageItem("startDate")) {this.startDate = JSON.parse(this.getSessionStorageItem("startDate") as string)}
     if(this.getSessionStorageItem("endDate")) {this.endDate = JSON.parse(this.getSessionStorageItem("endDate") as string)}
     if(this.getSessionStorageItem("sendingArrayStations")) {this.stationIDArray = JSON.parse(this.getSessionStorageItem("sendingArrayStations") as string)}
+    else {this.goBack()}
     if(this.getSessionStorageItem("stationDataObjs")) {this.stationDataObjs = JSON.parse(this.getSessionStorageItem("stationDataObjs") as string)}
     if(this.getSessionStorageItem("masterCheckedList")) {this.masterCheckedList = JSON.parse(this.getSessionStorageItem("masterCheckedList") as string)}
     if(this.getSessionStorageItem("masterSelected")) {this.masterSelected = JSON.parse(this.getSessionStorageItem("masterSelected") as string)}

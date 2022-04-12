@@ -45,6 +45,7 @@ export class StationsComponent implements OnInit {
   }
 
   async ngOnInit() {
+    if(!this.getSessionStorageItem("numYears")) {this.goBack()}
 
     // Fetch newest station list data from NOAA
     // BUG: If stations data loaded from here, cached checkbox data not loaded
@@ -76,6 +77,7 @@ export class StationsComponent implements OnInit {
     if(this.getSessionStorageItem("startDate")) {this.startDate = JSON.parse(this.getSessionStorageItem("startDate") as string)}
     if(this.getSessionStorageItem("endDate")) {this.endDate = JSON.parse(this.getSessionStorageItem("endDate") as string)}
     if(this.getSessionStorageItem("numYears")) {this.numYears = this.getSessionStorageItem("numYears")}
+    else {this.goBack()}
     if(this.getSessionStorageItem("startStr")) {this.startStr = this.getSessionStorageItem("startStr") as string}
     if(this.getSessionStorageItem("endStr")) {this.endStr = this.getSessionStorageItem("endStr") as string}
     if(this.getSessionStorageItem("multiInputs")) {this.multiInputs = JSON.parse(this.getSessionStorageItem("multiInputs") as string)}

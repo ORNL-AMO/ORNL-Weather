@@ -20,13 +20,18 @@ export class NavbarComponent {
 
   ssClr(){sessionStorage.clear()}
   ssClrStationsFwd(){
+    // Stations
+    sessionStorage.removeItem("sendingArrayStations")
     // Data
     sessionStorage.removeItem("stationDataObjs")
     sessionStorage.removeItem("masterSelected")
     sessionStorage.removeItem("masterCheckedList")
     sessionStorage.removeItem("sendingDataList")
   }
-  ssClrDataFwd(){}
+  ssClrDataFwd(){
+    // Data
+    sessionStorage.removeItem("sendingDataList")
+  }
   ssClrDisplayFwd(){}
 
 }
