@@ -201,6 +201,7 @@ export class DataComponent implements OnInit {
             }
           }
         }
+        this.getMasterList();
         this.getCheckedItemList();
         console.log("Available Data Types:");
         console.log(this.displayList);
@@ -228,30 +229,42 @@ export class DataComponent implements OnInit {
   getMasterList(){
     for (var i = 0; i < this.displayList.length; i++) {
       if(this.displayList[i].isSelected)
-        this.masterCheckedList.push(this.displayList[i].value);
+        this.masterCheckedList.push(this.displayList[i]);
     }
-    console.log(this.masterCheckedList)
   }
   // Get List of Checked Items
   getCheckedItemList(){
-    this.getMasterList()
+    let temp: any[] = []
+    for (var i = 0; i < this.masterCheckedList.length; i++){
+        temp.push(this.masterCheckedList[i])
+    }
     this.checkedList = [];
     for (var i = 0; i < this.displayList.length; i++) {
       if(this.displayList[i].isSelected)
-        this.checkedList.push(this.displayList[i].value);
+        this.checkedList.push(this.displayList[i]);
     }
-    let temp: any[] = []
-    for (var i = 0; i < this.masterCheckedList.length; i++) {
-      if(this.masterCheckedList[i].isSelected)
-        temp.push(this.masterCheckedList[i].value);
+    for (var i = 0; i < this.checkedList.length; i++){
+      if(!temp.includes(this.checkedList[i])){
+        temp.push(this.checkedList[i])
+      }
     }
-    for (var i = 0; i < this.checkedList.length; i++) {
-      if(this.checkedList[i].isSelected && !temp.includes(this.checkedList[i].value) )
-        temp.push(this.checkedList[i].value);
+    for (var i = 0; i < temp.length; i++){
+      if(temp[i].isSelected === false){
+        delete temp[i]
+        temp.splice(i, 1)
+      }
     }
+    temp = temp.reduce((a,b)=>{
+      if(!a.find((data: { id: any; }) => data.id === b.id)){
+        a.push(b);
+      }
+      return a;
+    }, [])
+    temp = temp.sort((a,b)=> a.id - b.id)
     this.masterCheckedList = temp;
+    console.log(temp)
     console.log(this.checkedList)
-    console.log(this.masterCheckedList)
+
   }
 
   async getStationDataTypes(){
@@ -385,7 +398,6 @@ export class DataComponent implements OnInit {
       let temp: any[] = [];
       for(let i = 0; i < this.checklist.length; i++){
         if(this.checklist[i].type == 'hourly'){
-          console.log(this.checklist[i])
           temp.push(this.checklist[i])
         }
       }
