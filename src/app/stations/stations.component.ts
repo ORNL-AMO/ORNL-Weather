@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, QueryList, ViewChildren} from '@angular/core';
 import { Router } from '@angular/router';
 
 export interface stationsElements {
@@ -32,6 +32,8 @@ export class StationsComponent implements OnInit {
   sendingArray: any[] = [];
   numYears: any = null;
   headers: any;
+
+  @ViewChildren('stationsTable') stationsTable: QueryList<any>;
 
   constructor(private router: Router) {
     // Get data from home page
@@ -78,16 +80,40 @@ export class StationsComponent implements OnInit {
     if(this.getSessionStorageItem("multiInputs")) {this.multiInputs = JSON.parse(this.getSessionStorageItem("multiInputs") as string)}
 
     await this.getStations();
+
     // Load previous input data if exists
     try {
       let tmp = sessionStorage.getItem("selectedArrayStations");
       if(tmp) {
         this.selectedArray = JSON.parse(tmp)
+        console.log("TEST2");
+        console.log(this.selectedArray);
         for(let i of this.selectedArray) {
           this.checkUncheckDuplicates(i.ID.toString(), true)
         }
       }
     } catch (e) {}
+
+  }
+
+  ngAfterViewInit() {
+    this.stationsTable.changes.subscribe(t => {
+      console.log("TEST");
+      console.log(this.stationsTable);
+
+      // Load previous input data if exists
+      try {
+        let tmp = sessionStorage.getItem("selectedArrayStations");
+        if(tmp) {
+          this.selectedArray = JSON.parse(tmp)
+          console.log("TEST2");
+          console.log(this.selectedArray);
+          for(let i of this.selectedArray) {
+            this.checkUncheckDuplicates(i.ID.toString(), true)
+          }
+        }
+      } catch (e) {}
+    })
   }
 
 

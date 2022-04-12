@@ -17,7 +17,7 @@
                 </th>
             </tr>
 
-            <ng-container *ngFor="let zip of stationsArray; let i = index">
+            <ng-container #stationsTable *ngFor="let zip of stationsArray; let i = index">
               <tr *ngIf="zipsList.length>0">
                 <td class="group" colspan="4">{{zipsList[i]}}</td>
               </tr>
