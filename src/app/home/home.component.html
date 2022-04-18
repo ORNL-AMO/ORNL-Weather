@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  
+
 
 <body>
   <div class="center" style="margin-top:20px;">
@@ -14,7 +14,7 @@
       <div class="center" id="zipBox">
           <input class="zip" name="zipcode" #zipcode id="zipcode" type="text"
                  size=18 (click)="distDropdown=true" (keyup)="checkInput()" (keyup.enter)="acceptVariables()" autocomplete="none">
-                 
+
          <div class="center" id="dropdown" tabindex="-1">
            <div id="scrollable-area" *ngIf="matchList.length>0 && zipcode.value.toString().length>=4 && !matchList.includes(zipcode.value.toString()) && distDropdown">
                <table fixed-table-headers="scrollable-area">
@@ -36,15 +36,15 @@
           <img id="image" src="assets/info.png" height="20px">
           <span class="tooltiptext">
             <h1><b>Search Options:</b></h1>
-            <p><b>Search by Zip Code(i.e. "37830")</b></p>
-            <p><b>Search by City(i.e. "OakRidge, TN")</b></p>
-            <p><b>Search by State(i.e. "TN")</b></p>
-            <p><b>Enter Station ID(i.e. "72427053868")</b></p>
-            <p><b>Multi-Location Search(i.e. "37830; 38501; Nashville, TN")</b></p>
-            
+            <p><b>Search by Zip Code (e.g. "37830")</b></p>
+            <p><b>Search by City (e.g. "Oak Ridge, TN")</b></p>
+            <p><b>Search by State (e.g. "TN" or "Tennessee")</b></p>
+            <p><b>Enter Station ID (e.g. "72427053868")</b></p>
+            <p><b>Multi-Location Search (e.g. "37830; 38501; Nashville, TN")</b></p>
+
           </span>
       </label>
-        
+
       </div>
       <!-- Display potential errors regarding input data to user -->
 

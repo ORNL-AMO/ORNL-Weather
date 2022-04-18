@@ -19,6 +19,24 @@ table {
   margin-left: 12%;
 }
 
+.alertcenter {
+position: absolute;
+left: 0;
+right: 0;
+margin-left: auto;
+margin-right: auto;
+margin-top:8px;
+
+color: #cc0033;
+font-size: 13.5px;
+line-height: 15px;
+
+display: flex;
+justify-content: center;
+float: center;
+text-align: center;
+}
+
 h1{
   text-align: center;
   color: #2b376b;

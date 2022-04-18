@@ -4,7 +4,7 @@
   justify-content: right;
   float: right;
   margin-right: 12%;
-  
+
 }
 
 .left { /* right side align */
@@ -12,7 +12,25 @@
   justify-content: left;
   float: left;
   margin-left: 12%;
-  
+
+}
+
+.alertcenter {
+position: absolute;
+left: 0;
+right: 0;
+margin-left: auto;
+margin-right: auto;
+margin-top:-15px;
+
+color: #cc0033;
+font-size: 13.5px;
+line-height: 15px;
+
+display: flex;
+justify-content: center;
+float: center;
+text-align: center;
 }
 
 h1{
@@ -61,7 +79,7 @@ h1{
   margin-right: 25%;
   min-width: 147px;
   margin-top: -45px;
-  
+
   z-index: 1;
 
 }
@@ -144,6 +162,7 @@ input[type="checkbox"]{
   border-radius: 8px;
   background: white;
   margin-right: 100px;
+  margin-left: 10px;
 }
 .dataList{
   padding: 13px;
@@ -263,7 +282,7 @@ input[type="checkbox"]{
     position: relative;
     display: center;
   }
-  
+
   .side_by_side{
     display : flex;
     flex-direction : row;
@@ -278,12 +297,12 @@ input[type="checkbox"]{
     text-align: center;
     padding: 5px 0;
     border-radius: 6px;
-   
+
     /* Position the tooltip text - see examples below! */
     position: absolute;
     z-index: 1;
   }
-  
+
   /* Show the tooltip text when you mouse over the tooltip container */
   .tooltip:hover .tooltiptext {
     visibility: visible;
@@ -292,7 +311,7 @@ input[type="checkbox"]{
     top: -5px;
     right: 105%;
   }
-  
+
   #image{
     margin-right: -50px;
     margin-left: -10px;
@@ -300,6 +319,6 @@ input[type="checkbox"]{
     width: 25px;
     margin-top: -20px;
     margin-bottom: -10px;
-    
+
 
   }

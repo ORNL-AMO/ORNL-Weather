@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, QueryList, ViewChildren} from '@angular/core';
 import { Router } from '@angular/router';
 
 export interface stationsElements {
@@ -32,6 +32,9 @@ export class StationsComponent implements OnInit {
   sendingArray: any[] = [];
   numYears: any = null;
   headers: any;
+  error: string = "";
+
+  @ViewChildren('stationsTable') stationsTable: QueryList<any>;
 
   constructor(private router: Router) {
     // Get data from home page
@@ -42,6 +45,7 @@ export class StationsComponent implements OnInit {
   }
 
   async ngOnInit() {
+    if(!this.getSessionStorageItem("numYears")) {this.goBack()}
 
     // Fetch newest station list data from NOAA
     // BUG: If stations data loaded from here, cached checkbox data not loaded
@@ -73,11 +77,13 @@ export class StationsComponent implements OnInit {
     if(this.getSessionStorageItem("startDate")) {this.startDate = JSON.parse(this.getSessionStorageItem("startDate") as string)}
     if(this.getSessionStorageItem("endDate")) {this.endDate = JSON.parse(this.getSessionStorageItem("endDate") as string)}
     if(this.getSessionStorageItem("numYears")) {this.numYears = this.getSessionStorageItem("numYears")}
+    else {this.goBack()}
     if(this.getSessionStorageItem("startStr")) {this.startStr = this.getSessionStorageItem("startStr") as string}
     if(this.getSessionStorageItem("endStr")) {this.endStr = this.getSessionStorageItem("endStr") as string}
     if(this.getSessionStorageItem("multiInputs")) {this.multiInputs = JSON.parse(this.getSessionStorageItem("multiInputs") as string)}
 
     await this.getStations();
+
     // Load previous input data if exists
     try {
       let tmp = sessionStorage.getItem("selectedArrayStations");
@@ -88,6 +94,22 @@ export class StationsComponent implements OnInit {
         }
       }
     } catch (e) {}
+
+  }
+
+  ngAfterViewInit() {
+    this.stationsTable.changes.subscribe(t => {
+      // Load previous input data if exists
+      try {
+        let tmp = sessionStorage.getItem("selectedArrayStations");
+        if(tmp) {
+          this.selectedArray = JSON.parse(tmp)
+          for(let i of this.selectedArray) {
+            this.checkUncheckDuplicates(i.ID.toString(), true)
+          }
+        }
+      } catch (e) {}
+    })
   }
 
 
@@ -231,14 +253,23 @@ export class StationsComponent implements OnInit {
     }
 
     sendToData(){
-      for(let index in this.selectedArray){
-        if(!this.sendingArray.includes(this.selectedArray[index].ID))
-        this.sendingArray.push(this.selectedArray[index].ID)
+      if(this.selectedArray.length == 0) {
+        this.error = "Please Select One or More Stations"
+        let context = this;
+        setTimeout(function(){
+          context.error = ""
+        }, 5000)
       }
-      console.log("Selected Stations:");
-      console.log(this.sendingArray);
-      sessionStorage.setItem("sendingArrayStations", JSON.stringify(this.sendingArray))
-      this.router.navigate(["/data"], {state: { stationsJSON: this.stationsJSON}})
+      else {
+        for(let index in this.selectedArray){
+          if(!this.sendingArray.includes(this.selectedArray[index].ID))
+          this.sendingArray.push(this.selectedArray[index].ID)
+        }
+        console.log("Selected Stations:");
+        console.log(this.sendingArray);
+        sessionStorage.setItem("sendingArrayStations", JSON.stringify(this.sendingArray))
+        this.router.navigate(["/data"], {state: { stationsJSON: this.stationsJSON}})
+      }
     }
 
     goBack(){
