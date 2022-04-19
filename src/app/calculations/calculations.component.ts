@@ -20,12 +20,15 @@ export class CalculationsComponent implements OnInit {
   totalCLDD: number = 0;
   totalHTDH: number = 0;
   totalCLDH: number = 0;
+  monthlyHTDD: any[] = [];
+  monthlyCLDD: any[] = [];
 
   degreeDaysObj: any[] = [];
   isLoading: boolean = false;
   isLoaded: boolean = false;
   isStart: boolean = true;
   isDDError: boolean = false;
+  ddPreload: boolean = false;
   config: any;
 
   constructor(private router: Router){
@@ -42,10 +45,10 @@ export class CalculationsComponent implements OnInit {
     ngOnInit(): void {
   }
 
-  degreeDays(){
-    let index: any[] = [];
+  degreeDays(val1: any, val2: any){
     if(this.headers.includes("HourlyDryBulbTemperature")){
-
+      let htt = Number(val1);
+      let ctt = Number(val2);
       //checking for NaN types in HourlyDryBulbTemperature and removing them
       // for(let i = 0; i < this.hourlyDataObj.length; i++){
       //   if (isNaN(this.hourlyDataObj[i].HourlyDryBulbTemperature)){
@@ -57,7 +60,11 @@ export class CalculationsComponent implements OnInit {
       //   this.hourlyDataObj.splice(index[i], 1)
       //   console.log(index[i])
       // }
-
+      for(let i = 0; i < this.hourlyDataObj.length; i++){
+        if (isNaN(this.hourlyDataObj[i].HourlyDryBulbTemperature)){
+          this.hourlyDataObj[i].HourlyDryBulbTemperature = this.hourlyDataObj[i].HourlyDryBulbTemperature.replace('s', '')
+        }
+      }
       for(let i = 0; i < this.hourlyDataObj.length; i++){
         let temp: any[] = [];
         let display: any[] = [];
@@ -93,10 +100,10 @@ export class CalculationsComponent implements OnInit {
       //HTDD
       for(let k = 0; k < this.displayObj.length; k++){
         if(k == 0){
-          if(this.displayObj[0][2] < 65){
+          if(this.displayObj[0][2] < htt){
             var date2 = new Date(this.displayObj[0][1]);
             let DF = ((date2.getTime() - dateStart.getTime())/60000)/(1440);
-            let temp = 65 - this.displayObj[0][2];
+            let temp = htt - this.displayObj[0][2];
             this.degreeDaysObj[k].HTDD = DF*temp;
             this.displayObj[k][3] = DF*temp;
             this.totalHTDD += DF*temp;
@@ -107,11 +114,11 @@ export class CalculationsComponent implements OnInit {
           }
         }
         else{
-          if(this.displayObj[k][2] < 65){
+          if(this.displayObj[k][2] < htt){
             var date1 = new Date(this.displayObj[k-1][1]);
             var date2 = new Date(this.displayObj[k][1]);
             let DF = ((date2.getTime() - date1.getTime())/60000)/(1440);
-            let temp = 65 - this.displayObj[k][2];
+            let temp = htt - this.displayObj[k][2];
             this.degreeDaysObj[k].HTDD = DF*temp;
             this.displayObj[k][3] = DF*temp;
             this.totalHTDD += DF*temp;
@@ -126,10 +133,10 @@ export class CalculationsComponent implements OnInit {
       //CLDD
       for(let k = 0; k < this.displayObj.length; k++){
         if(k == 0){
-          if(this.displayObj[0][2] > 75){
+          if(this.displayObj[0][2] > ctt){
             var date2 = new Date(this.displayObj[0][1]);
             let DF = ((date2.getTime() - dateStart.getTime())/60000)/(1440);
-            let temp = this.displayObj[0][2] - 75;
+            let temp = this.displayObj[0][2] - ctt;
             this.degreeDaysObj[k].CLDD = DF*temp;
             this.displayObj[k][4] = DF*temp;
             this.totalCLDD += DF*temp;
@@ -140,11 +147,11 @@ export class CalculationsComponent implements OnInit {
           }
         }
         else{
-          if(this.displayObj[k][2] > 75){
+          if(this.displayObj[k][2] > ctt){
             var date1 = new Date(this.displayObj[k-1][1]);
             var date2 = new Date(this.displayObj[k][1]);
             let DF = ((date2.getTime() - date1.getTime())/60000)/(1440);
-            let temp = this.displayObj[k][2] - 75;
+            let temp = this.displayObj[k][2] - ctt;
             this.degreeDaysObj[k].CLDD = DF*temp;
             this.displayObj[k][4] = DF*temp;
             this.totalCLDD += DF*temp;
@@ -175,6 +182,66 @@ export class CalculationsComponent implements OnInit {
       this.degreeDaysObj[0].Total_HTDH = this.totalHTDH;
       this.degreeDaysObj[0].Total_CLDH = this.totalCLDH;
 
+
+      let year:any;
+      let month: any;
+      let prevMonth: any;
+      let index = 0;
+      let tempDT;
+      let tempHTDD = 0;
+      let tempCLDD = 0;
+      let tempHTDDObj:any[] = [];
+      let tempCLDDObj:any[] = [];
+      let dateTime:any[] = [];
+      let months: any = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+      for(let i = 0; i < this.degreeDaysObj.length; i++){
+        year = parseInt(this.hourlyDataObj[i].DATE.split("/")[0])
+        year = year.toString();
+        month = parseInt(this.hourlyDataObj[i].DATE.split("/")[1])
+        
+        if(i == 0){
+          tempHTDD += this.degreeDaysObj[i].HTDD
+          tempCLDD += this.degreeDaysObj[i].CLDD
+          prevMonth = month;
+        }
+        else if(month == prevMonth){
+          tempHTDD += this.degreeDaysObj[i].HTDD
+          tempCLDD += this.degreeDaysObj[i].CLDD
+          prevMonth = month;
+        }
+        else if(month > prevMonth){
+          tempDT = year.concat(" " + months[month-2])
+          dateTime.push(tempDT);
+          tempHTDDObj[dateTime[index]] = tempHTDD;
+          tempCLDDObj[dateTime[index]] = tempCLDD;
+          index++;
+          tempHTDD = 0;
+          tempCLDD = 0;
+          tempHTDD += this.degreeDaysObj[i].HTDD
+          tempCLDD += this.degreeDaysObj[i].CLDD
+          prevMonth = month;
+        }
+        else if(month == 1 && prevMonth == 12){
+          tempDT = year.concat(" " + months[month-2])
+          dateTime.push(tempDT);
+          tempHTDDObj[dateTime[index]] = tempHTDD;
+          tempCLDDObj[dateTime[index]] = tempCLDD;
+          index++;
+          tempHTDD = 0;
+          tempCLDD = 0;
+          tempHTDD += this.degreeDaysObj[i].HTDD
+          tempCLDD += this.degreeDaysObj[i].CLDD
+          prevMonth = month;
+        }
+      }
+      tempDT = year.concat(" " + months[month-2])
+      dateTime.push(tempDT);
+      tempHTDDObj[dateTime[index]] = tempHTDD;
+      tempCLDDObj[dateTime[index]] = tempCLDD;
+      this.monthlyHTDD.push(tempHTDDObj);
+      this.monthlyCLDD.push(tempCLDDObj);
+      console.log(this.monthlyHTDD)
+      console.log(this.monthlyCLDD)
       this.isLoading = false;
       this.isLoaded = true;
 
@@ -202,13 +269,14 @@ export class CalculationsComponent implements OnInit {
     if(e.target.value == 'DD'){
       this.isStart = false;
       this.isLoading = true;
-      this.degreeDays();
+      this.ddPreload = true;
     }
     else{
       this.isStart = true;
       this.isLoading = false;
       this.isDDError = false;
       this.isLoaded = false;
+      this.ddPreload = false;
     }
     
   }

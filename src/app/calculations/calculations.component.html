@@ -1,12 +1,18 @@
 <div class="right">
   <button class="button button1" (click)="downloadCSV()">Download as CSV</button>
-  <button class="button button1" value="Download JSON" (click)="exportTojson()">Download as JSON</button>
+  <!-- <button class="button button1" value="Download JSON" (click)="exportTojson()">Download as JSON</button> -->
 </div>
-<div>
+<div style="display: inline-block;">
     <select class="selectOptions" name="calcOptions" #calcOptions id="calcOptions" (change)="onChangeCalc($event)">
         <option value=" ">Select Calculation</option>
         <option value="DD">Degree Days</option>
   </select>
+  <ng-container *ngIf="ddPreload">
+    <input name="httValue" #httValue id="httValue" type="text" placeholder="Enter HTT(i.e. 65)">
+  <input name="cttValue" #cttValue id="cttValue" type="text"placeholder="Enter CTT(i.e. 75)">
+  <button class="calcButton" (click)="degreeDays(httValue.value, cttValue.value)">Calculate</button>
+  </ng-container>
+  
 </div>
 <div class="tableParent">
     <div id="scrollable-area">
@@ -32,7 +38,7 @@
             <!-- Hourglass Loading Spinner -->
             <div class="cell">
                 <div class="pl pl-hourglass"></div>
-                <div class="pl-name">Compiling your Data...This May Take Several Minutes</div>
+                <div class="pl-name">Calculating Degree Days</div>
             </div>
         </div>
         <table class="table" *ngIf="isLoaded">
