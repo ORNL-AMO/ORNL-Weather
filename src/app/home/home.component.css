@@ -451,9 +451,14 @@ text-align: center;
     }
 
   .labelStartDate{
-      margin-left: 20px;
-      margin-right: 63px;
+      margin-left: 15px;
+      margin-right: 95px;
   }
+
+  .labelEndDate{
+    margin-left: 90px;
+    margin-right: 20px;
+}
 }
 
 /*  .mat-form-field {
