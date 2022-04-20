@@ -744,10 +744,6 @@ export class DisplayComponent implements OnInit {
     return null
   }
 
-  goToCalc(){
-    this.router.navigate(["/calculations"], {state: { stationsJSON: this.stationsJSON, hourlyData: this.hourlyDataObj, headers: this.hourlyHeads}})
-
-  }
   goBack(){
     this.router.navigate(["/data"], {state: { stationsJSON: this.stationsJSON}})
   }
