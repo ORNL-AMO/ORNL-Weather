@@ -93,11 +93,11 @@
 
   <div class="center">
     <div class="startParent">
-      <input class='startDate' #startdate type="date" id="start-date" name="start-date" style="width: 200px;" (change)="updateCachedInputs()">
+      <input class='startDate' #startdate type="date" id="start-date" name="start-date" (change)="updateCachedInputs()">
       <div *ngIf="dispError" class="alertcenter">{{ sError }}</div>
     </div>
     <div class="endParent">
-      <input class='endDate' #enddate type="date" id="end-date" name="end-date" style="width: 200px;" (change)="updateCachedInputs()">
+      <input class='endDate' #enddate type="date" id="end-date" name="end-date" (change)="updateCachedInputs()">
       <div *ngIf="dispError" class="alertcenter">{{ eError }}</div>
     </div>
 

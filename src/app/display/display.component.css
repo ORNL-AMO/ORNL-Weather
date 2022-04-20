@@ -144,6 +144,10 @@ tr:hover{
   
 }
 
+.rowsRemoved{
+  margin-left: 15%; margin-top: -55px; font-size: 15px;
+}
+
 .ohno{
   overflow: auto;
   overflow: overlay;
@@ -514,4 +518,128 @@ select {
   border-radius: 20px;
   border: 1px solid black;
 
+}
+
+@media only screen and (max-width: 700px){
+
+  .right { /* right side align */
+    display: flex;
+    justify-content: right;
+  
+    margin-right: 0;
+    margin-left: 10%
+  }
+
+  .rowsRemoved{
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-left: 0px;
+    margin-right: 0px;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    float: center;
+  }  
+  .controls{
+    width: 90%;
+  }
+
+  #backButton {
+    width: 100px;
+    font-size: 15px;
+    top: -4px;
+  }
+
+  .custom-pagination{
+    z-index: 2;
+    width: 250px;
+    margin-top: 0px;
+    
+  }
+  
+  .custom-pagination .page-number{
+    display: inline-flex;
+    background: white;
+    margin: 0px 0px;
+    border-radius: 8%;
+    border: 1px solid #587656;
+    color: #2c386b;
+    z-index: 1;
+  }
+  
+  .page-number-label {
+    display: inline-flex;
+    padding-top: 4px;
+    padding-right: 3px;
+    padding-left: 3px;
+    border-radius: 8%;
+    z-index: 2 !important;
+    cursor: pointer;
+  }
+  
+  .page-number.current{
+    background: #dbdada!important;
+    border: 1px solid #587656;
+    padding-top: 4px;
+    padding-right: 3px;
+    padding-left: 3px;
+    border-radius: 8%;
+    z-index: 1;
+  }
+  
+  .page-number:hover{
+    background-color: #839c7c;
+  }
+  
+  
+  
+  .page-number span{
+    display: block;
+    width: 20px;
+    height: 20px;
+    font-size: 14px;
+  }
+  
+  .pagination-previous,.pagination-next{
+    display: inline-block;
+    font-weight: bold;
+  }
+  
+  .centerPagi{
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-left: 0px;
+    margin-right: 0px;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    float: center;
+    margin-bottom: 0px;
+    height: 0px;
+    z-index: 0 !important;
+  }
+
+  .arrow{
+    margin-right: 3px;
+    margin-left: 3px;
+    margin-top: 0px;
+    height: 10px;
+    cursor: pointer;
+  }
+  #pagingValue {
+    width: 100px;
+    font-size: 13px;
+  }
+  #typeValue {
+    width: 100px;
+    font-size: 15px;
+    margin-top: -18px;
+  }
+
+}
+
+input:focus {
+  outline: black;
 }
