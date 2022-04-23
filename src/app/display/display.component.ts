@@ -589,6 +589,8 @@ export class DisplayComponent implements OnInit {
 
   onChange(e: any){
     this.config.itemsPerPage = e.target.value;
+    this.config.currentPage = 1;
+
   }
   onChangeType(e: any){
     if(e.target.value == "Hourly"){
