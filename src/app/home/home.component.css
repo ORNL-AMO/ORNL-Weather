@@ -222,7 +222,7 @@ opacity: 0;
   justify-content: center;
   margin-top: 3px;
   width: 200px;
-  min-width: 150px;
+  
   z-index: 1;
   cursor: pointer;
 }
@@ -407,6 +407,7 @@ text-align: center;
     position: relative;
     display: center;
     padding-right: 1.15px;
+    z-index: 4;
   }
   
   /* Tooltip text */
@@ -414,7 +415,7 @@ text-align: center;
     visibility: hidden;
     opacity: 0;
     transition: visibility 0s .5s, opacity .5s linear;
-    width: 100px;
+    width: 200px;
     background-color: white;
     border: 1.5px solid #587656;
     color: #2c386b;
@@ -426,7 +427,7 @@ text-align: center;
    
     /* Position the tooltip text - see examples below! */
     position: absolute;
-    z-index: 1;
+    z-index: 4;
   }
   
   /* Show the tooltip text when you mouse over the tooltip container */
@@ -438,25 +439,51 @@ text-align: center;
     padding-top: 18px;
   }
   .tooltip .tooltiptext {
-    top: -115px;
-    left: 105%;
+    top: 30px;
+    left: -150px;
+    z-index: 4;
+    
   }
   
+  .startParent {
+    position: relative;
+    min-height: 1px;
+    width: auto;
+    height: auto;
+    display: block;
+    margin-right: 15px;
+    margin-left: 5px;
+    justify-content: center;
+    }
+    
+    .endParent {
+    position: relative;
+    min-height: 1px;
+    width: auto;
+    height: auto;
+    display: block;
+    margin-left: 15px;
+    margin-right: 5px;
+    justify-content: center;
+    }
+
   .startDate{
       width: 150px;
+      font-size: 16px;
     }
 
   .endDate{
       width: 150px;
+      font-size: 16px;
     }
 
   .labelStartDate{
-      margin-left: 15px;
-      margin-right: 95px;
+      margin-left: 20px;
+      margin-right: 50px;
   }
 
   .labelEndDate{
-    margin-left: 90px;
+    margin-left: 50px;
     margin-right: 20px;
 }
 }

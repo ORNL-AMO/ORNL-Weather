@@ -2,10 +2,10 @@
 <html lang="en">
 
 
-    <div class="center" style="margin-top:0px;">
+    <div class="center" style="margin-top:10px; margin-bottom:-10px;">
         <h1><b>Available Data Types for Selection</b></h1>
     </div>
-    <div style="margin-left: 100px;">
+    <div class="center2">
         <select name="typeValue" #typeValue id="typeValue" (change)="onChangeType($event)">
             <option value="All">All Data Types</option>
             <option value="Hourly">Hourly Data Types</option>
@@ -15,7 +15,7 @@
         </select>
     </div>
 
-    <div class="side_by_side" style="margin-top: 25px;">
+    <div class="side_by_side" style="margin-top: 15px;">
         <div id="scrollable-area">
 
             <!-- Display Loading Circle -->
@@ -68,7 +68,7 @@
             </table>
         </div>
     </div>
-    <div class="center" style="margin-top: 75px;">
+    <div class="center" style="margin-top: 65px;">
         <button class="button button1" (click)="goBack()" ><b>Back</b></button>
         <div *ngIf="error" class="alertcenter">
           {{ error }}

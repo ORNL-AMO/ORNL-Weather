@@ -210,14 +210,19 @@ input[type="checkbox"]{
     display: flex;
     justify-content: right;
     float: right;
-    margin-right: 4%;
+    margin-right: 2%;
   }
   
   .left { /* right side align */
     display: flex;
     justify-content: left;
     float: left;
-    margin-left: 4%;
+    margin-left: 2%;
+  }
+
+  .button {
+    padding: 15px 22px;
+    min-width: 100px;
   }
 
 
