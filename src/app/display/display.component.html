@@ -11,7 +11,8 @@
         <b>Preview Data</b>
     </header>
 </div>
-<div class="tableParent">
+
+<div class="ohno">
     <!-- TODO: Figure out something for potential tab overflow here -->
     <ng-container *ngIf="stationIDArray && stationIDArray.length>0">
       <div class="tabs" *ngFor="let id of stationIDArray">
@@ -21,6 +22,9 @@
     <ng-container *ngIf="!stationIDArray || stationIDArray.length==0">
       <div class="tabs" style="margin-top:38px"></div>
     </ng-container>
+</div>
+<div class="tableParent">
+
 
 
     <div id="scrollable-area">
@@ -71,7 +75,7 @@
         </div>
     </div>
   </div>
-<div style="margin-left: 200px; font-size: 15px;">
+<div class="rowsRemoved">
   <p><b>Number of Rows removed from {{rowString}} data: {{rowsDeleted[displayIndex]}}</b></p>
 </div>
 <div class="controls">

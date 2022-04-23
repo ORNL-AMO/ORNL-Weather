@@ -125,6 +125,9 @@ td{
 
 th{
     text-align: left;
+    padding-right: 9px;
+    padding-left: 7px;
+    max-height: 10px;
     align-content: center;
     background-color: #5a7255;
     color: white;
@@ -279,9 +282,16 @@ input[type="checkbox"]{
     margin-top: 25px;
   }
 
+  #scrollable-area{
+    overflow: overlay;
+  }
+
   #scrollable-area::-webkit-scrollbar {
     width: 9px;   /* width of the entire scrollbar */
     height: 9px;
+    background: white;
+    border-radius: 50px;
+    
   }
   #scrollable-area::-webkit-scrollbar-corner{
     background: none;
@@ -342,4 +352,11 @@ input[type="checkbox"]{
     margin-bottom: -10px;
 
 
+  }
+
+  @media only screen and (max-width: 700px){
+    .button{
+      margin-left: 11%;
+      margin-right: 11%;
+    }
   }
