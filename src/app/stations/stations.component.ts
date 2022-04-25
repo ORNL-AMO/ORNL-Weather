@@ -1,7 +1,6 @@
 import {
   Component,
   OnInit,
-  AfterViewInit,
   QueryList,
   ViewChildren,
 } from "@angular/core";
@@ -132,11 +131,12 @@ export class StationsComponent implements OnInit {
           this.checkUncheckDuplicates(i.ID.toString(), true);
         }
       }
-    } catch (e) {}
+    } catch (e) {console.log(e);
+    }
   }
 
   ngAfterViewInit() {
-    this.stationsTable.changes.subscribe((t) => {
+    this.stationsTable.changes.subscribe(() => {
       // Load previous input data if exists
       try {
         const tmp = sessionStorage.getItem("selectedArrayStations");
@@ -146,7 +146,8 @@ export class StationsComponent implements OnInit {
             this.checkUncheckDuplicates(i.ID.toString(), true);
           }
         }
-      } catch (e) {}
+      } catch (e) {console.log(e);
+      }
     });
   }
 
@@ -384,7 +385,8 @@ export class StationsComponent implements OnInit {
       if (tmp) {
         return tmp;
       }
-    } catch (e) {}
+    } catch (e) {console.log(e);
+    }
     return null;
   }
 
