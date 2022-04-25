@@ -12,7 +12,7 @@ This program is for requesting weather data from National Centers for Environmen
 - [Angular CLI](https://github.com/angular/angular-cli)
 
 ## Bugs/Non-Working Features
-- Please report bugs to `bkemp42@tntech.edu`
+- Please report bugs to `armstrongko@ornl.gov`
 
 ## Installation - Local
 - To install as a Windows program, download and run ORNL-Weather-Setup executable from latest release [here](https://github.com/ORNL-AMO/ORNL-Weather/releases/) and follow installation wizard
