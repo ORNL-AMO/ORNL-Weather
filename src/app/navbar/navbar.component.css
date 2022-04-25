@@ -1,7 +1,7 @@
-body{ /* overall default styling for this page */
+body {
+  /* overall default styling for this page */
   color: #2c386b;
   font-size: 22px;
-
 }
 
 .mat-toolbar.mat-primary {
@@ -9,12 +9,10 @@ body{ /* overall default styling for this page */
   top: 0;
   z-index: 1;
   color: rgb(253, 253, 253);
-
 }
 
 .spacer {
   flex: 1 1 auto;
-
 }
 
 .mat-toolbar {
@@ -26,27 +24,31 @@ body{ /* overall default styling for this page */
   display: inline-block;
   margin: 0 10px;
   color: rgb(253, 253, 253);
-  text-decoration: none; 
+  text-decoration: none;
 }
 
 .mat-toolbar dev {
   display: inline-block;
   margin-left: 20px;
   color: rgb(253, 253, 253);
-  text-decoration: underline; 
+  text-decoration: underline;
   text-decoration-color: red;
   text-align: center;
 }
 
-div.cent cent {text-align: center;}
+div.cent cent {
+  text-align: center;
+}
 
-.navbtn { /* home button styling*/
-  background-color: #587656; 
-  border: none; 
-  color: white; /* White text */
-  padding: 13px 17px; 
-  font-size: 27px; 
-  cursor: pointer; 
+.navbtn {
+  /* home button styling*/
+  background-color: #587656;
+  border: none;
+  color: white;
+  /* White text */
+  padding: 13px 17px;
+  font-size: 27px;
+  cursor: pointer;
   border-radius: 50%;
   margin-top: 12px;
   margin-left: 12px;
@@ -54,7 +56,7 @@ div.cent cent {text-align: center;}
   margin-right: 12px;
 }
 
-
-.navbtn:hover { /* Change to green on hover */
+.navbtn:hover {
+  /* Change to green on hover */
   background-color: #839c7c;
 }

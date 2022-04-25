@@ -1,10 +1,9 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <body>
-
-    <button class="navbtn" (click)="ssClr()" routerLink="/"><i class="fa fa-home"></i></button>
-    <button class="navbtn" (click)="ssClrStationsFwd()" routerLink="/stations">Stations</button>
-    <button class="navbtn" (click)="ssClrDataFwd()" routerLink="/data">Data</button>
-    <button class="navbtn" (click)="ssClrDisplayFwd()" routerLink="/display">Display</button>
-
-
+  <button class="navbtn" (click)="ssClr()" routerLink="/">
+    <i class="fa fa-home"></i>
+  </button>
+  <button class="navbtn" (click)="ssClrStationsFwd()" routerLink="/stations">Stations</button>
+  <button class="navbtn" (click)="ssClrDataFwd()" routerLink="/data">Data</button>
+  <button class="navbtn" routerLink="/display">Display</button>
 </body>

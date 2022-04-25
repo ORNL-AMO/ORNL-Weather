@@ -1,69 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
-
-
-
-<body>
-  <div class="center" style="margin-top:30px;">
-      <label for="ZipCode"><b>Search</b></label>
-  </div>
-
-
-  <div class="zipParent">
-
+  <body>
+    <div class="center" style="margin-top:30px;">
+      <label for="ZipCode">
+        <b>Search</b>
+      </label>
+    </div>
+    <div class="zipParent">
       <div class="center" id="zipBox">
-          <input class="zip" name="zipcode" #zipcode id="zipcode" type="text"
-                 size=18 (click)="distDropdown=true" (keyup)="checkInput()" (keyup.enter)="acceptVariables()" autocomplete="none">
-
-         <div class="center" id="dropdown" tabindex="-1">
-           <div id="scrollable-area" *ngIf="matchList.length>0 && zipcode.value.toString().length>=4 && !matchList.includes(zipcode.value.toString()) && distDropdown">
-               <table fixed-table-headers="scrollable-area">
-                   <tr *ngFor = "let entry of matchList">
-                       <td class="rows" (click)=setCity(entry)>{{entry}}</td>
-                   </tr>
-               </table>
-           </div>
-         </div>
+        <input class="zip" name="zipcode" #zipcode id="zipcode" type="text" size=18 (click)="distDropdown=true" (keyup)="checkInput()" (keyup.enter)="acceptVariables()" autocomplete="none">
+        <div class="center" id="dropdown" tabindex="-1">
+          <div id="scrollable-area" *ngIf="matchList.length>0 && zipcode.value.toString().length>=4 && !matchList.includes(zipcode.value.toString()) && distDropdown">
+            <table fixed-table-headers="scrollable-area">
+              <tr *ngFor="let entry of matchList">
+                <td class="rows" (click)=setCity(entry)>{{entry}}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
       </div>
-
-
-
       <div *ngIf="dispError" class="alertcenter" style="margin-top:45px;">
         {{ zError }}
       </div>
-      <div class="center" >
+      <div class="center">
         <label class="tooltip" style="margin-left: 275px; margin-top: 13px;">
           <img id="image" src="assets/info.png" height="20px">
           <span class="tooltiptext">
-            <h1><b>Search Options:</b></h1>
-            <p><b>Search by Zip Code (e.g. "37830")</b></p>
-            <p><b>Search by City (e.g. "Oak Ridge, TN")</b></p>
-            <p><b>Search by State (e.g. "TN" or "Tennessee")</b></p>
-            <p><b>Enter Station ID (e.g. "72427053868")</b></p>
-            <p><b>Multi-Location Search (e.g. "37830; 38501; Nashville, TN")</b></p>
-
+            <h1>
+              <b>Search Options:</b>
+            </h1>
+            <p>
+              <b>Search by Zip Code (e.g. "37830")</b>
+            </p>
+            <p>
+              <b>Search by City (e.g. "Oak Ridge, TN")</b>
+            </p>
+            <p>
+              <b>Search by State (e.g. "TN" or "Tennessee")</b>
+            </p>
+            <p>
+              <b>Enter Station ID (e.g. "72427053868")</b>
+            </p>
+            <p>
+              <b>Multi-Location Search (e.g. "37830; 38501; Nashville, TN")</b>
+            </p>
           </span>
-      </label>
-
+        </label>
       </div>
       <!-- Display potential errors regarding input data to user -->
-
-
       <div class="center" style="margin-top:85px;">
-        <label class="distance"><b>Distance (miles)</b></label>
+        <label class="distance">
+          <b>Distance (miles)</b>
+        </label>
       </div>
-
       <div class="center">
-        <!-- <mat-form-field appearance="legacy" floatLabel="never" style="width:220px"  style="text-align:center">
-          <mat-label>Select Distance</mat-label>
-          <mat-select name="distance" #distance id="distance">
-            <mat-option value="10">10 miles</mat-option>
-            <mat-option value="25">25 miles</mat-option>
-            <mat-option value="50">50 miles</mat-option>
-            <mat-option value="100">100 miles</mat-option>
-          </mat-select>
-        </mat-form-field>-->
-        <label class = select>
+        <label class=select>
           <select name="distance" #distance id="distance" (change)="updateCachedInputs()">
             <option value=" ">Select Distance</option>
             <option value="10">10 miles</option>
@@ -73,60 +64,36 @@
           </select>
         </label>
       </div>
-
-  </div>
-
-  <div *ngIf="dispError" class="alertcenter">
-    {{ dError }}
-  </div>
-
-
-  <div class="center" style="margin-top:100px;">
-    <label class='labelStartDate'>
-      <b>Start Date</b>
-    </label>
-
-    <label class='labelEndDate'>
-      <b>End Date</b>
-    </label>
-  </div>
-
-  <div class="center">
-    <div class="startParent">
-      <input class='startDate' #startdate type="date" id="start-date" name="start-date" (change)="updateCachedInputs()">
-      <div *ngIf="dispError" class="alertcenter">{{ sError }}</div>
     </div>
-    <div class="endParent">
-      <input class='endDate' #enddate type="date" id="end-date" name="end-date" (change)="updateCachedInputs()">
-      <div *ngIf="dispError" class="alertcenter">{{ eError }}</div>
+    <div *ngIf="dispError" class="alertcenter">
+      {{ dError }}
     </div>
-
-  </div>
-
-    <!--<div class="startDate">
-    <mat-form-field appearance="legacy" floatLabel="never">
-      <input #startdate type="date" id="start-date" name="start-date" matInput [matDatepicker]="picker1" placeholder="mm/dd/yyyy">
-      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-      <mat-datepicker #picker1 #datepickercolor color="accent"></mat-datepicker>
-    </mat-form-field>
+    <div class="center" style="margin-top:100px;">
+      <label class='labelStartDate'>
+        <b>Start Date</b>
+      </label>
+      <label class='labelEndDate'>
+        <b>End Date</b>
+      </label>
     </div>
-
-    <div class="endDate">
-    <mat-form-field appearance="legacy" floatLabel="never">
-      <input placeholder="mm/dd/yyyy" #enddate type="date" id="end-date" name="end-date"matInput [matDatepicker]="picker2" placeholder="mm/dd/yyyy">
-      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-      <mat-datepicker #picker2 #datepickercolor color="accent"></mat-datepicker>
-    </mat-form-field> -->
-
-  <div class="center" style="margin-top: 100px;">
-    <button class="button button1" (click)="acceptVariables()" ><b>Station Select</b></button>
-  </div>
-  <div *ngIf="errors" class="alertcenter">
-    {{ errors }}
-  </div>
-</body>
-
-
-<img src= "assets/industrial-skyline.png" class="footer"/>
-
+    <div class="center">
+      <div class="startParent">
+        <input class='startDate' #startdate type="date" id="start-date" name="start-date" (change)="updateCachedInputs()">
+        <div *ngIf="dispError" class="alertcenter">{{ sError }}</div>
+      </div>
+      <div class="endParent">
+        <input class='endDate' #enddate type="date" id="end-date" name="end-date" (change)="updateCachedInputs()">
+        <div *ngIf="dispError" class="alertcenter">{{ eError }}</div>
+      </div>
+    </div>
+    <div class="center" style="margin-top: 100px;">
+      <button class="button button1" (click)="acceptVariables()">
+        <b>Station Select</b>
+      </button>
+    </div>
+    <div *ngIf="errors" class="alertcenter">
+      {{ errors }}
+    </div>
+  </body>
+  <img src="assets/industrial-skyline.png" class="footer" />
 </html>

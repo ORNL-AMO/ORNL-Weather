@@ -1,15 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
-
+import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { Router } from "@angular/router";
+import { CommonModule } from "@angular/common";
 
 @Component({
-  selector: 'app-data',
-  templateUrl: './data.component.html',
-  styleUrls: ['./data.component.css']
+  selector: "app-data",
+  templateUrl: "./data.component.html",
+  styleUrls: ["./data.component.css"],
 })
-
 export class DataComponent implements OnInit {
   dataTypesArray: any[] = [];
   years = 0;
@@ -18,44 +16,75 @@ export class DataComponent implements OnInit {
   endDate: any = null;
   startStr = "";
   endStr = "";
-  headers = ['Data Types']
+  headers = ["Data Types"];
   // NOTE: masterSelected: [0]=display [1]=All, [2]=hourly, [3]=daily, [4]=monthly, [5]=misc
-  masterSelected:boolean[] = [];
-  checklist:any;
-  checkedList:any;
-  displayList:any[] = [];
-  sendingDataList:string[] = []
-  stationDataTypes:string[] = []
-  stationDataObjs:any[] = []
+  masterSelected: boolean[] = [];
+  checklist: any;
+  checkedList: any;
+  displayList: any[] = [];
+  sendingDataList: string[] = [];
+  stationDataTypes: string[] = [];
+  stationDataObjs: any[] = [];
   isLoading = true;
   dispHeaders = false;
   stationsJSON: any = null;
   masterCheckedList: any[] = [];
-  error = ""
+  error = "";
 
   //page variables
   sendingArray: any[] = [];
 
-  constructor(private router: Router)
-    {
-      const state:any = this.router.getCurrentNavigation()!.extras.state;
-      if(state) {
-        this.stationsJSON = state.stationsJSON
-      }
+  constructor(private router: Router) {
+    const state: any = this.router.getCurrentNavigation()!.extras.state;
+    if (state) {
+      this.stationsJSON = state.stationsJSON;
     }
+  }
 
   async ngOnInit() {
-    if(this.getSessionStorageItem("startDate")) {this.startDate = JSON.parse(this.getSessionStorageItem("startDate") as string)}
-    if(this.getSessionStorageItem("endDate")) {this.endDate = JSON.parse(this.getSessionStorageItem("endDate") as string)}
-    if(this.getSessionStorageItem("sendingArrayStations")) {this.stationIDArray = JSON.parse(this.getSessionStorageItem("sendingArrayStations") as string)}
-    else {this.goBack()}
-    if(this.getSessionStorageItem("stationDataObjs")) {this.stationDataObjs = JSON.parse(this.getSessionStorageItem("stationDataObjs") as string)}
-    if(this.getSessionStorageItem("masterCheckedList")) {this.masterCheckedList = JSON.parse(this.getSessionStorageItem("masterCheckedList") as string)}
-    if(this.getSessionStorageItem("masterSelected")) {this.masterSelected = JSON.parse(this.getSessionStorageItem("masterSelected") as string)}
-    else {this.masterSelected.fill(false, 0, 5)}
-    if(this.getSessionStorageItem("numYears")) {this.years = +<any>this.getSessionStorageItem("numYears")}
-    if(this.getSessionStorageItem("startStr")) {this.startStr = this.getSessionStorageItem("startStr") as string}
-    if(this.getSessionStorageItem("endStr")) {this.endStr = this.getSessionStorageItem("endStr") as string}
+    if (this.getSessionStorageItem("startDate")) {
+      this.startDate = JSON.parse(
+        this.getSessionStorageItem("startDate") as string
+      );
+    }
+    if (this.getSessionStorageItem("endDate")) {
+      this.endDate = JSON.parse(
+        this.getSessionStorageItem("endDate") as string
+      );
+    }
+    if (this.getSessionStorageItem("sendingArrayStations")) {
+      this.stationIDArray = JSON.parse(
+        this.getSessionStorageItem("sendingArrayStations") as string
+      );
+    } else {
+      this.goBack();
+    }
+    if (this.getSessionStorageItem("stationDataObjs")) {
+      this.stationDataObjs = JSON.parse(
+        this.getSessionStorageItem("stationDataObjs") as string
+      );
+    }
+    if (this.getSessionStorageItem("masterCheckedList")) {
+      this.masterCheckedList = JSON.parse(
+        this.getSessionStorageItem("masterCheckedList") as string
+      );
+    }
+    if (this.getSessionStorageItem("masterSelected")) {
+      this.masterSelected = JSON.parse(
+        this.getSessionStorageItem("masterSelected") as string
+      );
+    } else {
+      this.masterSelected.fill(false, 0, 5);
+    }
+    if (this.getSessionStorageItem("numYears")) {
+      this.years = +(<any>this.getSessionStorageItem("numYears"));
+    }
+    if (this.getSessionStorageItem("startStr")) {
+      this.startStr = this.getSessionStorageItem("startStr") as string;
+    }
+    if (this.getSessionStorageItem("endStr")) {
+      this.endStr = this.getSessionStorageItem("endStr") as string;
+    }
 
     // https://docs.opendata.aws/noaa-ghcn-pds/readme.html
     // Helpful for finding descriptions and units of Data Types
@@ -177,40 +206,44 @@ export class DataComponent implements OnInit {
       {id:116,value:'WindEquipmentChangeDate',isSelected:false,title:'Wind Equipment Change Date',tooltip:"", type: 'misc'}
     ];
 
-    if(this.stationDataObjs.length > 0) {
-      this.isLoading = false;
-      this.displayList = this.stationDataObjs.slice()
-    }
-    if(this.stationIDArray) {
-      if(this.stationDataObjs.length == 0) {
-      this.isLoading = true;
-      await this.getStationDataTypes();
-      fetch("assets/dataTypesList.json")
-      .then((res) => res.json())
-      .then((data) =>{
-          for(let i = 0; i < data.length; i++){
-            const array: any []= []
-            if(data[i].DataTypes == this.checklist[i].value){
-              this.checklist[i].tooltip = data[i].Description
-            }
-          }
-      })
-      this.isLoading = false;
 
-        for(let i=0; i<this.checklist.length; i++) {
-          if(this.stationDataTypes.includes(this.checklist[i]["value"])) {
-            this.stationDataObjs.push(this.checklist[i])
+    if (this.stationDataObjs.length > 0) {
+      this.isLoading = false;
+      this.displayList = this.stationDataObjs.slice();
+    }
+    if (this.stationIDArray) {
+      if (this.stationDataObjs.length == 0) {
+        this.isLoading = true;
+        await this.getStationDataTypes();
+        fetch("assets/dataTypesList.json")
+          .then((res) => res.json())
+          .then((data) => {
+            for (let i = 0; i < data.length; i++) {
+              const array: any[] = [];
+              if (data[i].DataTypes == this.checklist[i].value) {
+                this.checklist[i].tooltip = data[i].Description;
+              }
+            }
+          });
+        this.isLoading = false;
+
+        for (let i = 0; i < this.checklist.length; i++) {
+          if (this.stationDataTypes.includes(this.checklist[i]["value"])) {
+            this.stationDataObjs.push(this.checklist[i]);
           }
         }
-        sessionStorage.setItem("stationDataObjs", JSON.stringify(this.stationDataObjs))
+        sessionStorage.setItem(
+          "stationDataObjs",
+          JSON.stringify(this.stationDataObjs)
+        );
       }
     }
     // Set display to All
-    const a:any = document.getElementById("typeValue") as HTMLInputElement
-    a.value = 'All'
-    this.displayList = this.stationDataObjs.slice()
-    this.masterSelected[0] = this.masterSelected[1]
-    this.isAllSelected()
+    const a: any = document.getElementById("typeValue") as HTMLInputElement;
+    a.value = "All";
+    this.displayList = this.stationDataObjs.slice();
+    this.masterSelected[0] = this.masterSelected[1];
+    this.isAllSelected();
 
     this.dispHeaders = true;
     this.getMasterList();
@@ -219,305 +252,364 @@ export class DataComponent implements OnInit {
     console.log(this.displayList);
   }
 
-
   // The master checkbox will check/ uncheck all items
   checkUncheckAll() {
-    const tmp:any = document.getElementById("typeValue") as HTMLInputElement;
-    const category:string = tmp.value;
+    const tmp: any = document.getElementById("typeValue") as HTMLInputElement;
+    const category: string = tmp.value;
     for (let i = 0; i < this.displayList.length; i++) {
       this.displayList[i].isSelected = this.masterSelected[0];
     }
 
     switch (category) {
-        case 'All':
-          this.masterSelected[1] = this.masterSelected[0]
-          if(!this.masterSelected[0]) {
-            this.masterCheckedList = []
-          }
-          break;
-        case 'Hourly':
-          this.masterSelected[2] = this.masterSelected[0]
-          if(!this.masterSelected[0]) {
-            this.masterCheckedList = this.masterCheckedList.filter(function( obj ) {
-              return obj.type != "hourly";
-            });
-          }
-          break;
+      case "All":
+        this.masterSelected[1] = this.masterSelected[0];
+        if (!this.masterSelected[0]) {
+          this.masterCheckedList = [];
+        }
+        break;
+      case "Hourly":
+        this.masterSelected[2] = this.masterSelected[0];
+        if (!this.masterSelected[0]) {
+          this.masterCheckedList = this.masterCheckedList.filter(function (
+            obj
+          ) {
+            return obj.type != "hourly";
+          });
+        }
+        break;
 
-        case 'Daily':
-          this.masterSelected[3] = this.masterSelected[0]
-          if(!this.masterSelected[0]) {
-            this.masterCheckedList = this.masterCheckedList.filter(function( obj ) {
-              return obj.type != "daily";
-            });
-          }
-          break;
-        case 'Monthly':
-          this.masterSelected[4] = this.masterSelected[0]
-          if(!this.masterSelected[0]) {
-            this.masterCheckedList = this.masterCheckedList.filter(function( obj ) {
-              return obj.type != "monthly";
-            });
-          }
-          break;
-        case 'Misc':
-          this.masterSelected[5] = this.masterSelected[0]
-          if(!this.masterSelected[0]) {
-            this.masterCheckedList = this.masterCheckedList.filter(function( obj ) {
-              return obj.type != "misc";
-            });
-          }
-          break;
+      case "Daily":
+        this.masterSelected[3] = this.masterSelected[0];
+        if (!this.masterSelected[0]) {
+          this.masterCheckedList = this.masterCheckedList.filter(function (
+            obj
+          ) {
+            return obj.type != "daily";
+          });
+        }
+        break;
+      case "Monthly":
+        this.masterSelected[4] = this.masterSelected[0];
+        if (!this.masterSelected[0]) {
+          this.masterCheckedList = this.masterCheckedList.filter(function (
+            obj
+          ) {
+            return obj.type != "monthly";
+          });
+        }
+        break;
+      case "Misc":
+        this.masterSelected[5] = this.masterSelected[0];
+        if (!this.masterSelected[0]) {
+          this.masterCheckedList = this.masterCheckedList.filter(function (
+            obj
+          ) {
+            return obj.type != "misc";
+          });
+        }
+        break;
     }
     this.getCheckedItemList();
   }
 
   // Check All Checkbox Checked
   isAllSelected() {
-    this.masterSelected[0] = this.displayList.every(function(item:any) {
+    this.masterSelected[0] = this.displayList.every(function (item: any) {
       return item.isSelected == true;
-    })
-    const tmp:any = document.getElementById("typeValue") as HTMLInputElement;
-    const category:string = tmp.value;
+    });
+    const tmp: any = document.getElementById("typeValue") as HTMLInputElement;
+    const category: string = tmp.value;
     switch (category) {
-        case 'All':
-          this.masterSelected[1] = this.masterSelected[0]
-          break;
-        case 'Hourly':
-          this.masterSelected[2] = this.masterSelected[0]
-          break;
-        case 'Daily':
-          this.masterSelected[3] = this.masterSelected[0]
-          break;
-        case 'Monthly':
-          this.masterSelected[4] = this.masterSelected[0]
-          break;
-        case 'Misc':
-          this.masterSelected[5] = this.masterSelected[0]
-          break;
-  }
+      case "All":
+        this.masterSelected[1] = this.masterSelected[0];
+        break;
+      case "Hourly":
+        this.masterSelected[2] = this.masterSelected[0];
+        break;
+      case "Daily":
+        this.masterSelected[3] = this.masterSelected[0];
+        break;
+      case "Monthly":
+        this.masterSelected[4] = this.masterSelected[0];
+        break;
+      case "Misc":
+        this.masterSelected[5] = this.masterSelected[0];
+        break;
+    }
     this.getCheckedItemList();
   }
-  getMasterList(){
+  getMasterList() {
     for (let i = 0; i < this.displayList.length; i++) {
-      if(this.displayList[i].isSelected)
+      if (this.displayList[i].isSelected)
         this.masterCheckedList.push(this.displayList[i]);
     }
   }
   // Get List of Checked Items
-  getCheckedItemList(){
-    let temp: any[] = []
-    for (var i = 0; i < this.masterCheckedList.length; i++){
-        temp.push(this.masterCheckedList[i])
+  getCheckedItemList() {
+    let temp: any[] = [];
+    for (var i = 0; i < this.masterCheckedList.length; i++) {
+      temp.push(this.masterCheckedList[i]);
     }
     this.checkedList = [];
     for (var i = 0; i < this.displayList.length; i++) {
-      if(this.displayList[i].isSelected) {
+      if (this.displayList[i].isSelected) {
         this.checkedList.push(this.displayList[i]);
       }
     }
 
-    for (var i = 0; i < this.checkedList.length; i++){
-      if(!temp.includes(this.checkedList[i])){
-        temp.push(this.checkedList[i])
+    for (var i = 0; i < this.checkedList.length; i++) {
+      if (!temp.includes(this.checkedList[i])) {
+        temp.push(this.checkedList[i]);
       }
     }
 
-    temp = temp.filter(function( obj ) {
+    temp = temp.filter(function (obj) {
       return obj.isSelected === true;
     });
 
-    temp = temp.reduce((a,b)=>{
-      if(!a.find((data: { id: any; }) => data.id === b.id)){
+    temp = temp.reduce((a, b) => {
+      if (!a.find((data: { id: any }) => data.id === b.id)) {
         a.push(b);
       }
       return a;
-    }, [])
-    temp = temp.sort((a,b)=> a.id - b.id)
+    }, []);
+    temp = temp.sort((a, b) => a.id - b.id);
     this.masterCheckedList = temp.slice();
     console.log(this.masterCheckedList);
 
-    for(const displayType of this.displayList) {
-      const tmpInd:any = this.stationDataObjs.findIndex((obj:any) => {
+    for (const displayType of this.displayList) {
+      const tmpInd: any = this.stationDataObjs.findIndex((obj: any) => {
         return obj.id == displayType.id;
       });
       this.stationDataObjs[tmpInd].isSelected = displayType.isSelected;
     }
-    sessionStorage.setItem("masterSelected", JSON.stringify(this.masterSelected))
-    sessionStorage.setItem("stationDataObjs", JSON.stringify(this.stationDataObjs))
-    sessionStorage.setItem("masterCheckedList", JSON.stringify(this.masterCheckedList))
+    sessionStorage.setItem(
+      "masterSelected",
+      JSON.stringify(this.masterSelected)
+    );
+    sessionStorage.setItem(
+      "stationDataObjs",
+      JSON.stringify(this.stationDataObjs)
+    );
+    sessionStorage.setItem(
+      "masterCheckedList",
+      JSON.stringify(this.masterCheckedList)
+    );
   }
 
-  async getStationDataTypes(){
-    for(let i=0; i<this.stationIDArray.length; i++) {
-      await fetch(`https://www.ncei.noaa.gov/data/local-climatological-data/access/${this.startDate.year}/${this.stationIDArray[i]}.csv`)
-      .then((res) => res.text())
-      .then((data) =>{
-        console.log("Got Test CSV File for " + this.stationIDArray[i]);
-        let csv = data;
-        const csvheaders = csv.substring(0, csv.search("\n")).replace(/['"]+/g, '').split(/,/);
-        csv = csv.replace(/['"]+/g, '')
+  async getStationDataTypes() {
+    for (let i = 0; i < this.stationIDArray.length; i++) {
+      await fetch(
+        `https://www.ncei.noaa.gov/data/local-climatological-data/access/${this.startDate.year}/${this.stationIDArray[i]}.csv`
+      )
+        .then((res) => res.text())
+        .then((data) => {
+          console.log("Got Test CSV File for " + this.stationIDArray[i]);
+          let csv = data;
+          const csvheaders = csv
+            .substring(0, csv.search("\n"))
+            .replace(/['"]+/g, "")
+            .split(/,/);
+          csv = csv.replace(/['"]+/g, "");
 
-        // Hourly
-        const startDateObj = new Date(+this.startDate.year, +this.startDate.month-1, this.startDate.day)
-        const oneDayData = this.trimToDates(csv, startDateObj)
-        const dayLines = oneDayData.split("\n")
-        for(let j = 1; j < dayLines.length-1; j++) {
-          const currLine = dayLines[j].split(",")
-          for(let k = 9; k < csvheaders.length; k++) {
-            if(currLine[k] && !this.stationDataTypes.includes(csvheaders[k-1])) {
-              this.stationDataTypes.push(csvheaders[k-1]);
-            }
-          }
-        }
-
-        // Daily
-        let counter = 0;
-        let sodInd = csv.indexOf(',SOD');
-        while(counter<10 && sodInd != -1) {
-          const firstInd = csv.lastIndexOf('\n', sodInd)
-          const dailyLine = csv.substring(firstInd, csv.indexOf('\n', firstInd+1)).split(",")
-          if(dailyLine.length>0) {
-            for(let k = 9; k < csvheaders.length; k++) {
-              if(dailyLine[k] && !this.stationDataTypes.includes(csvheaders[k-1])) {
-                this.stationDataTypes.push(csvheaders[k-1]);
+          // Hourly
+          const startDateObj = new Date(
+            +this.startDate.year,
+            +this.startDate.month - 1,
+            this.startDate.day
+          );
+          const oneDayData = this.trimToDates(csv, startDateObj);
+          const dayLines = oneDayData.split("\n");
+          for (let j = 1; j < dayLines.length - 1; j++) {
+            const currLine = dayLines[j].split(",");
+            for (let k = 9; k < csvheaders.length; k++) {
+              if (
+                currLine[k] &&
+                !this.stationDataTypes.includes(csvheaders[k - 1])
+              ) {
+                this.stationDataTypes.push(csvheaders[k - 1]);
               }
             }
           }
-          sodInd = csv.indexOf(',SOD', sodInd);
-          counter++;
-        }
 
-        // Monthly
-        counter = 0;
-        let somInd = csv.indexOf(',SOM');
-        while(counter<10 && somInd != -1) {
-          const firstInd = csv.lastIndexOf('\n', somInd)
-          const dailyLine = csv.substring(firstInd, csv.indexOf('\n', firstInd+1)).split(",")
-          if(dailyLine.length>0) {
-            for(let k = 9; k < csvheaders.length; k++) {
-              if(dailyLine[k] && !this.stationDataTypes.includes(csvheaders[k-1])) {
-                this.stationDataTypes.push(csvheaders[k-1]);
+          // Daily
+          let counter = 0;
+          let sodInd = csv.indexOf(",SOD");
+          while (counter < 10 && sodInd != -1) {
+            const firstInd = csv.lastIndexOf("\n", sodInd);
+            const dailyLine = csv
+              .substring(firstInd, csv.indexOf("\n", firstInd + 1))
+              .split(",");
+            if (dailyLine.length > 0) {
+              for (let k = 9; k < csvheaders.length; k++) {
+                if (
+                  dailyLine[k] &&
+                  !this.stationDataTypes.includes(csvheaders[k - 1])
+                ) {
+                  this.stationDataTypes.push(csvheaders[k - 1]);
+                }
               }
             }
+            sodInd = csv.indexOf(",SOD", sodInd);
+            counter++;
           }
-          somInd = csv.indexOf(',SOM', sodInd);
-          counter++;
-        }
 
-        console.log("Got Data Types for " + this.stationIDArray[i]);
-      })
+          // Monthly
+          counter = 0;
+          let somInd = csv.indexOf(",SOM");
+          while (counter < 10 && somInd != -1) {
+            const firstInd = csv.lastIndexOf("\n", somInd);
+            const dailyLine = csv
+              .substring(firstInd, csv.indexOf("\n", firstInd + 1))
+              .split(",");
+            if (dailyLine.length > 0) {
+              for (let k = 9; k < csvheaders.length; k++) {
+                if (
+                  dailyLine[k] &&
+                  !this.stationDataTypes.includes(csvheaders[k - 1])
+                ) {
+                  this.stationDataTypes.push(csvheaders[k - 1]);
+                }
+              }
+            }
+            somInd = csv.indexOf(",SOM", sodInd);
+            counter++;
+          }
+
+          console.log("Got Data Types for " + this.stationIDArray[i]);
+        });
     }
   }
 
-  trimToDates(csv:string, startDate:Date) {
-    let ind = -1
+  trimToDates(csv: string, startDate: Date) {
+    let ind = -1;
     // Cannot be last day of year
-    const maxDate = new Date(+this.startDate.year, 11, 31)
-    while(ind==-1 && startDate<maxDate) {
-      const start = startDate.getFullYear() + '-' + ("0"+(startDate.getMonth()+1)).slice(-2) + '-' + ("0" + startDate.getDate()).slice(-2)
-      const startRegex = new RegExp(`[\n][0-9]*[,]*${start}`)
-      ind = csv.search(startRegex)
-      if(ind!=-1) {
+    const maxDate = new Date(+this.startDate.year, 11, 31);
+    while (ind == -1 && startDate < maxDate) {
+      const start =
+        startDate.getFullYear() +
+        "-" +
+        ("0" + (startDate.getMonth() + 1)).slice(-2) +
+        "-" +
+        ("0" + startDate.getDate()).slice(-2);
+      const startRegex = new RegExp(`[\n][0-9]*[,]*${start}`);
+      ind = csv.search(startRegex);
+      if (ind != -1) {
         csv = csv.slice(ind);
       }
-      startDate.setDate(startDate.getDate()+1);
+      startDate.setDate(startDate.getDate() + 1);
     }
 
     // If start date is Dec 31, only one day will be in csv at this point
-    if(!(startDate>maxDate)) {
-      ind = -1
-      while(ind==-1 && startDate<maxDate) {
-        const end = startDate.getFullYear() + '-' + ("0"+(startDate.getMonth())+1).slice(-2) + '-' + ("0" + startDate.getDate()).slice(-2)
-        ind = csv.search(end)
-        if(ind!=-1) {
-          csv = csv.slice(0, csv.indexOf("\n", csv.lastIndexOf(end))+1)
-        }
-        else{
-          startDate.setDate(startDate.getDate()+1);
+    if (!(startDate > maxDate)) {
+      ind = -1;
+      while (ind == -1 && startDate < maxDate) {
+        const end =
+          startDate.getFullYear() +
+          "-" +
+          ("0" + startDate.getMonth() + 1).slice(-2) +
+          "-" +
+          ("0" + startDate.getDate()).slice(-2);
+        ind = csv.search(end);
+        if (ind != -1) {
+          csv = csv.slice(0, csv.indexOf("\n", csv.lastIndexOf(end)) + 1);
+        } else {
+          startDate.setDate(startDate.getDate() + 1);
         }
       }
     }
 
-    return csv
+    return csv;
   }
 
-  sendToDisplay(){
-    if(this.masterCheckedList.length == 0) {
-      this.error = "Please Select One or More Data Types"
+  sendToDisplay() {
+    if (this.masterCheckedList.length == 0) {
+      this.error = "Please Select One or More Data Types";
       const context = this;
-      setTimeout(function(){
-        context.error = ""
-      }, 5000)
-    }
-    else {
-      for(const i of this.masterCheckedList) {
-        this.sendingDataList.push(i.value)
+      setTimeout(function () {
+        context.error = "";
+      }, 5000);
+    } else {
+      for (const i of this.masterCheckedList) {
+        this.sendingDataList.push(i.value);
       }
-      sessionStorage.setItem("masterSelected", JSON.stringify(this.masterSelected))
-      sessionStorage.setItem("stationDataObjs", JSON.stringify(this.stationDataObjs))
-      sessionStorage.setItem("masterCheckedList", JSON.stringify(this.masterCheckedList))
-      sessionStorage.setItem("sendingDataList", JSON.stringify(this.sendingDataList))
-      this.router.navigate(["/display"], {state: { stationsJSON: this.stationsJSON}})
+      sessionStorage.setItem(
+        "masterSelected",
+        JSON.stringify(this.masterSelected)
+      );
+      sessionStorage.setItem(
+        "stationDataObjs",
+        JSON.stringify(this.stationDataObjs)
+      );
+      sessionStorage.setItem(
+        "masterCheckedList",
+        JSON.stringify(this.masterCheckedList)
+      );
+      sessionStorage.setItem(
+        "sendingDataList",
+        JSON.stringify(this.sendingDataList)
+      );
+      this.router.navigate(["/display"], {
+        state: { stationsJSON: this.stationsJSON },
+      });
     }
   }
 
-  goBack(){
-    sessionStorage.removeItem("stationDataObjs")
-    sessionStorage.removeItem("masterSelected")
-    sessionStorage.removeItem("masterCheckedList")
-    sessionStorage.removeItem("sendingDataList")
-    if(!this.getSessionStorageItem("stationID")) {
-      this.router.navigate(["/stations"], {state: { stationsJSON: this.stationsJSON}})
-    }
-    else {
-      this.router.navigate(["/home"], {state: { stationsJSON: this.stationsJSON}})
+  goBack() {
+    sessionStorage.removeItem("stationDataObjs");
+    sessionStorage.removeItem("masterSelected");
+    sessionStorage.removeItem("masterCheckedList");
+    sessionStorage.removeItem("sendingDataList");
+    if (!this.getSessionStorageItem("stationID")) {
+      this.router.navigate(["/stations"], {
+        state: { stationsJSON: this.stationsJSON },
+      });
+    } else {
+      this.router.navigate(["/home"], {
+        state: { stationsJSON: this.stationsJSON },
+      });
     }
   }
 
-  getSessionStorageItem(str:string) {
+  getSessionStorageItem(str: string) {
     try {
       const tmp = sessionStorage.getItem(str);
-      if(tmp) {
-        return tmp
+      if (tmp) {
+        return tmp;
       }
     } catch (e) {}
-    return null
+    return null;
   }
 
-  onChangeType(type: any){
-    if(type.target.value == "All"){
-      this.displayList = this.stationDataObjs.slice()
-      this.masterSelected[0] = this.masterSelected[1]
-      this.isAllSelected()
-    }
-    else if(type.target.value == "Hourly"){
-      this.masterSelected[0] = this.masterSelected[2]
-      this.displayList = this.stationDataObjs.filter(function( obj:any ) {
+  onChangeType(type: any) {
+    if (type.target.value == "All") {
+      this.displayList = this.stationDataObjs.slice();
+      this.masterSelected[0] = this.masterSelected[1];
+      this.isAllSelected();
+    } else if (type.target.value == "Hourly") {
+      this.masterSelected[0] = this.masterSelected[2];
+      this.displayList = this.stationDataObjs.filter(function (obj: any) {
         return obj.type == "hourly";
       });
-      this.isAllSelected()
-    }
-    else if(type.target.value == "Daily"){
-      this.masterSelected[0] = this.masterSelected[3]
-      this.displayList = this.stationDataObjs.filter(function( obj:any ) {
+      this.isAllSelected();
+    } else if (type.target.value == "Daily") {
+      this.masterSelected[0] = this.masterSelected[3];
+      this.displayList = this.stationDataObjs.filter(function (obj: any) {
         return obj.type == "daily";
       });
-      this.isAllSelected()
-    }
-    else if(type.target.value == "Monthly"){
-      this.masterSelected[0] = this.masterSelected[4]
-      this.displayList = this.stationDataObjs.filter(function( obj:any ) {
+      this.isAllSelected();
+    } else if (type.target.value == "Monthly") {
+      this.masterSelected[0] = this.masterSelected[4];
+      this.displayList = this.stationDataObjs.filter(function (obj: any) {
         return obj.type == "monthly";
       });
-      this.isAllSelected()
-    }
-    else if(type.target.value == "Misc"){
-      this.masterSelected[0] = this.masterSelected[5]
-      this.displayList = this.stationDataObjs.filter(function( obj:any ) {
+      this.isAllSelected();
+    } else if (type.target.value == "Misc") {
+      this.masterSelected[0] = this.masterSelected[5];
+      this.displayList = this.stationDataObjs.filter(function (obj: any) {
         return obj.type == "misc";
       });
-      this.isAllSelected()
+      this.isAllSelected();
     }
   }
 }

@@ -1,18 +1,21 @@
-div{
+div {
   z-index: 1;
 }
+
 table {
   width: 85%;
 }
 
-.right { /* right side align */
+.right {
+  /* right side align */
   display: flex;
   justify-content: right;
   float: right;
   margin-right: 11%;
 }
 
-.left { /* right side align */
+.left {
+  /* right side align */
   display: flex;
   justify-content: left;
   float: left;
@@ -20,47 +23,46 @@ table {
 }
 
 .alertcenter {
-position: absolute;
-left: 0;
-right: 0;
-margin-left: auto;
-margin-right: auto;
-margin-top:8px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 8px;
 
-color: #cc0033;
-font-size: 13.5px;
-line-height: 15px;
+  color: #cc0033;
+  font-size: 13.5px;
+  line-height: 15px;
 
-display: flex;
-justify-content: center;
-float: center;
-text-align: center;
+  display: flex;
+  justify-content: center;
+  float: center;
+  text-align: center;
 }
 
-h1{
+h1 {
   text-align: center;
   color: #2b376b;
   font-size: 30px;
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
   z-index: 1;
-
 }
 
-table{
-  font-family: 'Lato', sans-serif;
+table {
+  font-family: "Lato", sans-serif;
   border-collapse: collapse;
   width: 100%;
   background: white;
   z-index: 1;
-  }
+}
 
-
-td{
+td {
   align-content: center;
   text-align: left;
   z-index: 1;
 }
-th{
+
+th {
   padding: 8px;
   text-align: left;
   align-content: center;
@@ -72,6 +74,7 @@ th{
   font-size: 17;
   z-index: 1;
 }
+
 label {
   display: block;
   min-height: 100%;
@@ -79,19 +82,20 @@ label {
   cursor: pointer;
 }
 
-tr:nth-child(even){
+tr:nth-child(even) {
   background-color: #f2f2f2;
   z-index: 1;
 }
 
-tr:nth-child(odd){
+tr:nth-child(odd) {
   background-color: #dbdada;
   z-index: 1;
 }
 
-tr:hover{
+tr:hover {
   background-color: #839c7c;
 }
+
 #scrollable-area {
   margin: auto;
   min-height: 100px;
@@ -105,15 +109,15 @@ tr:hover{
   z-index: 1;
 }
 
-
-
 .center {
   display: flex;
   justify-content: center;
 }
+
 .rows {
   display: table-cell;
 }
+
 .group {
   justify-content: center;
   text-align: center;
@@ -149,71 +153,70 @@ tr:hover{
   margin-right: 23%;
   min-width: 147px;
   z-index: 1;
-
 }
-
 
 .button:hover {
   background-color: #839c7c;
 }
 
-
 .footer {
   height: auto;
-  width:100%;
-  bottom:0;
-  position:fixed;
+  width: 100%;
+  bottom: 0;
+  position: fixed;
   z-index: 0;
   justify-content: center;
 }
 
 @media screen and (max-height: 650px) {
-
-  .footer {display:none;}
-
+  .footer {
+    display: none;
+  }
 }
 
-#scrollable-area{
+#scrollable-area {
   overflow: overlay;
 }
 
 #scrollable-area::-webkit-scrollbar {
-  width: 9px;   /* width of the entire scrollbar */
+  width: 9px;
+  /* width of the entire scrollbar */
   height: 9px;
   background: white;
   border-radius: 50px;
-  
 }
-#scrollable-area::-webkit-scrollbar-corner{
+
+#scrollable-area::-webkit-scrollbar-corner {
   background: none;
   border-bottom-right-radius: 20px;
 }
-#scrollable-area::-webkit-scrollbar-track {
 
+#scrollable-area::-webkit-scrollbar-track {
   border-radius: 50px;
   border: double black 1px;
 }
 
 #scrollable-area::-webkit-scrollbar-thumb {
   background-color: rgb(179, 179, 179);
-    border-radius: 20px;
-    border: 1px solid black;
-
+  border-radius: 20px;
+  border: 1px solid black;
 }
 
-input[type="checkbox"]{
+input[type="checkbox"] {
   cursor: pointer;
 }
 
-@media only screen and (max-width: 600px){
-  .right { /* right side align */
+@media only screen and (max-width: 600px) {
+  .right {
+    /* right side align */
     display: flex;
     justify-content: right;
     float: right;
     margin-right: 2%;
   }
-  
-  .left { /* right side align */
+
+  .left {
+    /* right side align */
     display: flex;
     justify-content: left;
     float: left;
@@ -224,6 +227,4 @@ input[type="checkbox"]{
     padding: 15px 22px;
     min-width: 100px;
   }
-
-
 }

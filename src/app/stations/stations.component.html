@@ -1,48 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
-<body>
-    <!-- <div class="center" style="margin-top:100px;">
-        <button class="button button1" (click)="getStations()"><b>Get Stations</b></button>
-    </div> -->
-
+  <body>
     <div class="center" style="margin-top:0px;">
-        <h1><b>Stations in Area</b></h1>
+      <h1>
+        <b>Stations in Area</b>
+      </h1>
     </div>
     <div id="scrollable-area">
-        <table fixed-table-headers="scrollable-area">
-
-            <tr>
-                <th *ngFor = "let column of headers">
-                    {{column}}
-                </th>
-            </tr>
-
-            <ng-container #stationsTable *ngFor="let zip of stationsArray; let i = index">
-              <tr *ngIf="zipsList.length>0">
-                <td class="group" colspan="4">{{zipsList[i]}}</td>
-              </tr>
-              <tr *ngFor = "let row of zip">
-                  <label class="rows"><td class="center"><input type="checkbox" name="{{row.ID}}" id="{{row.ID+row.OTHER}}" (change)="getSelect($event, row.ID)"></td></label>
-                  <label class="rows" for="{{row.ID+row.OTHER}}"><td class="rows">{{row.ID}}</td></label>
-                  <label class="rows" for="{{row.ID+row.OTHER}}"><td class="rows">{{row.NAME}}</td></label>
-                  <label class="rows" for="{{row.ID+row.OTHER}}"><td class="rows">{{row.OTHER}}</td></label>
-              </tr>
-            </ng-container>
-
-        </table>
+      <table fixed-table-headers="scrollable-area">
+        <tr>
+          <th *ngFor="let column of headers">
+            {{column}}
+          </th>
+        </tr>
+        <ng-container #stationsTable *ngFor="let zip of stationsArray; let i = index">
+          <tr *ngIf="zipsList.length>0">
+            <td class="group" colspan="4">{{zipsList[i]}}</td>
+          </tr>
+          <tr *ngFor="let row of zip">
+            <label class="rows">
+              <td class="center">
+                <input type="checkbox" name="{{row.ID}}" id="{{row.ID+row.OTHER}}" (change)="getSelect($event, row.ID)">
+              </td>
+            </label>
+            <label class="rows" for="{{row.ID+row.OTHER}}">
+              <td class="rows">{{row.ID}}</td>
+            </label>
+            <label class="rows" for="{{row.ID+row.OTHER}}">
+              <td class="rows">{{row.NAME}}</td>
+            </label>
+            <label class="rows" for="{{row.ID+row.OTHER}}">
+              <td class="rows">{{row.OTHER}}</td>
+            </label>
+          </tr>
+        </ng-container>
+      </table>
     </div>
     <div class="left">
-        <button class="button button1" (click)="goBack()" ><b>Back</b></button>
+      <button class="button button1" (click)="goBack()">
+        <b>Back</b>
+      </button>
     </div>
     <div class="right">
-        <button class="button button1" (click)="sendToData()"><b>Data</b></button>
+      <button class="button button1" (click)="sendToData()">
+        <b>Data</b>
+      </button>
     </div>
     <div *ngIf="error" class="alertcenter" style="margin-top: 30px">
       {{ error }}
     </div>
     <div class="center">
-        <img src= "assets/industrial-skyline-2.png" class="footer"/>
+      <img src="assets/industrial-skyline-2.png" class="footer" />
     </div>
-</body>
-
+  </body>
 </html>

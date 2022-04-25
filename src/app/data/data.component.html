@@ -1,88 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
-
-
-    <div class="center" style="margin-top:10px; margin-bottom:-10px;">
-        <h1><b>Available Data Types for Selection</b></h1>
-    </div>
-    <div class="center2">
-        <select name="typeValue" #typeValue id="typeValue" (change)="onChangeType($event)">
-            <option value="All">All Data Types</option>
-            <option value="Hourly">Hourly Data Types</option>
-            <option value="Daily">Daily Data Types</option>
-            <option value="Monthly">Monthly Data Types</option>
-            <option value="Misc">Miscellaneous Data Types</option>
-        </select>
-    </div>
-
-    <div class="side_by_side" style="margin-top: 15px;">
-        <div id="scrollable-area">
-
-            <!-- Display Loading Circle -->
-            <div class="loading" *ngIf="isLoading" >
-                <!-- Hourglass Loading Spinner -->
-                <div class="cell">
-                    <div class="pl pl-hourglass"></div>
-                    <div class="pl-name">Checking for Available Data Types...</div>
-                </div>
-            </div>
-
-              <table *ngIf="!isLoading">
-
-                      <th *ngIf="dispHeaders">
-                          <label class="center"><input type="checkbox" [(ngModel)]="masterSelected[0]" name="list_name" value="m1"
-                          (change)="checkUncheckAll()"></label>
-                      </th>
-                      <th *ngIf="dispHeaders">Type</th>
-                      <th *ngIf="dispHeaders">Description</th>
-                      <th *ngIf="dispHeaders">Info</th>
-
-
-                  <tr *ngFor="let item of displayList">
-                      <label class="rows"><td class="center"><input type="checkbox" id="{{item.id}}" [(ngModel)]="item.isSelected" name="list_name" value="{{item.id}}" (change)="isAllSelected()"></td></label>
-                        <label class="rows" for="{{item.id}}">
-                            <td class="rows">
-
-                                {{item.value}}
-                            </td>
-                        </label>
-                        <label class="rows" for="{{item.id}}"><td class="rows">{{item.title}}</td></label>
-                        <label class="tooltip" for="{{item.id}}" >
-                            <img id="image" src="assets/info.png">
-                            <span class="tooltiptext">{{item.tooltip}}</span>
-                        </label>
-
-
-                  </tr>
-              </table>
+  <div class="center" style="margin-top:10px; margin-bottom:-10px;">
+    <h1>
+      <b>Available Data Types for Selection</b>
+    </h1>
+  </div>
+  <div class="center2">
+    <select name="typeValue" #typeValue id="typeValue" (change)="onChangeType($event)">
+      <option value="All">All Data Types</option>
+      <option value="Hourly">Hourly Data Types</option>
+      <option value="Daily">Daily Data Types</option>
+      <option value="Monthly">Monthly Data Types</option>
+      <option value="Misc">Miscellaneous Data Types</option>
+    </select>
+  </div>
+  <div class="side_by_side" style="margin-top: 15px;">
+    <div id="scrollable-area">
+      <!-- Display Loading Circle -->
+      <div class="loading" *ngIf="isLoading">
+        <!-- Hourglass Loading Spinner -->
+        <div class="cell">
+          <div class="pl pl-hourglass"></div>
+          <div class="pl-name">Checking for Available Data Types...</div>
         </div>
-        <div id="scrollable-area2">
-            <table fixed-table-headers="scrollable-area">
-                <th class="dataList" style="text-align: center;">
-                    Selected Data Types
-                </th>
-                <tr *ngFor="let item of masterCheckedList">
-                        <td class="rows"><label>{{item.value}}</label></td>
-                </tr>
-
-            </table>
-        </div>
+      </div>
+      <table *ngIf="!isLoading">
+        <th *ngIf="dispHeaders">
+          <label class="center">
+            <input type="checkbox" [(ngModel)]="masterSelected[0]" name="list_name" value="m1" (change)="checkUncheckAll()">
+          </label>
+        </th>
+        <th *ngIf="dispHeaders">Type</th>
+        <th *ngIf="dispHeaders">Description</th>
+        <th *ngIf="dispHeaders">Info</th>
+        <tr *ngFor="let item of displayList">
+          <label class="rows">
+            <td class="center">
+              <input type="checkbox" id="{{item.id}}" [(ngModel)]="item.isSelected" name="list_name" value="{{item.id}}" (change)="isAllSelected()">
+            </td>
+          </label>
+          <label class="rows" for="{{item.id}}">
+            <td class="rows">
+              {{item.value}}
+            </td>
+          </label>
+          <label class="rows" for="{{item.id}}">
+            <td class="rows">{{item.title}}</td>
+          </label>
+          <label class="tooltip" for="{{item.id}}">
+            <img id="image" src="assets/info.png">
+            <span class="tooltiptext">{{item.tooltip}}</span>
+          </label>
+        </tr>
+      </table>
     </div>
-    <div class="center" style="margin-top: 65px;">
-        <button class="button button1" (click)="goBack()" ><b>Back</b></button>
-        <div *ngIf="error" class="alertcenter">
-          {{ error }}
-        </div>
-        <button class="button button1" (click)="sendToDisplay()"><b>Display Data</b></button>
+    <div id="scrollable-area2">
+      <table fixed-table-headers="scrollable-area">
+        <th class="dataList" style="text-align: center;"> Selected Data Types </th>
+        <tr *ngFor="let item of masterCheckedList">
+          <td class="rows">
+            <label>{{item.value}}</label>
+          </td>
+        </tr>
+      </table>
     </div>
-
-
-
-
-
-    <div class="center">
-        <img src= "assets/industrial-skyline-2.png" class="footer"/>
+  </div>
+  <div class="center" style="margin-top: 65px;">
+    <button class="button button1" (click)="goBack()">
+      <b>Back</b>
+    </button>
+    <div *ngIf="error" class="alertcenter">
+      {{ error }}
     </div>
-
-
+    <button class="button button1" (click)="sendToDisplay()">
+      <b>Display Data</b>
+    </button>
+  </div>
+  <div class="center">
+    <img src="assets/industrial-skyline-2.png" class="footer" />
+  </div>
 </html>

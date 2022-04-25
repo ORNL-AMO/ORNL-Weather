@@ -1,130 +1,123 @@
 <!-- Displaying Data from NCEI Data Pull -->
-
 <div class="right">
-    <button class="button button1" (click)="downloadCSV()">Download as CSV</button>
-    <button class="button button1" value="Download JSON" (click)="exportTojson()">Download as JSON</button>
-
-
+  <button class="button button1" (click)="downloadCSV()">Download as CSV</button>
+  <button class="button button1" value="Download JSON" (click)="exportTojson()">Download as JSON</button>
 </div>
 <div class="center" style="margin-top:10px;">
-    <header>
-        <b>Preview Data</b>
-    </header>
+  <header>
+    <b>Preview Data</b>
+  </header>
 </div>
-
-<div class="ohno">
-    <!-- TODO: Figure out something for potential tab overflow here -->
-    <ng-container *ngIf="stationIDArray && stationIDArray.length>0">
-      <div class="tabs" *ngFor="let id of stationIDArray">
-        <div class="tab" (click)=changeStation(id) id={{id}}><label id="tabsLabel" for={{id}}>{{id}}</label></div>
+<div class="tabOverflow">
+  <!-- TODO: Figure out something for potential tab overflow here -->
+  <ng-container *ngIf="stationIDArray && stationIDArray.length>0">
+    <div class="tabs" *ngFor="let id of stationIDArray">
+      <div class="tab" (click)=changeStation(id) id={{id}}>
+        <label id="tabsLabel" for={{id}}>{{id}}</label>
       </div>
-    </ng-container>
-    <ng-container *ngIf="!stationIDArray || stationIDArray.length==0">
-      <div class="tabs" style="margin-top:38px"></div>
-    </ng-container>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="!stationIDArray || stationIDArray.length==0">
+    <div class="tabs" style="margin-top:38px"></div>
+  </ng-container>
 </div>
 <div class="tableParent">
-
-
-
-    <div id="scrollable-area">
-
-        <!-- Display Loading Circle -->
-        <div class="loading" *ngIf="isLoading" >
-            <!-- Hourglass Loading Spinner -->
-            <div class="cell">
-                <div class="pl pl-hourglass"></div>
-                <div class="pl-name">Compiling your Data...This May Take Several Minutes</div>
-            </div>
-        </div>
-
-        <ng-container *ngIf="!stationDataDisplayEmpty()">
-          <table class="table" *ngIf="!isLoading">
-
-           <!-- Display Headers -->
-              <th *ngFor = "let row of headers">
-                  {{row}}
-              </th>
-              <tr class="empty_rate" (click)="toggleEmptyAvail()" style="font-style:italic;cursor:pointer;">
-                <td *ngIf="years>0 && emptyAvail" id="empty_rate_text">Empty Data Rate</td>
-                <td *ngIf="years>0 && !emptyAvail" id="empty_rate_text">Reported Data Rate</td>
-                <td id="empty_rate_text">--</td>
-                <td id="empty_rate_text">--</td>
-                <td id="empty_rate_text">--</td>
-                <td id="empty_rate_text">--</td>
-                <td id="empty_rate_text">--</td>
-                <td id="empty_rate_text">--</td>
-                <td id="empty_rate_text">--</td>
-                <td id="empty_rate_text">--</td>
-                <ng-container *ngIf="emptyAvail"><td *ngFor="let row of headersStats[displayIndex]">{{row['EMPTY']}} of {{row['TOTAL']}}: {{row['EMP_RATE']}}%</td></ng-container>
-                <ng-container *ngIf="!emptyAvail"><td *ngFor="let row of headersStats[displayIndex]">{{row['TOTAL']-row['EMPTY']}} of {{row['TOTAL']}}: {{row['AVAIL_RATE']}}%</td></ng-container>
-              </tr>
-
-              <!-- Display Data -->
-              <tr *ngFor = "let row of displayObj[displayIndex] | paginate: config">
-                  <td *ngFor = "let column of row" class="rows">{{ column }}</td>
-              </tr>
-          </table>
-        </ng-container>
-        <div class="loading" *ngIf="stationDataDisplayEmpty()" style="font-size:24px">
-            <!-- Hourglass Loading Spinner -->
-            <div *ngIf="stationIDArray">
-              No {{typeValue.value}} Data Available For Station {{stationIDArray[displayIndex]}}
-            </div>
-
-        </div>
+  <div id="scrollable-area">
+    <!-- Display Loading Circle -->
+    <div class="loading" *ngIf="isLoading">
+      <!-- Hourglass Loading Spinner -->
+      <div class="cell">
+        <div class="pl pl-hourglass"></div>
+        <div class="pl-name">Compiling your Data...This May Take Several Minutes</div>
+      </div>
+    </div>
+    <ng-container *ngIf="!stationDataDisplayEmpty()">
+      <table class="table" *ngIf="!isLoading">
+        <!-- Display Headers -->
+        <th *ngFor="let row of headers">
+          {{row}}
+        </th>
+        <tr class="empty_rate" (click)="toggleEmptyAvail()" style="font-style:italic;cursor:pointer;">
+          <td *ngIf="years>0 && emptyAvail" id="empty_rate_text">Empty Data Rate</td>
+          <td *ngIf="years>0 && !emptyAvail" id="empty_rate_text">Reported Data Rate</td>
+          <td id="empty_rate_text">--</td>
+          <td id="empty_rate_text">--</td>
+          <td id="empty_rate_text">--</td>
+          <td id="empty_rate_text">--</td>
+          <td id="empty_rate_text">--</td>
+          <td id="empty_rate_text">--</td>
+          <td id="empty_rate_text">--</td>
+          <td id="empty_rate_text">--</td>
+          <ng-container *ngIf="emptyAvail">
+            <td *ngFor="let row of headersStats[displayIndex]">{{row['EMPTY']}} of {{row['TOTAL']}}: {{row['EMP_RATE']}}%</td>
+          </ng-container>
+          <ng-container *ngIf="!emptyAvail">
+            <td *ngFor="let row of headersStats[displayIndex]">{{row['TOTAL']-row['EMPTY']}} of {{row['TOTAL']}}: {{row['AVAIL_RATE']}}%</td>
+          </ng-container>
+        </tr>
+        <!-- Display Data -->
+        <tr *ngFor="let row of displayObj[displayIndex] | paginate: config">
+          <td *ngFor="let column of row" class="rows">{{ column }}</td>
+        </tr>
+      </table>
+    </ng-container>
+    <div class="loading" *ngIf="stationDataDisplayEmpty()" style="font-size:24px">
+      <!-- Hourglass Loading Spinner -->
+      <div *ngIf="stationIDArray"> No {{typeValue.value}} Data Available For Station {{stationIDArray[displayIndex]}}
+      </div>
     </div>
   </div>
+</div>
 <div class="rowsRemoved">
-  <p><b>Number of Rows removed from {{rowString}} data: {{rowsDeleted[displayIndex]}}</b></p>
+  <p>
+    <b>Number of Rows removed from {{rowString}} data: {{rowsDeleted[displayIndex]}}</b>
+  </p>
 </div>
 <div class="controls">
   <div id="backButton">
-    <button class="button button1" (click)="goBack()" ><b>Back</b></button>
+    <button class="button button1" (click)="goBack()">
+      <b>Back</b>
+    </button>
   </div>
-
-  <div class = centerPagi>
+  <div class=centerPagi>
     <pagination-template #p="paginationApi" [id]="config.id" (pageChange)="config.currentPage = $event">
       <div class="custom-pagination">
         <div class="pagination-previous" [class.disabled]="p.isFirstPage()">
           <span *ngIf="!p.isFirstPage()" (click)="p.previous()">
-              <img src= "assets/arrowLeft.png" class="arrow">
+            <img src="assets/arrowLeft.png" class="arrow">
           </span>
         </div>
-        <div *ngIf="p.isFirstPage()" style="display:inline-flex;width:17.5px;height:30"> </div>
+        <div *ngIf="p.isFirstPage()" style="display:inline-flex;width:17.5px;height:30"></div>
         <div class="page-number" *ngFor="let page of p.pages" [class.current]="p.getCurrent() === page.value">
-            <label class="page-number-label" for="page.label" *ngIf="p.getCurrent() !== page.value" (click)="p.setCurrent(page.value)"><span>{{ page.label }}</span></label>
-            <div *ngIf="p.getCurrent() === page.value">
-              <span>{{ page.label }}</span>
-            </div>
+          <label class="page-number-label" for="page.label" *ngIf="p.getCurrent() !== page.value" (click)="p.setCurrent(page.value)">
+            <span>{{ page.label }}</span>
+          </label>
+          <div *ngIf="p.getCurrent() === page.value">
+            <span>{{ page.label }}</span>
+          </div>
         </div>
         <div class="pagination-next" [class.disabled]="p.isLastPage()">
-          <span *ngIf="!p.isLastPage()" (click)="p.next()"> <img src= "assets/arrowRight.png" class="arrow"> </span>
+          <span *ngIf="!p.isLastPage()" (click)="p.next()">
+            <img src="assets/arrowRight.png" class="arrow">
+          </span>
         </div>
-        <div *ngIf="p.isLastPage()" style="display:inline-flex;width:17.5px;height:30"> </div>
+        <div *ngIf="p.isLastPage()" style="display:inline-flex;width:17.5px;height:30"></div>
       </div>
     </pagination-template>
   </div>
-
   <select name="typeValue" #typeValue id="typeValue" (change)="onChangeType($event)">
-      <option value="All">All Data</option>
-      <option value="Hourly">Hourly Data</option>
-      <option value="Daily">Daily Data</option>
-      <option value="Monthly">Monthly Data</option>
-
+    <option value="All">All Data</option>
+    <option value="Hourly">Hourly Data</option>
+    <option value="Daily">Daily Data</option>
+    <option value="Monthly">Monthly Data</option>
   </select>
-
   <select name="pagingValue" #pagingValue id="pagingValue" (change)="onChange($event)">
-        <option value="10">10 per page</option>
-        <option value="25">25 per page</option>
-        <option value="50">50 per page</option>
-        <option value="100">100 per page</option>
+    <option value="10">10 per page</option>
+    <option value="25">25 per page</option>
+    <option value="50">50 per page</option>
+    <option value="100">100 per page</option>
   </select>
-
-
-
 </div>
-
 <div class="center">
-    <img src= "assets/industrial-skyline-2.png" class="footer"/>
+  <img src="assets/industrial-skyline-2.png" class="footer" />
 </div>

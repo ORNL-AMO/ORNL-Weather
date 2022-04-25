@@ -1,8 +1,7 @@
-
-body{ /* overall default styling for this page */
+body {
+  /* overall default styling for this page */
   color: #2c386b;
   font-size: 24px;
-
 }
 
 .tooltip {
@@ -15,7 +14,7 @@ body{ /* overall default styling for this page */
 .tooltip .tooltiptext {
   visibility: hidden;
   opacity: 0;
-  transition: visibility 0s .5s, opacity .5s linear;
+  transition: visibility 0s 0.5s, opacity 0.5s linear;
   width: 300px;
   background-color: white;
   border: 1.5px solid #587656;
@@ -24,8 +23,7 @@ body{ /* overall default styling for this page */
   padding: 5px 0;
   border-radius: 6px;
   padding-top: 18px;
-  
- 
+
   /* Position the tooltip text - see examples below! */
   position: absolute;
   z-index: 1;
@@ -35,230 +33,200 @@ body{ /* overall default styling for this page */
 .tooltip:hover .tooltiptext {
   visibility: visible;
   opacity: 1;
-  transition: opacity .5s linear;
+  transition: opacity 0.5s linear;
   cursor: auto;
   padding-top: 18px;
 }
+
 .tooltip .tooltiptext {
   top: -75px;
   left: 105%;
 }
 
-table{
-font-family: 'Lato', sans-serif;
-border-collapse: collapse;
-width: 100%;
-opacity: 1;
-background: white;
+table {
+  font-family: "Lato", sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  opacity: 1;
+  background: white;
 }
 
 tr {
   height: 1px;
   background: white;
 }
+
 td {
   align-content: center;
   background: white;
   cursor: pointer;
 }
 
-td:hover{
-background-color: #ddd;
+td:hover {
+  background-color: #ddd;
 }
+
 #scrollable-area {
-position: absolute;
-z-index: 2;
-margin-top: 37px;
-width: 200px;
-height: 180px;
-border: 1.5px solid #587656;
-/* border-top: 0px; */
-overflow-y: scroll;
-border-bottom-left-radius: 5px;
-border-bottom-right-radius: 5px;
-background: white;
-background: rgb(255,255,255);
-justify-content: center;
-font-size: 14px;
-text-align: center;
+  position: absolute;
+  z-index: 2;
+  margin-top: 37px;
+  width: 200px;
+  height: 180px;
+  border: 1.5px solid #587656;
+  /* border-top: 0px; */
+  overflow-y: scroll;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  background: white;
+  background: rgb(255, 255, 255);
+  justify-content: center;
+  font-size: 14px;
+  text-align: center;
 }
+
 #scrollable-area::-webkit-scrollbar {
-width: 9px;   /* width of the entire scrollbar */
-height: 9px;
+  width: 9px;
+  /* width of the entire scrollbar */
+  height: 9px;
 }
-#scrollable-area::-webkit-scrollbar-corner{
-background: none;
-border-bottom-right-radius: 20px;
+
+#scrollable-area::-webkit-scrollbar-corner {
+  background: none;
+  border-bottom-right-radius: 20px;
 }
+
 #scrollable-area::-webkit-scrollbar-track {
-border: 0px;
+  border: 0px;
 }
 
 #scrollable-area::-webkit-scrollbar-thumb {
-/* background-color: rgb(0, 0, 0); */
-border-radius: 20px;
-background: gray;
-
+  /* background-color: rgb(0, 0, 0); */
+  border-radius: 20px;
+  background: gray;
 }
 
-.zipParent{
-position: relative;
-width: auto;
-height: auto;
-display: block;
-justify-content: center;
-min-height: 1px;
-height: auto;
-margin: auto;
+.zipParent {
+  position: relative;
+  width: auto;
+  height: auto;
+  display: block;
+  justify-content: center;
+  min-height: 1px;
+  height: auto;
+  margin: auto;
 }
 
 #zipcode + div {
-display: none;
+  display: none;
 }
+
 #zipBox:focus-within #dropdown {
-display: flex;
+  display: flex;
 }
-
-#zAlert {
-position: absolute;
-display: block;
-justify-content: center;
-float: center;
-}
-
 
 .startParent {
-position: relative;
-min-height: 1px;
-width: auto;
-height: auto;
-display: block;
-margin-right: 60px;
-justify-content: center;
+  position: relative;
+  min-height: 1px;
+  width: auto;
+  height: auto;
+  display: block;
+  margin-right: 60px;
+  justify-content: center;
 }
 
 .endParent {
-position: relative;
-min-height: 1px;
-width: auto;
-height: auto;
-display: block;
-margin-left: 60px;
-justify-content: center;
-}
-
-/* .card{
   position: relative;
-  background-color: #fff;
-  padding: 5px 5px;
-  clip-path: circle(4% at 4.2% 11.3%);
-  transition: all ease-in-out .6s;
-  transition: all ease-in-out .6s;
-  cursor: auto;
-  max-width: 220px;
-  z-index: 4;
-  left: 227px;
-  top: 3px;
-} */
-
-span{
-position: static;
-top: 10px;
-right: 28px;
-font-size: 11px;
-color: #2c386b;
-transition: ease-out .3s;
-
-}
-
-h1{
-margin-top: -12px;
-font-size: 15px;
-}
-p{
-font-size: 10px;
-padding:0px;
-margin-top: -10px;
-}
-/* .card:hover{
-clip-path: circle(75%);
-border-radius: 20px;
-}
-.card:hover span{
-opacity: 0;
-} */
-
-
-
-.startDate{ /* styling for start date button */
-
-  padding:10px;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  border-radius:9px;
-  border: 1.5px solid #587656;
-  color: #2c386b;
-
-  font-size: 17.4px;
-  text-align: center;
-  justify-content: center;
-  margin-top: 3px;
-  width: 200px;
-  z-index: 1;
-  cursor: pointer;
-}
-
-.endDate{ /* styling for end date button */
-
-  padding:10px;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  border-radius:9px;
-  border: 1.5px solid #587656;
-  color: #2c386b;
-
-  font-size: 17.4px;
-  text-align: center;
-  justify-content: center;
-  margin-top: 3px;
-  width: 200px;
-  
-  z-index: 1;
-  cursor: pointer;
-}
-
-
-
-/*.startDate1{
-  margin-right: 60px;
-}
-
-.endDate1{
+  min-height: 1px;
+  width: auto;
+  height: auto;
+  display: block;
   margin-left: 60px;
+  justify-content: center;
+}
 
-} */
+span {
+  position: static;
+  top: 10px;
+  right: 28px;
+  font-size: 11px;
+  color: #2c386b;
+  transition: ease-out 0.3s;
+}
 
-.distance{
+h1 {
+  margin-top: -12px;
+  font-size: 15px;
+}
+
+p {
+  font-size: 10px;
+  padding: 0px;
+  margin-top: -10px;
+}
+
+.startDate {
+  /* styling for start date button */
+
+  padding: 10px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-radius: 9px;
+  border: 1.5px solid #587656;
+  color: #2c386b;
+
+  font-size: 17.4px;
+  text-align: center;
+  justify-content: center;
+  margin-top: 3px;
+  width: 200px;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.endDate {
+  /* styling for end date button */
+
+  padding: 10px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-radius: 9px;
+  border: 1.5px solid #587656;
+  color: #2c386b;
+
+  font-size: 17.4px;
+  text-align: center;
+  justify-content: center;
+  margin-top: 3px;
+  width: 200px;
+
+  z-index: 1;
+  cursor: pointer;
+}
+
+.distance {
   z-index: 1;
 }
 
-.labelStartDate{ /* margin for start date label */
+.labelStartDate {
+  /* margin for start date label */
   margin-right: 120px;
   margin-left: 6%;
   z-index: 1;
 }
 
-.labelEndDate{ /* margin for end date label */
+.labelEndDate {
+  /* margin for end date label */
   margin-left: 120px;
   margin-right: 6%;
   z-index: 1;
 }
 
-.zip { /* zip code and distance input boxes styling and padding */
+.zip {
+  /* zip code and distance input boxes styling and padding */
   position: absolute;
   width: 220px;
-  padding:10px;
-  border-radius:9px;
+  padding: 10px;
+  border-radius: 9px;
   padding-top: 5px;
   padding-bottom: 5px;
   border: 1.5px solid #587656;
@@ -269,11 +237,13 @@ opacity: 0;
   margin-top: 5px;
   z-index: 1;
 }
+
 #distance {
-background-color: #A9A9A9;
+  background-color: #a9a9a9;
 }
 
-.button { /* default button */
+.button {
+  /* default button */
   border: none;
   color: white;
   padding: 15px 32px;
@@ -284,61 +254,53 @@ background-color: #A9A9A9;
   margin: 4px 2px;
   cursor: pointer;
   z-index: 1;
-
-
-
 }
 
-.center { /* centering */
+.center {
+  /* centering */
   display: flex;
   justify-content: center;
   float: center;
-
 }
 
-
-
-.button1 { /* color and styling of station select button */
+.button1 {
+  /* color and styling of station select button */
   border-radius: 60px;
   background-color: #587656;
 }
 
-
-.button:hover { /* change color on station select button hover */
+.button:hover {
+  /* change color on station select button hover */
   background-color: #839c7c;
 }
 
 /* Remove annoying blue highlight when input box selected */
 input:focus {
-      outline: black;
-  }
+  outline: black;
+}
 
-  input[type="date"]{
+input[type="date"] {
+  padding: 10px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-radius: 9px;
+  border: 1.5px solid #587656;
+  color: #2c386b;
+  justify-content: center;
+  font-size: 17.4px;
+  text-align: left;
+  font-family: "Lato", sans-serif;
+}
 
-      padding:10px;
-      padding-top: 4px;
-      padding-bottom: 4px;
-      border-radius:9px;
-      border: 1.5px solid #587656;
-      color: #2c386b;
-      justify-content: center;
-      font-size: 17.4px;
-      text-align: left;
-      font-family: 'Lato', sans-serif;
-  }
-
-  ::-webkit-calendar-picker-indicator{
-      color: #2c386b;
-      cursor: pointer;
-  }
-
-
+::-webkit-calendar-picker-indicator {
+  color: #2c386b;
+  cursor: pointer;
+}
 
 select {
-
   width: 240px;
-  padding:10px;
-  border-radius:9px;
+  padding: 10px;
+  border-radius: 9px;
   padding-top: 5.5px;
   padding-bottom: 5.5px;
   border: 1.5px solid #587656;
@@ -347,18 +309,16 @@ select {
   font-size: 19.1px;
   text-align: center;
   margin-top: 5px;
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
   background-color: white;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
   cursor: pointer;
   background: url("../../assets/arrow.png") 96% / 6% no-repeat white;
-
 }
 
-label
-{
+label {
   z-index: 1;
 }
 
@@ -368,53 +328,51 @@ select:focus {
 }
 
 .alertcenter {
-position: absolute;
-left: 0;
-right: 0;
-margin-left: auto;
-margin-right: auto;
-margin-top:8px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 8px;
 
-color: #cc0033;
-font-size: 13.5px;
-line-height: 15px;
+  color: #cc0033;
+  font-size: 13.5px;
+  line-height: 15px;
 
-display: flex;
-justify-content: center;
-float: center;
-text-align: center;
+  display: flex;
+  justify-content: center;
+  float: center;
+  text-align: center;
 }
 
 .footer {
   height: auto;
-  width:100%;
-  bottom:0px;
-  position:fixed;
+  width: 100%;
+  bottom: 0px;
+  position: fixed;
   z-index: 0;
   justify-content: center;
-
 }
 
 @media screen and (max-height: 625px) {
-
-  .footer {display:none;}
-
+  .footer {
+    display: none;
+  }
 }
 
-
-@media only screen and (max-width: 950px){ 
+@media only screen and (max-width: 950px) {
   .tooltip {
     position: relative;
     display: center;
     padding-right: 1.15px;
     z-index: 4;
   }
-  
+
   /* Tooltip text */
   .tooltip .tooltiptext {
     visibility: hidden;
     opacity: 0;
-    transition: visibility 0s .5s, opacity .5s linear;
+    transition: visibility 0s 0.5s, opacity 0.5s linear;
     width: 270px;
     background-color: white;
     border: 1.5px solid #587656;
@@ -423,43 +381,41 @@ text-align: center;
     padding: 5px 0;
     border-radius: 6px;
     padding-top: 18px;
-    
-   
+
     /* Position the tooltip text - see examples below! */
     position: absolute;
     z-index: 4;
   }
-  
+
   /* Show the tooltip text when you mouse over the tooltip container */
   .tooltip:hover .tooltiptext {
     visibility: visible;
     opacity: 1;
-    transition: opacity .5s linear;
+    transition: opacity 0.5s linear;
     cursor: auto;
     padding-top: 18px;
   }
+
   .tooltip .tooltiptext {
     top: 30px;
     left: -85px;
     z-index: 4;
-    
   }
 }
 
-@media only screen and (max-width: 650px){ 
-  
+@media only screen and (max-width: 650px) {
   .tooltip {
     position: relative;
     display: center;
     padding-right: 1.15px;
     z-index: 4;
   }
-  
+
   /* Tooltip text */
   .tooltip .tooltiptext {
     visibility: hidden;
     opacity: 0;
-    transition: visibility 0s .5s, opacity .5s linear;
+    transition: visibility 0s 0.5s, opacity 0.5s linear;
     width: 200px;
     background-color: white;
     border: 1.5px solid #587656;
@@ -468,28 +424,27 @@ text-align: center;
     padding: 5px 0;
     border-radius: 6px;
     padding-top: 18px;
-    
-   
+
     /* Position the tooltip text - see examples below! */
     position: absolute;
     z-index: 4;
   }
-  
+
   /* Show the tooltip text when you mouse over the tooltip container */
   .tooltip:hover .tooltiptext {
     visibility: visible;
     opacity: 1;
-    transition: opacity .5s linear;
+    transition: opacity 0.5s linear;
     cursor: auto;
     padding-top: 18px;
   }
+
   .tooltip .tooltiptext {
     top: 30px;
     left: -150px;
     z-index: 4;
-    
   }
-  
+
   .startParent {
     position: relative;
     min-height: 1px;
@@ -499,9 +454,9 @@ text-align: center;
     margin-right: 15px;
     margin-left: 5px;
     justify-content: center;
-    }
-    
-    .endParent {
+  }
+
+  .endParent {
     position: relative;
     min-height: 1px;
     width: auto;
@@ -510,144 +465,25 @@ text-align: center;
     margin-left: 15px;
     margin-right: 5px;
     justify-content: center;
-    }
-
-  .startDate{
-      width: 150px;
-      font-size: 16px;
-    }
-
-  .endDate{
-      width: 150px;
-      font-size: 16px;
-    }
-
-  .labelStartDate{
-      margin-left: 20px;
-      margin-right: 50px;
   }
 
-  .labelEndDate{
+  .startDate {
+    width: 150px;
+    font-size: 16px;
+  }
+
+  .endDate {
+    width: 150px;
+    font-size: 16px;
+  }
+
+  .labelStartDate {
+    margin-left: 20px;
+    margin-right: 50px;
+  }
+
+  .labelEndDate {
     margin-left: 50px;
     margin-right: 20px;
+  }
 }
-}
-
-/*  .mat-form-field {
-  color: #2c386b;
-  justify-content: center;
-  font-size: 19.1px;
-  border: 1.5px solid #587656;
-  background-color: white;
-  padding:10px;
-  padding-top: 3.5px;
-  padding-bottom: 3.5px;
-  border-radius:9px;
-  height: auto;
-  width: 200px;
-  margin-top: 4px;
-  font-family: 'Lato', sans-serif;
-  caret-color: #2c386b;
-  z-index: 1;
-}
-
-input{
-  caret-color: #2c386b;
-}
-
-::ng-deep .mat-form-field-wrapper{
-  margin-bottom: -1.50em;
-  margin-top: -1.1em;
-}
-
-
-
-::ng-deep.mat-datepicker-content .mat-calendar{
-  width: 220px !important;
-
-
-
-}
-
-
-
-
-
-
-
-::ng-deep .mat-select-arrow {
-  color:#2c386b!important;
-}
-
-::ng-deep .mat-select-arrow.active {
-  color:#2c386b;
-}
-::ng-deep .mat-select-arrow-selected {
-  color:#2c386b;
-}
-
-
-
-
-::ng-deep .mat-focused .mat-form-field-label {
-
-  color: #2c386b !important;
- }
-
- ::ng-deep.mat-form-field-underline {
-
-  display: none;
- }
-
-
-
- ::ng-deep .mat-form-field-label {
-
-  color: #2c386b !important;
- }
-
-
-
- mat-datepicker-toggle {
-  color: #2c386b !important;
- }
-
-
- mat-select{
-     text-align: center;
- }
-
- mat-label{
-  text-align: center !important;
-}
-
- mat-option {
-
-  color:white!important;
-  text-align: center;
-  width: auto;
-}
-
-mat-option.mat-selected {
-  color:#2c386b;
-}
-
-.not-empty-select.mat-selected {
-  color: #2c386b !important;
-}
-
-:host /deep/ .mat-select-value-text {
-  color: #2c386b !important;
-}
-
-.highlight-dates{
-  background: olive;
-  border-radius: 100%;
-}
-
-.ui-datepicker {
-  background: #333;
-  border: 1px solid #555;
-  color: #EEE;
-}
-*/
