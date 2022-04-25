@@ -14,32 +14,32 @@ export class HomeComponent implements OnInit {
   lat: any
   long: any
   dist: any;
-  stationID: string = ""
-  state: string = ""
+  stationID = ""
+  state = ""
   startDate: any;
-  startStr:string = "";
+  startStr = "";
   endDate: any;
-  endStr:string = "";
-  numYears: number = 0;
+  endStr = "";
+  numYears = 0;
   matchList: string[] = [];
-  distDropdown: boolean = false;
+  distDropdown = false;
   multiInputs: any[] = [];
 
   //other variables
-  errors: string = ""
-  sError: string = ""
-  eError: string = ""
-  zError: string = ""
-  dError: string = ""
+  errors = ""
+  sError = ""
+  eError = ""
+  zError = ""
+  dError = ""
 
-  hasError: boolean = false;
-  dispError: boolean = false;
-  dataLoaded: boolean = false;
+  hasError = false;
+  dispError = false;
+  dataLoaded = false;
   private stationsJSON: any
   private zipJSON: any;
   private statesJSON: any;
   private citiesJSON: any;
-  currDate: string = ""
+  currDate = ""
 
    constructor(private router: Router) {
     this.lat = null
@@ -56,10 +56,10 @@ export class HomeComponent implements OnInit {
 
     // Get current date
     // XXX: timezones?
-    let today = new Date();
-    let dd = String(today.getDate()).padStart(2, '0')
-    let mm = String(today.getMonth() + 1).padStart(2, '0')
-    let yyyy = today.getFullYear()
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0')
+    const mm = String(today.getMonth() + 1).padStart(2, '0')
+    const yyyy = today.getFullYear()
     this.currDate = this.currDate.concat(String(yyyy), String(mm), String(dd))
 
     // Print error if returning from empty stations dataset
@@ -69,13 +69,14 @@ export class HomeComponent implements OnInit {
       if(state) {
         if(state.err){
           this.errors = state.err
-          let context = this;
+          const context = this;
           setTimeout(function(){
             context.errors = ""
           }, 5000)
         }
       }
-    } catch (e){}
+    } catch (e){console.log(e);
+    }
   }
 
   async ngOnInit() {
@@ -87,7 +88,7 @@ export class HomeComponent implements OnInit {
     this.checkInput()
 
     // Set max dates for date selection boxes
-    let today = new Date().toISOString().split('T')[0];
+    const today = new Date().toISOString().split('T')[0];
     document.getElementsByName("start-date")[0].setAttribute('max', today);
     document.getElementsByName("end-date")[0].setAttribute('max', today);
 
@@ -155,13 +156,13 @@ export class HomeComponent implements OnInit {
   //accepts the variables being entered. converts date into a usable array for month, day and year. Also passes zip code or station id on to next function for processing. Also checks for input errors
   acceptVariables(){
     let tmp:any = document.getElementById("zipcode") as HTMLInputElement;
-    let val:string = tmp.value.toString();
+    const val:string = tmp.value.toString();
     tmp = document.getElementById("distance") as HTMLInputElement;
-    let dist:any = tmp.value;
+    const dist:any = tmp.value;
     tmp = document.getElementById("start-date") as HTMLInputElement;
-    let SD:any = tmp.value;
+    const SD:any = tmp.value;
     tmp = document.getElementById("end-date") as HTMLInputElement;
-    let ED:any = tmp.value;
+    const ED:any = tmp.value;
 
     this.hasError = false;
     this.dispError = false;
@@ -205,13 +206,13 @@ export class HomeComponent implements OnInit {
     if(!this.hasError){
 
       //splitting start and end date values into separate elements
-      let tempStart = SD.split("-");
-      let tempEnd = ED.split("-")
+      const tempStart = SD.split("-");
+      const tempEnd = ED.split("-")
 
       //creating temp objs
-      let tempHead: any[] = ['year', 'month', 'day']
-      let sObj: any[] = []
-      let eObj: any[] = []
+      const tempHead: any[] = ['year', 'month', 'day']
+      const sObj: any[] = []
+      const eObj: any[] = []
 
       //assigning month, day, year into to objects with respective value meanings
       for(let i = 0; i < 3; i++){
@@ -245,7 +246,7 @@ export class HomeComponent implements OnInit {
     if(!this.dataLoaded) {
       this.hasError = true;
       this.errors = "Data has not finished loading. Please try again momentarily."
-      let context = this;
+      const context = this;
       setTimeout(function(){
         context.errors = ""
       }, 8000)
@@ -256,8 +257,8 @@ export class HomeComponent implements OnInit {
       // Check for input formatting or missing distance value errors
       if(val.includes(';')) {   // Multi-Input
         val = val.replace(/([\s]+)/gm, ' ').replace(/([\s]*[;]+[\s]*)/gm, ';').replace(/([;]+$)|(^[;]+)/gm, '')
-        let valsArr = val.split(';')
-        for(let val of valsArr) {
+        const valsArr = val.split(';')
+        for(const val of valsArr) {
           this.checkForInputErrors(val)
           if(this.hasError) {break}
         }
@@ -271,7 +272,7 @@ export class HomeComponent implements OnInit {
         this.hasError = true;
         console.log("Start Date cannot be later than End Date")
         this.errors = "Start Date cannot be later than End Date."
-        let context = this;
+        const context = this;
         setTimeout(function(){
           context.errors = ""
         }, 8000)
@@ -281,7 +282,7 @@ export class HomeComponent implements OnInit {
         this.hasError = true;
         console.log("Date(s) missing")
         this.errors = "Please enter a valid date range."
-        let context = this;
+        const context = this;
         setTimeout(function(){
           context.errors = ""
         }, 8000)
@@ -291,7 +292,7 @@ export class HomeComponent implements OnInit {
         this.hasError = true;
         console.log("Future dates selected")
         this.errors = "Please enter a valid date range."
-        let context = this;
+        const context = this;
         setTimeout(function(){
           context.errors = ""
         }, 8000)
@@ -304,8 +305,8 @@ export class HomeComponent implements OnInit {
         }
 
         if(val.includes(';')) {   // Multiple Inputs
-          let inputArr = val.split(';')
-          for(let value of inputArr) {
+          const inputArr = val.split(';')
+          for(const value of inputArr) {
             if(value) {
               this.multiInputs.push(this.multiInputSearch(value))
             }
@@ -340,7 +341,7 @@ export class HomeComponent implements OnInit {
             this.hasError = true;
             console.log("Invalid format for input")
             this.errors = "Invalid format for input. Please enter a 5-digit zipcode, an 11-digit station ID, a state, or a city."
-            let context = this;
+            const context = this;
             setTimeout(function(){
               context.errors = ""
             }, 8000)
@@ -367,8 +368,8 @@ export class HomeComponent implements OnInit {
 
   // Get coordinates for center of input zip code
   getCoordsZip(zip: any){
-    var num: string = zip
-    let outArr: string[] = [];
+    const num: string = zip
+    const outArr: string[] = [];
     this.zipJSON.every((zipcode: any) => {
       if(zipcode.ZIPCODE == num){
         outArr.push(zipcode.LAT, zipcode.LONG, num)
@@ -389,8 +390,8 @@ export class HomeComponent implements OnInit {
 
   // Check if input station ID valid
   getStationID(val: any){
-    var num: string = val
-    var out:string = "";
+    const num: string = val
+    let out = "";
     this.stationsJSON.every((station: any) => {
       if(station.USAF.concat(station.WBAN) == num){     // Each Station ID consists of a USAF + WBAN code
         if((station.BEGIN<=this.startStr) && (station.END>=this.endStr)) {
@@ -398,8 +399,8 @@ export class HomeComponent implements OnInit {
         }
         else {    // Error if station exists but invalid date range
           console.log("Station doesn't report data within the selected period")
-          let tmpBegin = station.BEGIN.substr(0,4) + "-" + station.BEGIN.substr(4,2) + "-" + station.BEGIN.substr(6,2)
-          let tmpEnd = station.END.substr(0,4) + "-" + station.END.substr(4,2) + "-" + station.END.substr(6,2)
+          const tmpBegin = station.BEGIN.substr(0,4) + "-" + station.BEGIN.substr(4,2) + "-" + station.BEGIN.substr(6,2)
+          const tmpEnd = station.END.substr(0,4) + "-" + station.END.substr(4,2) + "-" + station.END.substr(6,2)
           this.checkZErrors(`Station ${val} reporting period (${tmpBegin}, ${tmpEnd}) is not compatible with selected dates.`)
         }
         return false
@@ -410,7 +411,7 @@ export class HomeComponent implements OnInit {
     if (out == "") {
       console.log("Station not found")
       this.checkZErrors(`Station ${val} not found. Please try again.`)
-      let context = this;
+      const context = this;
       setTimeout(function(){
         context.errors = ""
       }, 8000)
@@ -422,7 +423,7 @@ export class HomeComponent implements OnInit {
   }
 
   getState(str:string) {
-    let outArr: string[] = [];
+    const outArr: string[] = [];
     this.statesJSON.every((state: any) => {
       if(state.CODE.toUpperCase() == str.toUpperCase() || state.STATE.toUpperCase() == str.toUpperCase()){
         outArr.push(state.CODE, state.STATE);
@@ -433,7 +434,7 @@ export class HomeComponent implements OnInit {
     if(outArr.length==0) {
       console.log("State not found")
       this.checkZErrors(`State ${str} not found. Please try again.`)
-      let context = this;
+      const context = this;
       setTimeout(function(){
         context.errors = ""
       }, 3000)
@@ -445,13 +446,13 @@ export class HomeComponent implements OnInit {
   }
 
   getCity(str:string) {
-    let outArr: string[] = [];
+    const outArr: string[] = [];
     str = str.replace(/[\s]+/gi, ' ')
     str = str.replace(/(^[\s]*[,]+)|([,]+[\s]*)/g, ', ')
     str = str.trim()
     console.log(str.toUpperCase());
     this.citiesJSON.every((city: any) => {
-      let citystate:string = city.CITY.toUpperCase() + ", " + city.STATE.toUpperCase()
+      const citystate:string = city.CITY.toUpperCase() + ", " + city.STATE.toUpperCase()
       if(str.toUpperCase() == citystate){
         outArr.push(city.LAT, city.LONG, str)
         return false
@@ -461,7 +462,7 @@ export class HomeComponent implements OnInit {
     if(outArr.length==0) {
       console.log("City not found")
       this.checkZErrors(`City ${str} not found. Please try again or select one from the dropdown.`)
-      let context = this;
+      const context = this;
       setTimeout(function(){
         context.errors = ""
       }, 3000)
@@ -499,8 +500,8 @@ export class HomeComponent implements OnInit {
   // NOTE: DO NOT use as-is for final data output
   //      Needs to be reviewed for data containing , and ""
   async CSVtoJSON(val: string):Promise<string> {
-    let path: string = val
-    let jsonFile: any = []
+    const path: string = val
+    const jsonFile: any = []
     await fetch(path)
     .then((res) => res.text())
     .then((data) =>{
@@ -508,11 +509,11 @@ export class HomeComponent implements OnInit {
       //Remove "" that are automatically added
       csv = csv.replace(/['"]+/g, '')
 
-      let lines = csv.split("\n")
-      let headers = lines[0].split(",")
+      const lines = csv.split("\n")
+      const headers = lines[0].split(",")
       for(let i=1; i<lines.length; i++) {
-        let obj: any = {}
-        let currLine = lines[i].split(",")
+        const obj: any = {}
+        const currLine = lines[i].split(",")
         for(let j=0; j<headers.length; j++) {
           obj[headers[j]] = currLine[j];
         }
@@ -523,10 +524,10 @@ export class HomeComponent implements OnInit {
   }
 
   updateCachedInputs() {
-    let zip = (document.getElementById("zipcode") as HTMLInputElement).value.toString()
-    let dist = (document.getElementById("distance") as HTMLInputElement).value
-    let start = (document.getElementById("start-date") as HTMLInputElement).value
-    let end = (document.getElementById("end-date") as HTMLInputElement).value
+    const zip = (document.getElementById("zipcode") as HTMLInputElement).value.toString()
+    const dist = (document.getElementById("distance") as HTMLInputElement).value
+    const start = (document.getElementById("start-date") as HTMLInputElement).value
+    const end = (document.getElementById("end-date") as HTMLInputElement).value
 
     sessionStorage.setItem('zipcode', zip);
     sessionStorage.setItem('distance', dist);
@@ -537,10 +538,10 @@ export class HomeComponent implements OnInit {
   // Change input text box background color depending on validity of input
   checkInput() {
     this.updateCachedInputs();
-    let zipcode = document.getElementById("zipcode") as HTMLInputElement
+    const zipcode = document.getElementById("zipcode") as HTMLInputElement
     let val = zipcode.value.toString().trim()
 
-    let dist = document.getElementById("distance") as HTMLInputElement
+    const dist = document.getElementById("distance") as HTMLInputElement
     this.distDropdown = true;
 
     // Get Matching Cities List
@@ -549,7 +550,7 @@ export class HomeComponent implements OnInit {
       this.listCities(val)
     }
     else if(val.includes(';')) {
-      let lastVal = val.slice(val.lastIndexOf(';')+1).trim()
+      const lastVal = val.slice(val.lastIndexOf(';')+1).trim()
       this.matchList = []
       if(lastVal.length>=4) {
         this.listCities(lastVal)
@@ -558,10 +559,10 @@ export class HomeComponent implements OnInit {
 
     if(val.includes(';')) {   // Multi-Input
       val = val.replace(/([\s]+)/gm, ' ').replace(/([\s]*[;]+[\s]*)/gm, ';').replace(/([;]+$)|(^[;]+)/gm, '')
-      let inputs = val.split(';')
-      let needsDist: boolean = false;
-      let valid: boolean = true;
-      for(let value of inputs) {
+      const inputs = val.split(';')
+      let needsDist = false;
+      let valid = true;
+      for(const value of inputs) {
         if(!this.isCity(value) && !this.isStateFormat(value) && !this.isZip(value) && !this.isSID(value)) {
           valid = false;
           break;
@@ -633,7 +634,7 @@ export class HomeComponent implements OnInit {
 
   listCities(val:string) {
     this.citiesJSON.every((city: any) => {
-      let citystate:string = city.CITY + ", " + city.STATE
+      const citystate:string = city.CITY + ", " + city.STATE
       if(citystate.toUpperCase().includes(val.toUpperCase())) {
         this.matchList.push(citystate)
       }
@@ -642,7 +643,7 @@ export class HomeComponent implements OnInit {
   }
 
   setCity(val:string) {
-    let zipcode = document.getElementById("zipcode") as HTMLInputElement
+    const zipcode = document.getElementById("zipcode") as HTMLInputElement
     if(zipcode.value.includes(';')) {
       zipcode.value = zipcode.value.substring(0,zipcode.value.lastIndexOf(';')+1) + val + ';';
       this.checkInput();
@@ -660,7 +661,7 @@ export class HomeComponent implements OnInit {
     return /[A-Za-z\s]+[,][\s]*[A-Za-z]{2}/i.test(str);
   }
   isState(str:string){
-    let isState:boolean = false;
+    let isState = false;
     this.statesJSON.every((state: any) => {
       if(state.CODE.toUpperCase() == str.toUpperCase() || state.STATE.toUpperCase() == str.toUpperCase()){
         isState = true;
@@ -702,7 +703,7 @@ export class HomeComponent implements OnInit {
     this.dispError = true;
     this.zError = str;
 
-    let context = this;
+    const context = this;
     context.dispError = true;
     setTimeout(function(){
       context.dispError = false;
@@ -715,7 +716,7 @@ export class HomeComponent implements OnInit {
     this.dispError = true;
     this.sError = str;
 
-    let context = this;
+    const context = this;
     context.dispError = true;
     setTimeout(function(){
       context.dispError = false;
@@ -727,7 +728,7 @@ export class HomeComponent implements OnInit {
     this.dispError = true;
     this.eError = str;
 
-    let context = this;
+    const context = this;
     context.dispError = true;
     setTimeout(function(){
       context.dispError = false;
@@ -739,7 +740,7 @@ export class HomeComponent implements OnInit {
     this.dispError = true;
     this.dError = str;
 
-    let context = this;
+    const context = this;
     context.dispError = true;
     setTimeout(function(){
       context.dispError = false;
@@ -753,7 +754,7 @@ export class HomeComponent implements OnInit {
 
       console.log("Input format unknown")
       this.checkZErrors("Please enter a valid City, State, Zip Code, or 11-digit Station ID.")
-      let context = this;
+      const context = this;
       setTimeout(function(){
         context.errors = ""
       }, 8000)
@@ -762,7 +763,7 @@ export class HomeComponent implements OnInit {
     else if((this.isZip(val) || this.isCity(val)) && this.dist==" ") {
       console.log("Distance missing for zip")
       this.checkDErrors("Please select a distance when using a City or Zip Code.")
-      let context = this;
+      const context = this;
       setTimeout(function(){
         context.errors = ""
       }, 8000)
@@ -771,7 +772,7 @@ export class HomeComponent implements OnInit {
 
   getFormData(str:any) {
     if(sessionStorage.getItem(str) != null) {
-      let a:any = document.getElementById(str) as HTMLInputElement
+      const a:any = document.getElementById(str) as HTMLInputElement
       a.value = sessionStorage.getItem(str);
     }
   }

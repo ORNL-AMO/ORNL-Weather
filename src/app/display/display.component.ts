@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ngxCsv } from 'ngx-csv/ngx-csv';
 import { saveAs } from "file-saver";
-declare var require: any
+declare let require: any
 @Component({
   selector: 'app-display',
   templateUrl: './display.component.html',
@@ -54,11 +54,11 @@ export class DisplayComponent implements OnInit {
 
   //page variables
   yearsObj: any[] = [];
-  years: number = 0;
+  years = 0;
 
   //deleted row variables
   rowsDeleted: any[] = [];
-  rowString: string = "";
+  rowString = "";
   removeHourly: any[] = [];
   removeDaily: any[] = [];
   removeMonthly: any[] = [];
@@ -70,16 +70,16 @@ export class DisplayComponent implements OnInit {
   endDate: any;
   heightIndex = 0
   dataTypeObj: any[] = [];
-  displayIndex: number = 0;
-  startStr:string = "";
-  endStr:string = "";
+  displayIndex = 0;
+  startStr = "";
+  endStr = "";
   displayList: any;
   config: any;
-  emptyAvail: boolean = true;
-  public maxSize: number = 7;
-  public directionLinks: boolean = true;
-  public autoHide: boolean = false;
-  public responsive: boolean = true;
+  emptyAvail = true;
+  public maxSize = 7;
+  public directionLinks = true;
+  public autoHide = false;
+  public responsive = true;
   public labels: any = {
       previousLabel: '<--',
       nextLabel: '-->',
@@ -117,10 +117,10 @@ export class DisplayComponent implements OnInit {
 
 
   //making boolean for loading spinner
-  isLoading: boolean = true;
+  isLoading = true;
 
   constructor(private router: Router) {
-    let state:any = this.router.getCurrentNavigation()!.extras.state;
+    const state:any = this.router.getCurrentNavigation()!.extras.state;
       if(state) {
         this.stationsJSON = state.stationsJSON;
       }
@@ -157,10 +157,10 @@ export class DisplayComponent implements OnInit {
 
     for(let i=0; i<this.stationIDArray.length; i++) {
       console.log("Fetching Station Data for " + this.stationIDArray[i]);
-      let stationObj:any[] = [];
-      let stationHObj:any[] = [];
-      let stationDObj:any[] = [];
-      let stationMObj:any[] = [];
+      const stationObj:any[] = [];
+      const stationHObj:any[] = [];
+      const stationDObj:any[] = [];
+      const stationMObj:any[] = [];
       for(let j=0; j<this.years; j++) {
         await this.fetchCSV(this.yearsObj[j].toString(), Number(this.stationIDArray[i]), i, stationObj, stationHObj, stationDObj, stationMObj);
 
@@ -176,8 +176,8 @@ export class DisplayComponent implements OnInit {
     }
     console.log("Requested Data Retrieved Successfully");
     console.log(this.displayObj[this.displayIndex]);
-    for(let i of this.allHeadersStats) {
-      for(let j of i) {
+    for(const i of this.allHeadersStats) {
+      for(const j of i) {
         if(j['TOTAL']==0) {
           j['EMP_RATE'] = "0.00"
           j['AVAIL_RATE'] = "0.00"
@@ -188,8 +188,8 @@ export class DisplayComponent implements OnInit {
         }
       }
     }
-    for(let i of this.hourlyHeadersStats) {
-      for(let j of i) {
+    for(const i of this.hourlyHeadersStats) {
+      for(const j of i) {
         if(j['TOTAL']==0) {
           j['EMP_RATE'] = "0.00"
           j['AVAIL_RATE'] = "0.00"
@@ -200,8 +200,8 @@ export class DisplayComponent implements OnInit {
         }
       }
     }
-    for(let i of this.dailyHeadersStats) {
-      for(let j of i) {
+    for(const i of this.dailyHeadersStats) {
+      for(const j of i) {
         if(j['TOTAL']==0) {
           j['EMP_RATE'] = "0.00"
           j['AVAIL_RATE'] = "0.00"
@@ -212,8 +212,8 @@ export class DisplayComponent implements OnInit {
         }
       }
     }
-    for(let i of this.monthlyHeadersStats) {
-      for(let j of i) {
+    for(const i of this.monthlyHeadersStats) {
+      for(const j of i) {
         if(j['TOTAL']==0) {
           j['EMP_RATE'] = "0.00"
           j['AVAIL_RATE'] = "0.00"
@@ -237,7 +237,7 @@ export class DisplayComponent implements OnInit {
     .then((data) =>{
 
       let csv = data
-      let csvheaders = csv.substring(0, csv.search("\n")).replace(/['"]+/g, '').split(/,/); // Why use many line, when one line do trick
+      const csvheaders = csv.substring(0, csv.search("\n")).replace(/['"]+/g, '').split(/,/); // Why use many line, when one line do trick
 
       let removeHourly = 0;
       let removeDaily = 0;
@@ -269,10 +269,10 @@ export class DisplayComponent implements OnInit {
 
         // Initialize Empty Stats Object
         for(let i=0; i<this.stationIDArray.length; i++) {
-          let tmpA = []
-          let tmpH = []
-          let tmpD = []
-          let tmpM = []
+          const tmpA = []
+          const tmpH = []
+          const tmpD = []
+          const tmpM = []
           for(let j=0; j<this.dataTypeObj.length; j++) {
             tmpA.push({'TOTAL':0,'EMPTY':0,'RATE':-1})
             if(this.hourlyHeaders.includes(this.dataTypeObj[j])){
@@ -299,20 +299,20 @@ export class DisplayComponent implements OnInit {
       csv = this.trimToDates(csv, year)
 
       //splitting csv into lines and splitting the headers element
-      let lines = csv.split("\n")
+      const lines = csv.split("\n")
 
       //adding "TIME" header
       csvheaders.splice(2,0,"TIME")
 
       // Get indices of data types to filter
-      let desiredTypes: number[] = []
-      let desiredHTypes: number[] = []
-      let desiredDTypes: number[] = []
-      let desiredMTypes: number[] = []
+      const desiredTypes: number[] = []
+      const desiredHTypes: number[] = []
+      const desiredDTypes: number[] = []
+      const desiredMTypes: number[] = []
 
-      let hourly: any[] = [];
-      let daily: any[] = [];
-      let monthly: any[] = [];
+      const hourly: any[] = [];
+      const daily: any[] = [];
+      const monthly: any[] = [];
 
       //all types
       for(let i=0; i<csvheaders.length; i++) {
@@ -362,22 +362,22 @@ export class DisplayComponent implements OnInit {
 
       for(let i = 1; i < lines.length-1; i++) {
         // Data accumulators
-        let dObj: any = [];
-        let dHObj: any = [];
-        let dDObj: any = [];
-        let dMObj: any = [];
+        const dObj: any = [];
+        const dHObj: any = [];
+        const dDObj: any = [];
+        const dMObj: any = [];
 
 
         // Display accumulators
-        let obj: any = [];
-        let hObj: any = [];
-        let dayObj: any = [];
-        let mObj: any = [];
-        let currLine = lines[i].split(",")
+        const obj: any = [];
+        const hObj: any = [];
+        const dayObj: any = [];
+        const mObj: any = [];
+        const currLine = lines[i].split(",")
 
         //seperating the date element into date and time elements
-        let a = currLine[1].replace("T", " ")
-        let b = a.split(" ")
+        const a = currLine[1].replace("T", " ")
+        const b = a.split(" ")
         currLine.splice(1,0, "")
 
         //pushing the station ID, date, and time into the currLine postitions to match headers.
@@ -434,7 +434,7 @@ export class DisplayComponent implements OnInit {
           let ind = 9, indH = 9, indD = 9, indM = 9;
           let statsInd = -1, statsIndH = 0, statsIndD = 0, statsIndM = 0;
           // Yes, the parse & stringify is actually needed
-          let tmpStatsH = JSON.parse(JSON.stringify(this.hourlyHeadersStats[stationsInd])),
+          const tmpStatsH = JSON.parse(JSON.stringify(this.hourlyHeadersStats[stationsInd])),
               tmpStatsD = JSON.parse(JSON.stringify(this.dailyHeadersStats[stationsInd])),
               tmpStatsM = JSON.parse(JSON.stringify(this.monthlyHeadersStats[stationsInd])),
               tmpStatsA = JSON.parse(JSON.stringify(this.allHeadersStats[stationsInd]));
@@ -500,8 +500,8 @@ export class DisplayComponent implements OnInit {
           }
 
           if(hObj.slice(9).length > 0){
-            let tmp: string = "";
-            for (let i of hObj.slice(9)) {
+            let tmp = "";
+            for (const i of hObj.slice(9)) {
               tmp += i.toString().trim();
             } if(tmp) {
               stationHObj.push(hObj)
@@ -513,8 +513,8 @@ export class DisplayComponent implements OnInit {
             }
           }
           if(dayObj.slice(9).length > 0){
-            let tmp: string = "";
-            for (let i of dayObj.slice(9)) {
+            let tmp = "";
+            for (const i of dayObj.slice(9)) {
               tmp += i.toString().trim();
             } if(tmp) {
               stationDObj.push(dayObj)
@@ -526,8 +526,8 @@ export class DisplayComponent implements OnInit {
             }
           }
           if(mObj.slice(9).length > 0){
-            let tmp: string = "";
-            for (let i of mObj.slice(9)) {
+            let tmp = "";
+            for (const i of mObj.slice(9)) {
               tmp += i.toString().trim();
             } if(tmp) {
               stationMObj.push(mObj)
@@ -540,8 +540,8 @@ export class DisplayComponent implements OnInit {
           }
 
           if(obj.slice(9).length > 0){
-            let tmp: string = "";
-            for (let i of obj.slice(9)) {
+            let tmp = "";
+            for (const i of obj.slice(9)) {
               tmp += i.toString().trim();
             } if(tmp) {
               stationObj.push(obj);
@@ -567,9 +567,9 @@ export class DisplayComponent implements OnInit {
 
   //triggers download of array data into a csv to users computer.
   downloadCSV(){
-    let filename = "NCEI_Weather_Data";
+    const filename = "NCEI_Weather_Data";
 
-    var options = {
+    const options = {
       fieldSeparator: ',',
       showLabels: true,
       headers: this.headers
@@ -579,7 +579,7 @@ export class DisplayComponent implements OnInit {
   }
 
   emptyValues(obj: any){
-    let checking: Boolean = true;
+    const checking = true;
 
   }
 
@@ -638,11 +638,11 @@ export class DisplayComponent implements OnInit {
     const { convertArrayToCSV } = require('convert-array-to-csv');
     const converter = require('convert-array-to-csv');
 
-    let filename = "NCEI_Weather_Data";
-    let header = this.headers;
-    var temp: string = "";
+    const filename = "NCEI_Weather_Data";
+    const header = this.headers;
+    let temp = "";
     for(let i = 0; i < this.displayObj.length; i++){
-      var csvFromArrayOfArrays: string = convertArrayToCSV(this.displayObj[i], {
+      const csvFromArrayOfArrays: string = convertArrayToCSV(this.displayObj[i], {
         header,
         separator: ','
       });
@@ -650,42 +650,42 @@ export class DisplayComponent implements OnInit {
     }
     temp = temp.substring(0, temp.length-1)
 
-    let exportData = JSON.parse(await this.CSVtoJSON(temp))
+    const exportData = JSON.parse(await this.CSVtoJSON(temp))
     return saveAs(
       new Blob([JSON.stringify(exportData, null, 2)], { type: 'JSON' }), `${filename}.json`
     );
   }
 
   async CSVtoJSON(val: string):Promise<string> {
-    let path: string = val
-    let jsonFile: any = []
+    const path: string = val
+    const jsonFile: any = []
 
     let csv = val
     //Remove "" that are automatically added
     csv = csv.replace(/['"]+/g, '')
 
-    let lines = csv.split("\n")
-    let headers = lines[0].split(",")
+    const lines = csv.split("\n")
+    const headers = lines[0].split(",")
     for(let i=1; i<lines.length; i++) {
-      let obj: any = {}
-      let currLine = lines[i].split(",")
+      const obj: any = {}
+      const currLine = lines[i].split(",")
       for(let j=0; j<headers.length; j++) {
         obj[headers[j]] = currLine[j];
       }
       jsonFile.push(obj)
-    };
+    }
     return JSON.stringify(jsonFile)
   }
 
   trimToDates(csv:string, year:string) {
-    let tempStartDateObj = new Date(+this.startDate.year, +this.startDate.month-1, this.startDate.day)
+    const tempStartDateObj = new Date(+this.startDate.year, +this.startDate.month-1, this.startDate.day)
     let ind = -1
-    let minDate = new Date(+this.startDate.year, 0, 1)
-    let maxDate = new Date(+this.endDate.year, 11, 31)
+    const minDate = new Date(+this.startDate.year, 0, 1)
+    const maxDate = new Date(+this.endDate.year, 11, 31)
 
     while(year == this.startDate.year && ind==-1 && tempStartDateObj>=minDate) {
-      let start = tempStartDateObj.getFullYear() + '-' + ("0"+(tempStartDateObj.getMonth()+1)).slice(-2) + '-' + ("0" + tempStartDateObj.getDate()).slice(-2)
-      let startRegex = new RegExp(`[\n][0-9]*[,]*${start}`)
+      const start = tempStartDateObj.getFullYear() + '-' + ("0"+(tempStartDateObj.getMonth()+1)).slice(-2) + '-' + ("0" + tempStartDateObj.getDate()).slice(-2)
+      const startRegex = new RegExp(`[\n][0-9]*[,]*${start}`)
       ind = csv.search(startRegex)
       if(ind!=-1) {
         csv = csv.slice(ind);
@@ -695,10 +695,10 @@ export class DisplayComponent implements OnInit {
       }
     }
 
-    let tempEndDateObj = new Date(+this.endDate.year, +this.endDate.month-1, this.endDate.day)
+    const tempEndDateObj = new Date(+this.endDate.year, +this.endDate.month-1, this.endDate.day)
     ind = -1
     while(year == this.endDate.year && ind==-1 && tempEndDateObj<=maxDate) {
-      let end = tempEndDateObj.getFullYear() + '-' + ("0"+(tempEndDateObj.getMonth()+1)).slice(-2) + '-' + ("0" + tempEndDateObj.getDate()).slice(-2)
+      const end = tempEndDateObj.getFullYear() + '-' + ("0"+(tempEndDateObj.getMonth()+1)).slice(-2) + '-' + ("0" + tempEndDateObj.getDate()).slice(-2)
       ind = csv.search(end)
       if(ind!=-1) {
         csv = csv.slice(0, csv.indexOf("\n", csv.lastIndexOf(end))+1)
@@ -712,8 +712,8 @@ export class DisplayComponent implements OnInit {
 
   changeStation(id:any) {
     this.displayIndex = this.stationIDArray.indexOf(id)
-    let tab:any = document.getElementById(id)
-    let allTabs:any = document.getElementsByClassName("tab")
+    const tab:any = document.getElementById(id)
+    const allTabs:any = document.getElementsByClassName("tab")
     this.config.currentPage = 1;
     for(let i=0; i<allTabs.length; i++) {
       allTabs[i].style.backgroundColor=null;
@@ -727,7 +727,7 @@ export class DisplayComponent implements OnInit {
 
   stationDataDisplayEmpty() {
     if(this.headersStats[this.displayIndex]) {
-      for(let row of this.headersStats[this.displayIndex]) {
+      for(const row of this.headersStats[this.displayIndex]) {
         if(row['TOTAL']>0) {
           return false;
         }
@@ -738,7 +738,7 @@ export class DisplayComponent implements OnInit {
 
   getSessionStorageItem(str:string) {
     try {
-      let tmp = sessionStorage.getItem(str);
+      const tmp = sessionStorage.getItem(str);
       if(tmp) {
         return tmp
       }

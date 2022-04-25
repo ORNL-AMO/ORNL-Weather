@@ -21,9 +21,9 @@ export class StationsComponent implements OnInit {
   stationID:any = "";
   state:any = "";
   startDate:any = null;
-  startStr:string = "";
+  startStr = "";
   endDate:any = null;
-  endStr:string = "";
+  endStr = "";
   stationsJSON:any = null;
   multiInputs: string[] = [];
   zipsList: string[] = [];
@@ -32,13 +32,13 @@ export class StationsComponent implements OnInit {
   sendingArray: any[] = [];
   numYears: any = null;
   headers: any;
-  error: string = "";
+  error = "";
 
   @ViewChildren('stationsTable') stationsTable: QueryList<any>;
 
   constructor(private router: Router) {
     // Get data from home page
-      let state:any = this.router.getCurrentNavigation()!.extras.state;
+      const state:any = this.router.getCurrentNavigation()!.extras.state;
       if(state) {
         this.stationsJSON = state.stationsJSON;
       }
@@ -86,10 +86,10 @@ export class StationsComponent implements OnInit {
 
     // Load previous input data if exists
     try {
-      let tmp = sessionStorage.getItem("selectedArrayStations");
+      const tmp = sessionStorage.getItem("selectedArrayStations");
       if(tmp) {
         this.selectedArray = JSON.parse(tmp)
-        for(let i of this.selectedArray) {
+        for(const i of this.selectedArray) {
           this.checkUncheckDuplicates(i.ID.toString(), true)
         }
       }
@@ -101,10 +101,10 @@ export class StationsComponent implements OnInit {
     this.stationsTable.changes.subscribe(t => {
       // Load previous input data if exists
       try {
-        let tmp = sessionStorage.getItem("selectedArrayStations");
+        const tmp = sessionStorage.getItem("selectedArrayStations");
         if(tmp) {
           this.selectedArray = JSON.parse(tmp)
-          for(let i of this.selectedArray) {
+          for(const i of this.selectedArray) {
             this.checkUncheckDuplicates(i.ID.toString(), true)
           }
         }
@@ -115,8 +115,8 @@ export class StationsComponent implements OnInit {
 
   getStations() {
     if(this.multiInputs.length>0) {   // Multi-Input Search
-      let allStationIDs: boolean = true;
-      for(let i in this.multiInputs) {
+      let allStationIDs = true;
+      for(const i in this.multiInputs) {
         if(this.multiInputs[i].length == 3){   // Lat, Lon, Zip or City
           this.getStationsZip(this.multiInputs[i][0], this.multiInputs[i][1]);
           this.zipsList.push(this.multiInputs[i][2])
@@ -165,17 +165,17 @@ export class StationsComponent implements OnInit {
 
   getStationsZip(lat:string, long:string) {
     // Check each station for distance, date range
-    let tmpStationsArr: any[] = []
+    const tmpStationsArr: any[] = []
     this.stationsJSON.forEach((station: any) => {
       // Get station distance from zip code coordinates
-      let distance = this.Haversine(lat, long, station.LAT, station.LON)
+      const distance = this.Haversine(lat, long, station.LAT, station.LON)
 
       // Store valid stations and data required for display
       if(distance<this.dist && this.startStr>station.BEGIN && this.endStr<station.END) {
-        let tmp: any[] = []
+        const tmp: any[] = []
         this.headers = ['', 'Station ID', 'Station Name', 'Distance(Miles)']
-        let headers: any[] = ['NAME', 'ID', 'OTHER']
-        let id:string = ""
+        const headers: any[] = ['NAME', 'ID', 'OTHER']
+        let id = ""
         id = id.concat(String(station.USAF), String(station.WBAN))
         tmp[headers[0]] = station["STATION NAME"]
         tmp[headers[1]] = id
@@ -189,7 +189,7 @@ export class StationsComponent implements OnInit {
     console.log("Matching Stations:");
     console.log(tmpStationsArr)
     if(tmpStationsArr.length == 0) {
-      let error:string = "No matching stations found. Try increasing distance."
+      const error = "No matching stations found. Try increasing distance."
       this.router.navigate(["/home"], {state: {err: error}})
     }
     else {
@@ -198,16 +198,16 @@ export class StationsComponent implements OnInit {
   }
 
   getStationsState(str:string) {
-    let tmpStationsArr: any[] = []
+    const tmpStationsArr: any[] = []
     this.stationsJSON.forEach((station: any) => {
       // Store valid stations and data required for display
       if(station.CTRY=="US" && str==station.STATE && this.startStr>station.BEGIN && this.endStr<station.END) {
-        let tmp: any[] = []
+        const tmp: any[] = []
         this.headers = ['', 'Station ID', 'Station Name', 'Coordinates']
-        let headers: any[] = ['NAME', 'ID', 'OTHER']
-        let id:string = ""
+        const headers: any[] = ['NAME', 'ID', 'OTHER']
+        let id = ""
         id = id.concat(String(station.USAF), String(station.WBAN))
-        let coords:string = ""
+        let coords = ""
         coords = coords.concat(String(station.LAT), ", ", String(station.LON))
         tmp[headers[0]] = station["STATION NAME"]
         tmp[headers[1]] = id
@@ -219,7 +219,7 @@ export class StationsComponent implements OnInit {
     console.log("Matching Stations:");
     console.log(tmpStationsArr)
     if(tmpStationsArr.length == 0) {
-      let error:string = "No matching stations found. Try another search method"
+      const error = "No matching stations found. Try another search method"
       this.router.navigate(["/home"], {state: {err: error}})
     }
     else {
@@ -228,8 +228,8 @@ export class StationsComponent implements OnInit {
   }
 
   //// Selection Functions
-  getSelect(ev: any, val: String){
-      let obj = {
+  getSelect(ev: any, val: string){
+      const obj = {
         ID: val,
       };
 
@@ -239,15 +239,15 @@ export class StationsComponent implements OnInit {
       }
       else{
         this.checkUncheckDuplicates(obj.ID.toString(), false);
-        let el = this.selectedArray.find((itm) => itm.ID === val);
+        const el = this.selectedArray.find((itm) => itm.ID === val);
         if (el) this.selectedArray.splice(this.selectedArray.indexOf(el), 1);
       }
       sessionStorage.setItem('selectedArrayStations', JSON.stringify(this.selectedArray));
     }
 
     checkUncheckDuplicates(id:string, val:boolean) {
-      var dupStations = <HTMLInputElement[]><any>document.getElementsByName(id);
-      for(var i = 0; i < dupStations.length; i++) {
+      const dupStations = <HTMLInputElement[]><any>document.getElementsByName(id);
+      for(let i = 0; i < dupStations.length; i++) {
         dupStations[i].checked = val;
       }
     }
@@ -255,13 +255,13 @@ export class StationsComponent implements OnInit {
     sendToData(){
       if(this.selectedArray.length == 0) {
         this.error = "Please Select One or More Stations"
-        let context = this;
+        const context = this;
         setTimeout(function(){
           context.error = ""
         }, 5000)
       }
       else {
-        for(let index in this.selectedArray){
+        for(const index in this.selectedArray){
           if(!this.sendingArray.includes(this.selectedArray[index].ID))
           this.sendingArray.push(this.selectedArray[index].ID)
         }
@@ -316,7 +316,7 @@ export class StationsComponent implements OnInit {
 
   getSessionStorageItem(str:string) {
     try {
-      let tmp = sessionStorage.getItem(str);
+      const tmp = sessionStorage.getItem(str);
       if(tmp) {
         return tmp
       }
@@ -325,8 +325,8 @@ export class StationsComponent implements OnInit {
   }
 
   async CSVtoJSON(val: string):Promise<string> {
-    let path: string = val
-    let jsonFile: any = []
+    const path: string = val
+    const jsonFile: any = []
     await fetch(path)
     .then((res) => res.text())
     .then((data) =>{
@@ -334,11 +334,11 @@ export class StationsComponent implements OnInit {
       //Remove "" that are automatically added
       csv = csv.replace(/['"]+/g, '')
 
-      let lines = csv.split("\n")
-      let headers = lines[0].split(",")
+      const lines = csv.split("\n")
+      const headers = lines[0].split(",")
       for(let i=1; i<lines.length; i++) {
-        let obj: any = {}
-        let currLine = lines[i].split(",")
+        const obj: any = {}
+        const currLine = lines[i].split(",")
         for(let j=0; j<headers.length; j++) {
           obj[headers[j]] = currLine[j];
         }

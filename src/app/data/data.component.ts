@@ -12,12 +12,12 @@ import { CommonModule } from '@angular/common';
 
 export class DataComponent implements OnInit {
   dataTypesArray: any[] = [];
-  years: number = 0;
+  years = 0;
   stationIDArray: any;
   startDate: any = null;
   endDate: any = null;
-  startStr:string = "";
-  endStr:string = "";
+  startStr = "";
+  endStr = "";
   headers = ['Data Types']
   // NOTE: masterSelected: [0]=display [1]=All, [2]=hourly, [3]=daily, [4]=monthly, [5]=misc
   masterSelected:boolean[] = [];
@@ -27,18 +27,18 @@ export class DataComponent implements OnInit {
   sendingDataList:string[] = []
   stationDataTypes:string[] = []
   stationDataObjs:any[] = []
-  isLoading: boolean = true;
-  dispHeaders: boolean = false;
+  isLoading = true;
+  dispHeaders = false;
   stationsJSON: any = null;
   masterCheckedList: any[] = [];
-  error: string = ""
+  error = ""
 
   //page variables
   sendingArray: any[] = [];
 
   constructor(private router: Router)
     {
-      let state:any = this.router.getCurrentNavigation()!.extras.state;
+      const state:any = this.router.getCurrentNavigation()!.extras.state;
       if(state) {
         this.stationsJSON = state.stationsJSON
       }
@@ -189,7 +189,7 @@ export class DataComponent implements OnInit {
       .then((res) => res.json())
       .then((data) =>{
           for(let i = 0; i < data.length; i++){
-            let array: any []= []
+            const array: any []= []
             if(data[i].DataTypes == this.checklist[i].value){
               this.checklist[i].tooltip = data[i].Description
             }
@@ -206,7 +206,7 @@ export class DataComponent implements OnInit {
       }
     }
     // Set display to All
-    let a:any = document.getElementById("typeValue") as HTMLInputElement
+    const a:any = document.getElementById("typeValue") as HTMLInputElement
     a.value = 'All'
     this.displayList = this.stationDataObjs.slice()
     this.masterSelected[0] = this.masterSelected[1]
@@ -222,9 +222,9 @@ export class DataComponent implements OnInit {
 
   // The master checkbox will check/ uncheck all items
   checkUncheckAll() {
-    let tmp:any = document.getElementById("typeValue") as HTMLInputElement;
-    let category:string = tmp.value;
-    for (var i = 0; i < this.displayList.length; i++) {
+    const tmp:any = document.getElementById("typeValue") as HTMLInputElement;
+    const category:string = tmp.value;
+    for (let i = 0; i < this.displayList.length; i++) {
       this.displayList[i].isSelected = this.masterSelected[0];
     }
 
@@ -277,8 +277,8 @@ export class DataComponent implements OnInit {
     this.masterSelected[0] = this.displayList.every(function(item:any) {
       return item.isSelected == true;
     })
-    let tmp:any = document.getElementById("typeValue") as HTMLInputElement;
-    let category:string = tmp.value;
+    const tmp:any = document.getElementById("typeValue") as HTMLInputElement;
+    const category:string = tmp.value;
     switch (category) {
         case 'All':
           this.masterSelected[1] = this.masterSelected[0]
@@ -299,7 +299,7 @@ export class DataComponent implements OnInit {
     this.getCheckedItemList();
   }
   getMasterList(){
-    for (var i = 0; i < this.displayList.length; i++) {
+    for (let i = 0; i < this.displayList.length; i++) {
       if(this.displayList[i].isSelected)
         this.masterCheckedList.push(this.displayList[i]);
     }
@@ -337,8 +337,8 @@ export class DataComponent implements OnInit {
     this.masterCheckedList = temp.slice();
     console.log(this.masterCheckedList);
 
-    for(let displayType of this.displayList) {
-      let tmpInd:any = this.stationDataObjs.findIndex((obj:any) => {
+    for(const displayType of this.displayList) {
+      const tmpInd:any = this.stationDataObjs.findIndex((obj:any) => {
         return obj.id == displayType.id;
       });
       this.stationDataObjs[tmpInd].isSelected = displayType.isSelected;
@@ -355,15 +355,15 @@ export class DataComponent implements OnInit {
       .then((data) =>{
         console.log("Got Test CSV File for " + this.stationIDArray[i]);
         let csv = data;
-        let csvheaders = csv.substring(0, csv.search("\n")).replace(/['"]+/g, '').split(/,/);
+        const csvheaders = csv.substring(0, csv.search("\n")).replace(/['"]+/g, '').split(/,/);
         csv = csv.replace(/['"]+/g, '')
 
         // Hourly
-        let startDateObj = new Date(+this.startDate.year, +this.startDate.month-1, this.startDate.day)
-        let oneDayData = this.trimToDates(csv, startDateObj)
-        let dayLines = oneDayData.split("\n")
+        const startDateObj = new Date(+this.startDate.year, +this.startDate.month-1, this.startDate.day)
+        const oneDayData = this.trimToDates(csv, startDateObj)
+        const dayLines = oneDayData.split("\n")
         for(let j = 1; j < dayLines.length-1; j++) {
-          let currLine = dayLines[j].split(",")
+          const currLine = dayLines[j].split(",")
           for(let k = 9; k < csvheaders.length; k++) {
             if(currLine[k] && !this.stationDataTypes.includes(csvheaders[k-1])) {
               this.stationDataTypes.push(csvheaders[k-1]);
@@ -375,8 +375,8 @@ export class DataComponent implements OnInit {
         let counter = 0;
         let sodInd = csv.indexOf(',SOD');
         while(counter<10 && sodInd != -1) {
-          let firstInd = csv.lastIndexOf('\n', sodInd)
-          let dailyLine = csv.substring(firstInd, csv.indexOf('\n', firstInd+1)).split(",")
+          const firstInd = csv.lastIndexOf('\n', sodInd)
+          const dailyLine = csv.substring(firstInd, csv.indexOf('\n', firstInd+1)).split(",")
           if(dailyLine.length>0) {
             for(let k = 9; k < csvheaders.length; k++) {
               if(dailyLine[k] && !this.stationDataTypes.includes(csvheaders[k-1])) {
@@ -392,8 +392,8 @@ export class DataComponent implements OnInit {
         counter = 0;
         let somInd = csv.indexOf(',SOM');
         while(counter<10 && somInd != -1) {
-          let firstInd = csv.lastIndexOf('\n', somInd)
-          let dailyLine = csv.substring(firstInd, csv.indexOf('\n', firstInd+1)).split(",")
+          const firstInd = csv.lastIndexOf('\n', somInd)
+          const dailyLine = csv.substring(firstInd, csv.indexOf('\n', firstInd+1)).split(",")
           if(dailyLine.length>0) {
             for(let k = 9; k < csvheaders.length; k++) {
               if(dailyLine[k] && !this.stationDataTypes.includes(csvheaders[k-1])) {
@@ -413,10 +413,10 @@ export class DataComponent implements OnInit {
   trimToDates(csv:string, startDate:Date) {
     let ind = -1
     // Cannot be last day of year
-    let maxDate = new Date(+this.startDate.year, 11, 31)
+    const maxDate = new Date(+this.startDate.year, 11, 31)
     while(ind==-1 && startDate<maxDate) {
-      let start = startDate.getFullYear() + '-' + ("0"+(startDate.getMonth()+1)).slice(-2) + '-' + ("0" + startDate.getDate()).slice(-2)
-      let startRegex = new RegExp(`[\n][0-9]*[,]*${start}`)
+      const start = startDate.getFullYear() + '-' + ("0"+(startDate.getMonth()+1)).slice(-2) + '-' + ("0" + startDate.getDate()).slice(-2)
+      const startRegex = new RegExp(`[\n][0-9]*[,]*${start}`)
       ind = csv.search(startRegex)
       if(ind!=-1) {
         csv = csv.slice(ind);
@@ -428,7 +428,7 @@ export class DataComponent implements OnInit {
     if(!(startDate>maxDate)) {
       ind = -1
       while(ind==-1 && startDate<maxDate) {
-        let end = startDate.getFullYear() + '-' + ("0"+(startDate.getMonth())+1).slice(-2) + '-' + ("0" + startDate.getDate()).slice(-2)
+        const end = startDate.getFullYear() + '-' + ("0"+(startDate.getMonth())+1).slice(-2) + '-' + ("0" + startDate.getDate()).slice(-2)
         ind = csv.search(end)
         if(ind!=-1) {
           csv = csv.slice(0, csv.indexOf("\n", csv.lastIndexOf(end))+1)
@@ -445,13 +445,13 @@ export class DataComponent implements OnInit {
   sendToDisplay(){
     if(this.masterCheckedList.length == 0) {
       this.error = "Please Select One or More Data Types"
-      let context = this;
+      const context = this;
       setTimeout(function(){
         context.error = ""
       }, 5000)
     }
     else {
-      for(let i of this.masterCheckedList) {
+      for(const i of this.masterCheckedList) {
         this.sendingDataList.push(i.value)
       }
       sessionStorage.setItem("masterSelected", JSON.stringify(this.masterSelected))
@@ -477,7 +477,7 @@ export class DataComponent implements OnInit {
 
   getSessionStorageItem(str:string) {
     try {
-      let tmp = sessionStorage.getItem(str);
+      const tmp = sessionStorage.getItem(str);
       if(tmp) {
         return tmp
       }
