@@ -7,7 +7,6 @@ import { HomeComponent } from './home/home.component';
 import { StationsComponent } from './stations/stations.component';
 import { DataComponent } from './data/data.component';
 import { DisplayComponent } from './display/display.component';
-import { HttpClientModule } from '@angular/common/http';
 import { NavbarComponent } from './navbar/navbar.component';
 import { appRoutingModule } from './app.routing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';

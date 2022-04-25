@@ -1,7 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
 import { Router } from "@angular/router";
-import { CommonModule } from "@angular/common";
 
 @Component({
   selector: "app-data",
@@ -219,7 +217,6 @@ export class DataComponent implements OnInit {
           .then((res) => res.json())
           .then((data) => {
             for (let i = 0; i < data.length; i++) {
-              const array: any[] = [];
               if (data[i].DataTypes == this.checklist[i].value) {
                 this.checklist[i].tooltip = data[i].Description;
               }
@@ -347,17 +344,17 @@ export class DataComponent implements OnInit {
   // Get List of Checked Items
   getCheckedItemList() {
     let temp: any[] = [];
-    for (var i = 0; i < this.masterCheckedList.length; i++) {
+    for (let i = 0; i < this.masterCheckedList.length; i++) {
       temp.push(this.masterCheckedList[i]);
     }
     this.checkedList = [];
-    for (var i = 0; i < this.displayList.length; i++) {
+    for (let i = 0; i < this.displayList.length; i++) {
       if (this.displayList[i].isSelected) {
         this.checkedList.push(this.displayList[i]);
       }
     }
 
-    for (var i = 0; i < this.checkedList.length; i++) {
+    for (let i = 0; i < this.checkedList.length; i++) {
       if (!temp.includes(this.checkedList[i])) {
         temp.push(this.checkedList[i]);
       }
@@ -577,7 +574,8 @@ export class DataComponent implements OnInit {
       if (tmp) {
         return tmp;
       }
-    } catch (e) {}
+    } catch (e) {console.log(e);
+    }
     return null;
   }
 

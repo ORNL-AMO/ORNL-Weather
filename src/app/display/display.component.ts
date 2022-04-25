@@ -517,7 +517,7 @@ export class DisplayComponent implements OnInit {
               obj[j] = currLine[j + 1];
               dObj[this.allHeaders[j]] = currLine[j + 1];
 
-              if (currLine[8] == "FM-15" || "FM-12" || "FM-16") {
+              if (currLine[8] == "FM-15" || currLine[8] == "FM-12" || currLine[8] == "FM-16") {
                 hObj[j] = currLine[j + 1];
                 dHObj[this.hourlyHeads[j]] = currLine[j + 1];
               }
@@ -696,10 +696,6 @@ export class DisplayComponent implements OnInit {
     new ngxCsv(this.dataObj, filename, options);
   }
 
-  emptyValues(obj: any) {
-    const checking = true;
-  }
-
   pageChanged(event: any) {
     this.config.currentPage = event;
   }
@@ -752,8 +748,6 @@ export class DisplayComponent implements OnInit {
 
   async exportTojson() {
     const { convertArrayToCSV } = require("convert-array-to-csv");
-    const converter = require("convert-array-to-csv");
-
     const filename = "NCEI_Weather_Data";
     const header = this.headers;
     let temp = "";
@@ -777,13 +771,10 @@ export class DisplayComponent implements OnInit {
   }
 
   async CSVtoJSON(val: string): Promise<string> {
-    const path: string = val;
     const jsonFile: any = [];
-
     let csv = val;
     //Remove "" that are automatically added
     csv = csv.replace(/['"]+/g, "");
-
     const lines = csv.split("\n");
     const headers = lines[0].split(",");
     for (let i = 1; i < lines.length; i++) {
@@ -886,7 +877,8 @@ export class DisplayComponent implements OnInit {
       if (tmp) {
         return tmp;
       }
-    } catch (e) {}
+    } catch (e) {console.log(e);
+    }
     return null;
   }
 
