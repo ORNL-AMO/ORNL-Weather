@@ -590,6 +590,7 @@ export class HomeComponent implements OnInit {
     sessionStorage.setItem("distance", dist);
     sessionStorage.setItem("start-date", start);
     sessionStorage.setItem("end-date", end);
+    sessionStorage.removeItem("numYears")
   }
 
   // Change input text box background color depending on validity of input
