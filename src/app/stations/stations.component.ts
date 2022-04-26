@@ -27,6 +27,8 @@ export class StationsComponent implements OnInit {
   startStr = "";
   endDate: any = null;
   endStr = "";
+  endDateObj: any = null;
+  today = new Date();
   stationsJSON: any = null;
   multiInputs: string[] = [];
   zipsList: string[] = [];
@@ -49,7 +51,7 @@ export class StationsComponent implements OnInit {
 
   async ngOnInit() {
     if (!this.getSessionStorageItem("numYears")) {
-      this.goBack();
+      await this.goBack();
     }
 
     // Fetch newest station list data from NOAA
@@ -102,6 +104,8 @@ export class StationsComponent implements OnInit {
       this.endDate = JSON.parse(
         this.getSessionStorageItem("endDate") as string
       );
+      this.endDateObj = new Date(+this.endDate.year, this.endDate.month, this.endDate.day);
+      this.endDateObj.setMonth(this.endDateObj.getMonth()-1);
     }
     if (this.getSessionStorageItem("numYears")) {
       this.numYears = this.getSessionStorageItem("numYears");
@@ -241,8 +245,14 @@ export class StationsComponent implements OnInit {
     console.log("Matching Stations:");
     console.log(tmpStationsArr);
     if (tmpStationsArr.length == 0) {
-      const error = "No matching stations found. Try increasing distance.";
-      this.router.navigate(["/home"], { state: { err: error } });
+      if((this.today.getDate()-14) < this.endDateObj.getDate()) {
+        const error = "Stations may not have data available yet for the selected date range. Try decreasing End Date or increasing Distance.";
+        this.router.navigate(["/home"], { state: { err: error } });
+      }
+      else {
+        const error = "No matching stations found. Try increasing distance.";
+        this.router.navigate(["/home"], { state: { err: error } });
+      }
     } else {
       this.stationsArray.push(tmpStationsArr);
     }
@@ -275,8 +285,15 @@ export class StationsComponent implements OnInit {
     console.log("Matching Stations:");
     console.log(tmpStationsArr);
     if (tmpStationsArr.length == 0) {
-      const error = "No matching stations found. Try another search method";
-      this.router.navigate(["/home"], { state: { err: error } });
+      if((this.today.getDate()-14) < this.endDateObj.getDate()) {
+        const error = "Stations may not have data available yet for the selected date range. Try decreasing End Date or increasing Distance.";
+        this.router.navigate(["/home"], { state: { err: error } });
+      }
+      else {
+        const error = "No matching stations found. Try another search method.";
+        this.router.navigate(["/home"], { state: { err: error } });
+      }
+
     } else {
       this.stationsArray.push(tmpStationsArr);
     }
