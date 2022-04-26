@@ -334,6 +334,7 @@ select:focus {
   margin-left: auto;
   margin-right: auto;
   margin-top: 8px;
+  z-index: 1;
 
   color: #cc0033;
   font-size: 13.5px;
