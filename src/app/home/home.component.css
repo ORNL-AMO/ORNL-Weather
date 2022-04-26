@@ -132,6 +132,7 @@ td:hover {
   display: block;
   margin-right: 60px;
   justify-content: center;
+  z-index: 2;
 }
 
 .endParent {
@@ -142,6 +143,7 @@ td:hover {
   display: block;
   margin-left: 60px;
   justify-content: center;
+  z-index: 2;
 }
 
 span {
@@ -151,6 +153,7 @@ span {
   font-size: 11px;
   color: #2c386b;
   transition: ease-out 0.3s;
+  z-index: 2;
 }
 
 h1 {
