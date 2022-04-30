@@ -4,6 +4,16 @@ body {
   font-size: 24px;
 }
 
+.DbDate {
+  display: block;
+  position: absolute;
+  align-content: flex-end;
+  top: 5px;
+  right: 5px;
+  font-style: italic;
+  font-size: 14px;
+}
+
 .tooltip {
   position: relative;
   display: center;

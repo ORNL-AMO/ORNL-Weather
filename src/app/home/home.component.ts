@@ -34,11 +34,13 @@ export class HomeComponent implements OnInit {
   hasError = false;
   dispError = false;
   dataLoaded = false;
+  stationsErr = false;
   private stationsJSON: any;
   private zipJSON: any;
   private statesJSON: any;
   private citiesJSON: any;
-  currDate = "";
+  currDate: string = "";
+  lastDbUpdateDate: any;
 
   constructor(private router: Router) {
     this.lat = null;
@@ -52,6 +54,7 @@ export class HomeComponent implements OnInit {
     this.statesJSON = [];
     this.citiesJSON = [];
     this.distDropdown = false;
+    this.stationsErr = false;
 
     // Get current date
     // XXX: timezones?
@@ -67,7 +70,9 @@ export class HomeComponent implements OnInit {
       state = this.router.getCurrentNavigation()!.extras.state;
       if (state) {
         if (state.err) {
+          this.stationsErr = true;
           this.errors = state.err;
+          // if(this.errors.contains("Try"))
           const context = this;
           setTimeout(function () {
             context.errors = "";
@@ -88,9 +93,29 @@ export class HomeComponent implements OnInit {
     this.checkInput();
 
     // Set max dates for date selection boxes
-    const today = new Date().toISOString().split("T")[0];
-    document.getElementsByName("start-date")[0].setAttribute("max", today);
-    document.getElementsByName("end-date")[0].setAttribute("max", today);
+    let tmpDate: any;
+    let maxDate: string = "";
+    try {
+      await fetch("https://www.ncei.noaa.gov/data/local-climatological-data/")
+      .then((res) => res.text())
+      .then((data) => {
+        data = data.slice(data.indexOf("access"));
+        data = data.substring(0, data.indexOf(":"));
+        const dateRegex = new RegExp(`[0-9]{4}-[0-9]{2}-[0-9]{2}`);
+        tmpDate = data.match(dateRegex);
+        sessionStorage.setItem("lastDbUpdate", tmpDate[0])
+        tmpDate = tmpDate[0].split('-');
+        tmpDate = new Date(tmpDate[0], tmpDate[1]-1, tmpDate[2]);
+        console.log(tmpDate.toISOString());
+      });
+      this.lastDbUpdateDate = tmpDate.toLocaleString('en-us', {  weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+      maxDate = tmpDate.toISOString().split("T")[0];
+    } catch (error) {
+      this.lastDbUpdateDate = "error";
+      maxDate = new Date().toISOString().split("T")[0];
+    }
+    document.getElementsByName("start-date")[0].setAttribute("max", maxDate);
+    document.getElementsByName("end-date")[0].setAttribute("max", maxDate);
 
     // Preload Zip Code and Station data into memory
 
@@ -586,11 +611,14 @@ export class HomeComponent implements OnInit {
       .value;
     const end = (document.getElementById("end-date") as HTMLInputElement).value;
 
+    if(this.stationsErr == true || (sessionStorage.getItem("zipcode") != zip || sessionStorage.getItem("distance") != dist || sessionStorage.getItem("start-date") != start || sessionStorage.getItem("end-date") != end)) {
+      sessionStorage.removeItem("numYears")
+    }
+
     sessionStorage.setItem("zipcode", zip);
     sessionStorage.setItem("distance", dist);
     sessionStorage.setItem("start-date", start);
     sessionStorage.setItem("end-date", end);
-    sessionStorage.removeItem("numYears")
   }
 
   // Change input text box background color depending on validity of input

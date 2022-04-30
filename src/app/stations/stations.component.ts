@@ -28,9 +28,9 @@ export class StationsComponent implements OnInit {
   endDate: any = null;
   endStr = "";
   endDateObj: any = null;
-  today = new Date();
   stationsJSON: any = null;
   multiInputs: string[] = [];
+  lastDbUpdateDate: any = null;
   zipsList: string[] = [];
   stationsArray: any[] = [];
   selectedArray: any[] = [];
@@ -46,12 +46,22 @@ export class StationsComponent implements OnInit {
     const state: any = this.router.getCurrentNavigation()!.extras.state;
     if (state) {
       this.stationsJSON = state.stationsJSON;
+      if (state.err) {
+        this.error = state.err;
+        const context = this;
+        setTimeout(function () {
+          context.error = "";
+        }, 5000);
+      }
     }
   }
 
   async ngOnInit() {
     if (!this.getSessionStorageItem("numYears")) {
-      await this.goBack();
+      sessionStorage.removeItem("selectedArrayStations");
+      sessionStorage.removeItem("sendingArrayStations");
+      const error = "Please submit input using Station Select button.";
+      this.router.navigate(["/home"], { state: { err: error } });
     }
 
     // Fetch newest station list data from NOAA
@@ -122,6 +132,14 @@ export class StationsComponent implements OnInit {
       this.multiInputs = JSON.parse(
         this.getSessionStorageItem("multiInputs") as string
       );
+    }
+    if (this.getSessionStorageItem("lastDbUpdate")) {
+      let tmp = this.getSessionStorageItem("lastDbUpdate") as string;
+      let tmpArr = tmp.split('-');
+      this.lastDbUpdateDate = new Date(+tmpArr[0], +tmpArr[1]-1, +tmpArr[2]);
+    }
+    else {
+      this.lastDbUpdateDate = new Date();
     }
 
     await this.getStations();
@@ -245,8 +263,8 @@ export class StationsComponent implements OnInit {
     console.log("Matching Stations:");
     console.log(tmpStationsArr);
     if (tmpStationsArr.length == 0) {
-      if((this.today.getDate()-14) < this.endDateObj.getDate()) {
-        const error = "Stations may not have data available yet for the selected date range. Try decreasing End Date or increasing Distance.";
+      if(this.lastDbUpdateDate.getDate()-7 < this.endDateObj.getDate()) {
+        const error = "No matching stations found. Try decreasing End Date or increasing Distance.";
         this.router.navigate(["/home"], { state: { err: error } });
       }
       else {
@@ -285,8 +303,8 @@ export class StationsComponent implements OnInit {
     console.log("Matching Stations:");
     console.log(tmpStationsArr);
     if (tmpStationsArr.length == 0) {
-      if((this.today.getDate()-14) < this.endDateObj.getDate()) {
-        const error = "Stations may not have data available yet for the selected date range. Try decreasing End Date or increasing Distance.";
+      if(this.lastDbUpdateDate.getDate()-7 < this.endDateObj.getDate()) {
+        const error = "No matching stations found. Try decreasing End Date or increasing Distance.";
         this.router.navigate(["/home"], { state: { err: error } });
       }
       else {
@@ -301,6 +319,7 @@ export class StationsComponent implements OnInit {
 
   //// Selection Functions
   getSelect(ev: any, val: string) {
+    this.clearData();
     const obj = {
       ID: val,
     };
@@ -330,7 +349,7 @@ export class StationsComponent implements OnInit {
 
   sendToData() {
     if (this.selectedArray.length == 0) {
-      this.error = "Please Select One or More Stations";
+      this.error = "Please select one or more stations.";
       const context = this;
       setTimeout(function () {
         context.error = "";
@@ -356,8 +375,15 @@ export class StationsComponent implements OnInit {
     // Clear Stations sessionstorage items
     sessionStorage.removeItem("selectedArrayStations");
     sessionStorage.removeItem("sendingArrayStations");
-
     this.router.navigate(["/home"]);
+  }
+
+  clearData() {
+    sessionStorage.removeItem("sendingArrayStations");
+    sessionStorage.removeItem("stationDataObjs");
+    sessionStorage.removeItem("masterSelected");
+    sessionStorage.removeItem("masterCheckedList");
+    sessionStorage.removeItem("sendingDataList");
   }
 
   //// Utility Functions

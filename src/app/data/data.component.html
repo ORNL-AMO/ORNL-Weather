@@ -36,7 +36,7 @@
         <tr *ngFor="let item of displayList">
           <label class="rows">
             <td class="center">
-              <input type="checkbox" id="{{item.id}}" [(ngModel)]="item.isSelected" name="list_name" value="{{item.id}}" (change)="isAllSelected()">
+              <input type="checkbox" id="{{item.id}}" [(ngModel)]="item.isSelected" name="list_name" value="{{item.id}}" (change)="isAllSelected(); clearSending()">
             </td>
           </label>
           <label class="rows" for="{{item.id}}">
@@ -66,7 +66,7 @@
     </div>
   </div>
   <div class="center" style="margin-top: 65px;">
-    <button class="button button1" (click)="goBack()">
+    <button class="button button1" (click)="goBack('')">
       <b>Back</b>
     </button>
     <div *ngIf="error" class="alertcenter">

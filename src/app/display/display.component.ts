@@ -198,14 +198,14 @@ export class DisplayComponent implements OnInit {
         this.getSessionStorageItem("sendingArrayStations") as string
       );
     } else {
-      this.goBack();
+      this.goBack("Please submit data type selections using Display Data button.");
     }
     if (this.getSessionStorageItem("sendingDataList")) {
       this.dataTypeObj = JSON.parse(
         this.getSessionStorageItem("sendingDataList") as string
       );
     } else {
-      this.goBack();
+      this.goBack("Please submit data type selections using Display Data button.");
     }
 
     if (this.stationIDArray) {
@@ -882,9 +882,9 @@ export class DisplayComponent implements OnInit {
     return null;
   }
 
-  goBack() {
+  goBack(err:string) {
     this.router.navigate(["/data"], {
-      state: { stationsJSON: this.stationsJSON },
+      state: { stationsJSON: this.stationsJSON, err: err },
     });
   }
 }

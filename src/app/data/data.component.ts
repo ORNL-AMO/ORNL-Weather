@@ -27,7 +27,7 @@ export class DataComponent implements OnInit {
   dispHeaders = false;
   stationsJSON: any = null;
   masterCheckedList: any[] = [];
-  error = "";
+  error: string = "";
 
   //page variables
   sendingArray: any[] = [];
@@ -36,6 +36,13 @@ export class DataComponent implements OnInit {
     const state: any = this.router.getCurrentNavigation()!.extras.state;
     if (state) {
       this.stationsJSON = state.stationsJSON;
+      if (state.err) {
+        this.error = state.err;
+        const context = this;
+        setTimeout(function () {
+          context.error = "";
+        }, 5000);
+      }
     }
   }
 
@@ -55,7 +62,7 @@ export class DataComponent implements OnInit {
         this.getSessionStorageItem("sendingArrayStations") as string
       );
     } else {
-      this.goBack();
+      this.goBack("Please submit station selections using Data button below table.");
     }
     if (this.getSessionStorageItem("stationDataObjs")) {
       this.stationDataObjs = JSON.parse(
@@ -552,18 +559,18 @@ export class DataComponent implements OnInit {
     }
   }
 
-  goBack() {
+  goBack(err:string) {
     sessionStorage.removeItem("stationDataObjs");
     sessionStorage.removeItem("masterSelected");
     sessionStorage.removeItem("masterCheckedList");
     sessionStorage.removeItem("sendingDataList");
     if (!this.getSessionStorageItem("stationID")) {
       this.router.navigate(["/stations"], {
-        state: { stationsJSON: this.stationsJSON },
+        state: { stationsJSON: this.stationsJSON, err: err },
       });
     } else {
       this.router.navigate(["/home"], {
-        state: { stationsJSON: this.stationsJSON },
+        state: { stationsJSON: this.stationsJSON, err: err },
       });
     }
   }
@@ -609,5 +616,9 @@ export class DataComponent implements OnInit {
       });
       this.isAllSelected();
     }
+  }
+
+  clearSending() {
+    sessionStorage.removeItem("sendingDataList")
   }
 }
