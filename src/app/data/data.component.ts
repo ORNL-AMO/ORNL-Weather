@@ -27,7 +27,7 @@ export class DataComponent implements OnInit {
   dispHeaders = false;
   stationsJSON: any = null;
   masterCheckedList: any[] = [];
-  error: string = "";
+  error = "";
 
   //page variables
   sendingArray: any[] = [];

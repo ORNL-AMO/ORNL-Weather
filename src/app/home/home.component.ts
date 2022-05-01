@@ -39,7 +39,7 @@ export class HomeComponent implements OnInit {
   private zipJSON: any;
   private statesJSON: any;
   private citiesJSON: any;
-  currDate: string = "";
+  currDate = "";
   lastDbUpdateDate: any;
 
   constructor(private router: Router) {
@@ -94,7 +94,7 @@ export class HomeComponent implements OnInit {
 
     // Set max dates for date selection boxes
     let tmpDate: any;
-    let maxDate: string = "";
+    let maxDate = "";
     try {
       await fetch("https://www.ncei.noaa.gov/data/local-climatological-data/")
       .then((res) => res.text())

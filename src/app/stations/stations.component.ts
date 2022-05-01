@@ -134,8 +134,8 @@ export class StationsComponent implements OnInit {
       );
     }
     if (this.getSessionStorageItem("lastDbUpdate")) {
-      let tmp = this.getSessionStorageItem("lastDbUpdate") as string;
-      let tmpArr = tmp.split('-');
+      const tmp = this.getSessionStorageItem("lastDbUpdate") as string;
+      const tmpArr = tmp.split('-');
       this.lastDbUpdateDate = new Date(+tmpArr[0], +tmpArr[1]-1, +tmpArr[2]);
     }
     else {
