@@ -69,7 +69,10 @@
       "output": "../output/"
     },
     "win": {
-      "target": "nsis",
+      "target": [
+        "nsis",
+        "zip"
+      ],
       "icon": "src/assets/doe_image256.png"
     },
     "nsis": {
@@ -95,7 +98,7 @@
         "dmg",
         "zip"
       ],
-      "icon": "src/assets/doe_image256.png",
+      "icon": "src/assets/doe_image512.png",
       "hardenedRuntime": true,
       "entitlements": "entitlements.mac.inherit.plist",
       "entitlementsInherit": "entitlements.mac.inherit.plist",

@@ -417,6 +417,12 @@ select:focus {
   }
 }
 
+@media only screen and (max-width: 800px) {
+  .DbDate {
+    display: none;
+  }
+}
+
 @media only screen and (max-width: 650px) {
   .tooltip {
     position: relative;
