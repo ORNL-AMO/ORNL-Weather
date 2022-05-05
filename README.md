@@ -8,15 +8,21 @@ This program is for requesting Local Climatological weather data from the Nation
 
 
 ## Dependencies
-- [Node.js v17.3.0 or higher](https://nodejs.org/en/)
+- [Node.js v14.15.0 or higher](https://nodejs.org/en/)
 - [Angular CLI](https://github.com/angular/angular-cli)
 
 ## Bugs/Non-Working Features
 - Please report bugs to `armstrongko@ornl.gov`
 
 ## Installation - Local
+### Windows
 - To install as a Windows program, download and run ORNL-Weather-Setup executable from latest release [here](https://github.com/ORNL-AMO/ORNL-Weather/releases/) and follow installation wizard
-- To run without installing, download ORNL-Weather zip from latest release [here](https://github.com/ORNL-AMO/ORNL-Weather/releases/), unzip folder, then run ORNL-Weather.exe
+- To run without installing, download ORNL-Weather-*x.y.z*-win.zip from latest release [here](https://github.com/ORNL-AMO/ORNL-Weather/releases/), unzip folder, then run ORNL-Weather.exe
+### macOS
+- To run from DMG, download and open .dmg file from latest release [here](https://github.com/ORNL-AMO/ORNL-Weather/releases/), drag ORNL-Weather to Applications at the prompt, then open from Applications.
+- To run from zip, download and open ORNL-Weather-*x.y.z*-mac.zip from latest release [here](https://github.com/ORNL-AMO/ORNL-Weather/releases/), then open the zip by double clicking to create the application.
+### Linux
+- To run from AppImage, download and run .AppImage file from latest release [here](https://github.com/ORNL-AMO/ORNL-Weather/releases/).
 
 ## Installation - Server
 - First download and install node.js from above link.
@@ -50,8 +56,9 @@ sudo systemctl restart apache2
 - Run `npm install -g @angular/cli` to install angular.
 - Run `npm install` to install all the packages required for the program.
 - Run command `npm run dist` to build project
-- Installer will be found at ../output/ORNL-Weather-Setup-\*.\*.\*.exe
-- Folder containing Windows executable can be found at ../output/win-unpacked/
+- **Windows**: Installer (ORNL-Weather-Setup-*x.y.z*.exe) and zip containing executable (ORNL-Weather-*x.y.z*-win) can be found in ORNL-Weather\output\.
+- **macOS**: DMG (ORNL-Weather-*x.y.z*.dmg) and zip containing application (ORNL-Weather-*x.y.z*-mac.zip) can be found in ORNL-Weather/output/.
+- **Linux**: AppImage (ORNL-Weather-*x.y.z*.AppImage) and tarball containing application (ORNL-Weather-*x.y.z*-linux.tar.gz) can be found in ORNL-Weather/output/.
 
 ### Build Development Server
 - To install all required packages:

@@ -66,7 +66,7 @@
     "appId": "com.electron.ornl-amo-weather",
     "productName": "ORNL-Weather",
     "directories": {
-      "output": "../output/"
+      "output": "./output/"
     },
     "win": {
       "target": [
@@ -85,8 +85,7 @@
     },
     "linux": {
       "target": [
-        "AppImage",
-        "tar.gz"
+        "AppImage"
       ],
       "icon": "src/assets/doe_image256.png",
       "executableName": "ORNL-Weather",
