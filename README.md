@@ -16,13 +16,16 @@ This program is for requesting Local Climatological weather data from the Nation
 
 ## Installation - Local
 ### Windows
-- To install as a Windows program, download and run ORNL-Weather-Setup executable from latest release [here](https://github.com/ORNL-AMO/ORNL-Weather/releases/) and follow installation wizard
-- To run without installing, download ORNL-Weather-*x.y.z*-win.zip from latest release [here](https://github.com/ORNL-AMO/ORNL-Weather/releases/), unzip folder, then run ORNL-Weather.exe
+- To install as a Windows program, download and run ORNL-Weather-Setup executable from latest release [here](https://github.com/ORNL-AMO/ORNL-Weather/releases/) and follow installation wizard.
+- To run without installing, download ORNL-Weather-*x.y.z*-win.zip from latest release [here](https://github.com/ORNL-AMO/ORNL-Weather/releases/), unzip folder, then run ORNL-Weather.exe.
+- ***Note:*** Windows may display SmartScreen warnings when launching for the first time. Simply choose "Run anyway".
 ### macOS
-- To run from DMG, download and open .dmg file from latest release [here](https://github.com/ORNL-AMO/ORNL-Weather/releases/), drag ORNL-Weather to Applications at the prompt, then open from Applications.
-- To run from zip, download and open ORNL-Weather-*x.y.z*-mac.zip from latest release [here](https://github.com/ORNL-AMO/ORNL-Weather/releases/), then open the zip by double clicking to create the application.
+- To run from DMG, download .dmg file from latest release [here](https://github.com/ORNL-AMO/ORNL-Weather/releases/), open the file in Finder, drag ORNL-Weather to Applications at the prompt, then open from Applications.
+- To run from zip, download ORNL-Weather-*x.y.z*-mac.zip from latest release [here](https://github.com/ORNL-AMO/ORNL-Weather/releases/), then open by double clicking to launch the application.
+- ***Note:*** Pop-ups that appear during the first run can be ignored and should not reappear on subsequent launches.
+- ***Note:*** Downloaded files will not properly open unless opened in Finder.
 ### Linux
-- To run from AppImage, download and run .AppImage file from latest release [here](https://github.com/ORNL-AMO/ORNL-Weather/releases/).
+- To run from AppImage, download .AppImage file from latest release [here](https://github.com/ORNL-AMO/ORNL-Weather/releases/), open .AppImage file Properties>Permissions and ensure "Allow executing of file as program" is checked, then double-click the file to launch the application.
 
 ## Installation - Server
 - First download and install node.js from above link.
@@ -37,12 +40,11 @@ This program is for requesting Local Climatological weather data from the Nation
 curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
 source ~/.profile
 nvm install node
-wget https://github.com/ORNL-AMO/ORNL-Weather/archive/refs/tags/1.0.0.tar.gz
-tar -xf 1.0.0.tar.gz
-cd ORNL-Weather-1.0.0/
+wget https://github.com/ORNL-AMO/ORNL-Weather/archive/refs/tags/1.2.1.tar.gz
+tar -xf 1.2.1.tar.gz
+cd ORNL-Weather-1.2.1/
 npm install
 npm install -g @angular/cli
-npm update
 ng build --base-href /weather/
 sudo mv ./dist/ornl-weather /var/www/html/weather
 sudo systemctl restart apache2
